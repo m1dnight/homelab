@@ -1,0 +1,24 @@
+---
+
+- name: render Caddyfile into variable
+  set_fact:
+    caddy_file_content: "{{ lookup('template', 'Caddyfile.j2') }}"
+  with_items:
+    - "{{ reverse_proxies }}"
+  tags: caddy
+
+- name: print the Caddy file
+  ansible.builtin.debug:
+    msg: "{{ caddy_file_content }}"
+  tags: caddy
+
+- name: install caddy from role
+  ansible.builtin.import_role:
+    name: caddy_ansible.caddy_ansible
+  vars: 
+    caddy_config: "{{ caddy_file_content }}"
+  tags: caddy
+
+- name: format caddy file
+  ansible.builtin.shell: caddy fmt --overwrite /etc/caddy/Caddyfile
+  tags: caddy

@@ -1,0 +1,33 @@
+
+{% for proxy in reverse_proxies %}
+#-------------------------------------------------------------------------------
+# reverse proxy {{ proxy.name }}
+{{ proxy.from }} {
+{% if proxy.lan_only == 1 %}
+	@denied not remote_ip private_ranges
+	abort @denied
+{% endif %}
+
+{% if proxy.debug is defined and proxy.debug == 1 %}
+	log {
+		level DEBUG 
+		output stdout 
+	}
+{% endif %}
+
+{% if proxy.tls is defined and proxy.tls == 1 %}
+	 reverse_proxy {{ proxy.to }} { 
+		transport http {
+			tls
+{% if proxy.tls_verify is defined and proxy.tls_verify == 0 %}		
+			tls_insecure_skip_verify
+{% endif %}
+		}
+	 }
+{% else %} 
+	reverse_proxy {{ proxy.to }}	 
+{% endif %}
+
+}
+{% endfor %}
+

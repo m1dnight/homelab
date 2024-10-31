@@ -1,0 +1,102 @@
+---
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - git
+  - net-tools
+  - libnss3-tools
+
+#-------------------------------------------------------------------------------
+# role: caddy
+
+caddy_os: linux
+caddy_version: ""
+caddy_update: true
+caddy_packages: []
+
+# allow caddy to bind to lower ports
+caddy_setcap: true
+caddy_systemd_capabilities_enabled: true
+caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
+
+reverse_proxies:
+  - name: "homeassistant"
+    from: "homeassistant.call-cc.be"
+    lan_only: yes
+    to: "andromeda.localdomain:8123"
+
+  - name: "exbin"
+    from: "exbin.call-cc.be"
+    lan_only: no
+    to: "exbin.localdomain:5000"
+
+  - name: "proxmox"
+    from: "proxmox.call-cc.be"
+    lan_only: yes
+    to: "https://milkyway.localdomain:8006"
+    debug: yes
+    tls: yes 
+    tls_verify: no
+
+  - name: "transmission"
+    from: "transmission.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:9091"
+
+  - name: "bazarr"
+    from: "bazarr.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:6767"
+
+  - name: "jackett"
+    from: "jackett.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:9117"
+
+  - name: "radarr"
+    from: "radarr.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:7878"
+
+  - name: "lidarr"
+    from: "lidarr.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:8686"
+
+  - name: "sonarr"
+    from: "sonarr.call-cc.be"
+    lan_only: yes
+    to: "torrents.localdomain:8989"
+
+  - name: "synology"
+    from: "synology.call-cc.be"
+    lan_only: yes
+    tls: yes 
+    tls_verify: no
+    to: "pulsar.localdomain:8081"
+
+  - name: "plausible"
+    from: "plausible.loomy.be"
+    lan_only: no
+    to: "observability.localdomain:8000"
+
+  - name: "development.loomy.be"
+    from: "development.loomy.be"
+    lan_only: no
+    to: "192.168.1.153"
+
+  - name: "api.development.loomy.be"
+    from: "api.development.loomy.be"
+    lan_only: no
+    to: "192.168.1.153:8080"
+
+  - name: "notifications.development.loomy.be"
+    from: "notifications.development.loomy.be"
+    lan_only: no
+    to: "192.168.1.153:4001"
+
+  - name: "weechat"
+    from: "chat.call-cc.be"
+    lan_only: no
+    to: "weechat.localdomain:1234"    
