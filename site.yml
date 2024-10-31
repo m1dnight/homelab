@@ -1,0 +1,17 @@
+---
+- hosts: all
+  roles:
+    - common
+
+- hosts: web
+  roles:
+    - caddy
+
+- hosts: weechat
+  roles:
+    - weechat
+
+- hosts: beets
+  roles:
+    - samba 
+    - beet

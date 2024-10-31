@@ -1,0 +1,19 @@
+---
+- block:
+    - name: upgrade all packages 
+      ansible.builtin.apt:
+        upgrade: dist
+        
+    - name: install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+      
+    - name: install basic system packages
+      apt:
+        pkg: "{{ packages }}"
+        state: latest
+        update_cache: true
+      when: packages is defined
+  become: true

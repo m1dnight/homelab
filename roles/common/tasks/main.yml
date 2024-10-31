@@ -1,0 +1,9 @@
+---
+
+- name: configure ntp
+  include_tasks: ntp.yml
+  tags: ntp 
+  
+- name: install packages
+  include_tasks: packages.yml
+  tags: packages

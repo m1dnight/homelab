@@ -1,0 +1,4 @@
+[lxc]
+web ansible_host=web.localdomain ansible_user=root
+weechat ansible_host=weechat.localdomain ansible_user=root
+beets ansible_host=beets.localdomain ansible_user=debian
