@@ -1,0 +1,23 @@
+---
+- name: create mountpoints
+  become: yes
+  file:
+    path: "{{ item.path }}"
+    state: directory
+  with_items: "{{ samba_shares }}"
+
+- name: mount shares in fstab
+  become: yes
+  ansible.posix.mount:
+    src: "{{ item.share }}"
+    path: "{{ item.path }}"
+    opts: "user={{ item.username }},password={{ item.password }},{{ item.extra_opts }}"
+    fstype: cifs
+    state: present
+  with_items: "{{ samba_shares }}"
+
+- name: reload systemctl daemon
+  become: yes
+  ansible.builtin.systemd_service:
+    name: local-fs
+    daemon_reload: true
