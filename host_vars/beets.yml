@@ -1,0 +1,45 @@
+---
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - cifs-utils
+  - python3
+  - python3-pip
+  - python3-venv
+  - tmux
+
+#-------------------------------------------------------------------------------
+# role: samba
+samba_shares:
+  - {
+      name: "music",
+      path: "/mnt/music",
+      username: "{{ secret.samba.music.username }}",
+      password: "{{ secret.samba.music.password }}",
+      share: "//pulsar.localdomain/music",
+      extra_opts: "vers=3.0,file_mode=0777,dir_mode=0777,iocharset=utf8",
+    }
+  - {
+      name: "home",
+      path: "/mnt/home",
+      username: "{{ secret.samba.home.username }}",
+      password: "{{ secret.samba.home.password }}",
+      share: "//pulsar.localdomain/home",
+      extra_opts: "vers=3.0,file_mode=0777,dir_mode=0777,iocharset=utf8",
+    }
+
+#-------------------------------------------------------------------------------
+# role: beets
+
+beet:
+  music_directory: "/mnt/music/merged_library"
+  plugins: 
+    - "info"
+    # - "lastgenre"
+    - "fetchart"
+    - "embedart"
+    - "web"
+    - "discogs"
+  discogs_token: "{{ secret.beet.discogs_token }}"
+

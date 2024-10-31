@@ -1,0 +1,37 @@
+---
+# install beets
+- name: Ensure the virtual environment exists
+  pip:
+    name: "{{ item }}"
+    virtualenv: "$HOME/venv"
+    virtualenv_command: "python3 -m venv"
+  with_items: 
+     - "beets"
+     - "python3-discogs-client"
+     - "Pillow"
+     - "flask"
+
+# config beets
+- name: create config directory
+  ansible.builtin.file:
+    path: "$HOME/.config/beets"
+    state: directory
+
+- name: install beets config
+  template:
+    src: config.yaml.j2
+    dest: "$HOME/.config/beets/config.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
+  tags: beet
+
+- name: copy the genres file
+  ansible.builtin.copy:
+    src: genres.txt
+    dest: "$HOME/.config/beets/genres.txt"
+
+- name: copy the genres file
+  ansible.builtin.copy:
+    src: genres-tree.yaml
+    dest: "$HOME/.config/beets/genres-tree.yaml"

@@ -1,0 +1,73 @@
+directory: {{ beet.music_directory }}
+
+plugins: [{{ ",".join(beet.plugins)}}]
+
+import:
+    # write metadata to music files
+    write: yes
+    # move imported files from source to the music directory
+    move: no
+    autotag: yes
+    timid: no
+    resume: ask
+    quiet_fallback: skip 
+
+lastgenre:
+    whitelist: {{ ansible_env.HOME }}/.config/beets/genres.txt
+    canonical: {{ ansible_env.HOME }}/.config/beets/genres-tree.yaml
+    fallback: 'no_genre'
+    source: artist
+
+fetchart:
+    auto: yes
+    maxwidth: 300
+    cautious: true
+    cover_names: cover folder
+
+embedart:
+    auto: yes
+    maxwidth: 300
+
+replace:
+    '[\\/]': _
+    '^\.': _
+    '[\x00-\x1f]': _
+    '[<>:"\?\*\|]': _
+    '\.$': _
+    '\s+$': ''
+    ';': ''
+
+match:
+    # 90% match is accepted 
+    strong_rec_thresh: 0.1
+    # completely avoid releases with missing tracks
+    ignored: missing_tracks
+
+
+paths:
+    default: Albums/%asciify{$albumartist}/%asciify{$album}%aunique{}/$track %asciify{$title}
+    singleton: Non-Album/%asciify{$artist}/%asciify{$title}
+    comp: Compilations/%asciify{$album}%aunique{}/$track %asciify{$title}
+
+# use mutliple threads during import
+threaded: yes
+timeout: 5.0
+verbose: no
+
+# User Interface -------------------------------------------------------------
+
+color: yes
+list_format_item: %genre - %upper{$artist} - $album - $track. $title
+list_format_album: %genre - %upper{$albumartist} - $album
+time_format: '%Y-%m-%d %H:%M:%S'
+terminal_encoding: utf8
+
+ui:
+    terminal_width: 80
+    length_diff_thresh: 10.0
+
+web:
+    host: 0.0.0.0
+
+discogs:
+    user_token: "{{ beet.discogs_token }}"
