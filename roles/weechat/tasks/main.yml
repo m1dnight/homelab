@@ -1,0 +1,56 @@
+---
+
+- name: stop running weechat
+  ansible.builtin.shell: "pkill -f weechat"
+  ignore_errors: yes
+  tags: weechat
+
+- name: add all the servers in the config
+  with_items: "{{ servers }}"
+  include_tasks: "add_server.yml"
+  tags: weechat
+
+- name: set the relay password
+  ansible.builtin.shell: "weechat -r '/relay add weechat {{ relay.port }};/quit'"
+  when: relay.port is defined
+  tags: weechat
+
+- name: set the relay password
+  ansible.builtin.shell: "weechat -r '/set relay.network.password {{ relay.password }};/quit'"
+  when: relay.password is defined
+  tags: weechat
+
+- name: enable download plugins 
+  ansible.builtin.shell: "weechat -r '/set script.scripts.download_enabled on;/quit'"
+  when: plugins is defined
+  tags: weechat
+
+- name: install plugins 
+  ansible.builtin.shell: "weechat -r '/script install {{ item }};/quit'"
+  with_items: "{{ plugins }}"
+  when: plugins is defined
+  tags: weechat
+
+- name: disable download plugins 
+  ansible.builtin.shell: "weechat -r '/set script.scripts.download_enabled off;/quit'"
+  when: plugins is defined
+  tags: weechat
+
+- name: run various commands
+  ansible.builtin.shell: "weechat -r '{{ item }};/quit'"
+  when: various_commands is defined
+  with_items: "{{ various_commands }}"
+  tags: weechat
+
+- name: start weechat in a tmux on boot
+  ansible.builtin.cron:
+    name: "start weechat"
+    special_time: reboot
+    job: "tmux new-session -d -s weechat 'weechat'"
+  tags: weechat
+
+- name: start weechat in a tmux on boot
+  ansible.builtin.shell: "tmux new-session -d -s weechat 'weechat'"
+  tags: weechat
+
+

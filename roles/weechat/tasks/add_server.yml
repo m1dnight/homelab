@@ -1,0 +1,72 @@
+---
+
+- name: set username
+  set_fact: 
+    username: "{{ default_username }}"
+  when: item.username is undefined
+  tags: weechat
+  
+- name: set username
+  set_fact: 
+    username: "{{ item.username }}"
+  when: item.username is defined
+  tags: weechat
+  
+- name: set nick
+  set_fact: 
+    nicknames: "{{ default_nicknames }}"
+  when: item.nicknames is undefined
+  tags: weechat
+  
+- name: set nick
+  set_fact: 
+    nicknames: "{{ item.nicknames }}"
+  when: item.nicknames is defined
+  tags: weechat
+
+- name: add the server
+  ansible.builtin.shell: "weechat -r '/server add {{ item.name }} {{ item.address }};/quit'"
+  tags: weechat
+
+- name: set the ssl to on if defined 
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.ssl {{ 'on' if (item.tls is defined and item.tls) else 'off'}};/quit'"
+
+- name: set ssl verify
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.ssl_verify {{ 'on' if (item.tls_verify is defined and item.tls_verify) else 'off'}};/quit'"
+  tags: weechat
+
+- name: set autoconnect 
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.autoconnect {{ 'on' if (item.autoconnect is defined and item.autoconnect) else 'off'}};/quit'"
+  tags: weechat
+
+- name: set the username
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.username {{ username }};/quit'"
+  tags: weechat
+
+- name: set alternate nicknames to true
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.nicks_alternate on;/quit'"
+  tags: weechat
+
+- name: set the list of nicknames
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.nicks {{ ','.join(nicknames) }};/quit'"
+  tags: weechat
+
+- name: set the command to run at the start of connection
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.command {{ commands[item.name].command }};/quit'"
+  when: commands[item.name].command is defined
+  tags: weechat
+
+- name: set the sasl username
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_username {{ sasl[item.name].username }};/quit'"
+  when: sasl[item.name].username is defined
+  tags: weechat
+
+- name: set the sasl password
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_password {{ sasl[item.name].password }};/quit'"
+  when: sasl[item.name].password is defined
+  tags: weechat
+
+- name: set the autojoin channels
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.autojoin {{ ','.join(item.autojoin) }};/quit'"
+  when: item.autojoin is defined
+  tags: weechat

@@ -1,0 +1,126 @@
+---
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - git
+  - net-tools
+  - libnss3-tools
+  - ca-certificates
+  - dirmngr
+  - gpg-agent
+  - apt-transport-https
+  - weechat-curses
+  - weechat-plugins
+  - weechat-python
+  - weechat-perl
+  - tmux
+#-------------------------------------------------------------------------------
+# role: weechat
+
+default_nicknames:
+  - "m1dnight"
+  - "m1dnight_"
+
+default_username: "m1dnight"
+
+relay:
+  port: 1234
+  password: {{ secret.weechat.relay_password }}
+
+plugins:
+  - "go.py"
+  - "grep.py"
+  - "highmon.pl"
+  - "buffers.pl"
+
+various_commands:
+  - "/set irc.look.smart_filter on"
+  - "/filter add irc_smart * irc_smart_filter *"
+  - "/set irc.look.smart_filter_delay 5"
+
+servers:
+  - name: libera
+    address: "irc.libera.chat/6697"
+    autoconnect: yes
+    tls: yes
+    autojoin:
+      - "#elixir"
+      - "#nginx"
+      - "#linux"
+      - "#motorcycles"
+      - "#windows"
+      - "#arduino"
+      - "#haskell"
+      - "#plex"
+      - "#scheme"
+      - "#openbsd"
+      - "##English"
+      - "#homeassistant"
+      - "#raspberrypi"
+      - "#embedded"
+      - "#css"
+      - "#latex"
+      - "#debian"
+      - "#raspbian"
+      - "#proglangdesign"
+      - "#weechat"
+      - "#ubuntu"
+      - "#git"
+      - "#python"
+      - "#winehq"
+      - "#yubikey"
+      - "#tmux"
+      - "#exbin"
+      - "##bicycles"
+      - "#racket"
+      - "#erlang"
+      - "#gimp"
+      - "#physics"
+      - "#jackett"
+      - "#emacs"
+      - "##apple"
+      - "#vscode"
+      - "#truenas"
+      - "#radarr"
+      - "##autism"
+      - "#esp32"
+      - "#typescript"
+      - "#docker"
+      - "#ugov.be"
+      - "#beets"
+
+  - name: quakenet
+    address: "irc.quakenet.org/6667"
+    autoconnect: yes
+    tls: no
+    autojoin:
+      - "#quakelive"
+      - "#irpghelp"
+      - "#linux.be"
+
+  - name: tweakers
+    address: "irc.tweakers.net/6697"
+    autoconnect: yes
+    nicknames:
+      - "m1dnight"
+      - "m1dnight_"
+    tls: yes
+    autojoin:
+      - "#tweakers"
+      - "#nerds"
+
+  - name: ulyssis
+    address: "irc.ulyssis.org/6668"
+    autoconnect: yes
+    tls: yes
+    autojoin:
+      - "#ulyssis"
+
+  - name: torrentleech
+    address: "irc.torrentleech.org/7021"
+    autoconnect: yes
+    tls: yes
+    tls_verify: no
+    autojoin:
+      - "#ulyssis"
