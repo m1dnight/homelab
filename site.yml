@@ -1,7 +1,7 @@
 ---
-- hosts: all
-  roles:
-    - common
+# - hosts: all
+#   roles:
+#     - common
 
 - hosts: web
   roles:
@@ -13,5 +13,9 @@
 
 - hosts: beets
   roles:
-    - samba 
+    - samba
     - beet
+
+- hosts: pihole
+  roles:
+    - pihole

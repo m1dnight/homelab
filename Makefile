@@ -14,3 +14,6 @@ web:
 
 weechat: 
 	$(ANSIBLE) --limit weechat
+
+pihole: 
+	$(ANSIBLE) --limit pihole

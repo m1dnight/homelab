@@ -1,0 +1,24 @@
+#---------------------------------------------------------------------------
+# Install basic packages
+
+- name: checkout pihole repo 
+  ansible.builtin.git:
+    repo: 'https://github.com/pi-hole/pi-hole.git'
+    depth: 1
+    dest: '/opt/Pi-hole'
+
+- name: create config directory
+  file:
+    path: /etc/pihole
+    state: directory
+
+- name: write config file 
+  ansible.builtin.template:
+    src: setupVars.conf.j2
+    dest: /etc/pihole/setupVars.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: install pihole 
+  command: /opt/Pi-hole/automated\ install/basic-install.sh --unattended --reconfigure
