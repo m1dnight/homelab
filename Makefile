@@ -14,3 +14,6 @@ web:
 
 weechat: 
 	$(ANSIBLE) --limit weechat
+
+homeassistant: 
+	$(ANSIBLE) --limit homeassistant
