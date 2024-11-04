@@ -2,5 +2,4 @@
 # role: pihole
 
 web_password: "{{ secret.pihole.web_password }}"
-dns1: 8.8.8.8
-dns2: 8.8.4.4
+dns1: 192.168.6.1

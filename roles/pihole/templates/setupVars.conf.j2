@@ -1,6 +1,13 @@
 PIHOLE_INTERFACE=eth0
+{% if dns1 is defined %}
 PIHOLE_DNS_1={{ dns1 }}
+{% endif %}
+{% if dns2 is defined %}
 PIHOLE_DNS_2={{ dns2 }}
+{% endif %}
+{% if dns2 is defined %}
+PIHOLE_DNS_3={{ dns3 }}
+{% endif %}
 QUERY_LOGGING=true
 INSTALL_WEB_SERVER=true
 INSTALL_WEB_INTERFACE=true
