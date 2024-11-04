@@ -15,3 +15,5 @@
   roles:
     - samba 
     - beet
+
+- hosts: butler
