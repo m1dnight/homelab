@@ -15,5 +15,8 @@ web:
 weechat: 
 	$(ANSIBLE) --limit weechat
 
+homeassistant: 
+	$(ANSIBLE) --limit homeassistant
+
 pihole: 
 	$(ANSIBLE) --limit pihole

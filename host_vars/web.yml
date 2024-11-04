@@ -24,7 +24,7 @@ reverse_proxies:
   - name: "homeassistant"
     from: "homeassistant.call-cc.be"
     lan_only: yes
-    to: "andromeda.localdomain:8123"
+    to: "homeassistant.localdomain:8123"
 
   - name: "exbin"
     from: "exbin.call-cc.be"
