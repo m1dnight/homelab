@@ -15,6 +15,9 @@ web:
 weechat: 
 	$(ANSIBLE) --limit weechat
 
+butler: 
+	$(ANSIBLE) --limit butler
+
 homeassistant: 
 	$(ANSIBLE) --limit homeassistant
 

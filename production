@@ -2,5 +2,6 @@
 web ansible_host=web.localdomain ansible_user=root
 weechat ansible_host=weechat.localdomain ansible_user=root
 beets ansible_host=beets.localdomain ansible_user=debian
+butler ansible_host=butler.isolated ansible_user=root 
 homeassistant ansible-host=homeassistant.localdomain ansible_user=root 
 pihole ansible_host=pihole.isolated ansible_user=root
