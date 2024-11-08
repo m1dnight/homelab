@@ -1,12 +1,11 @@
----
 - name: remove previous .pyenv
-  file: 
+  file:
     path: "$HOME/.pyenv"
     state: absent
   when: homeassistant.force_pyenv
 
 - name: download pyenv installer
-  get_url: 
+  get_url:
     url: https://pyenv.run
     dest: /tmp/pyenv.sh
     mode: 'a+x'
@@ -17,7 +16,7 @@
   when: homeassistant.force_pyenv
 
 - name: remove pyenv installer
-  file: 
+  file:
     path: /tmp/pyenv.sh
     state: absent
   when: homeassistant.force_pyenv
@@ -27,7 +26,7 @@
     path: "$HOME/.profile"
     line: "{{ item }}"
     create: true
-  with_items: 
+  with_items:
     - 'export PYENV_ROOT="$HOME/.pyenv"'
     - 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"'
     - 'eval "$(pyenv init -)"'
@@ -37,7 +36,7 @@
     path: "$HOME/.bash_profile"
     line: "{{ item }}"
     create: true
-  with_items: 
+  with_items:
     - 'export PYENV_ROOT="$HOME/.pyenv"'
     - 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"'
     - 'eval "$(pyenv init -)"'
@@ -47,7 +46,7 @@
     path: "$HOME/.bashrc"
     line: "{{ item }}"
     create: true
-  with_items: 
+  with_items:
     - 'export PYENV_ROOT="$HOME/.pyenv"'
     - 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"'
     - 'eval "$(pyenv init -)"'
@@ -57,17 +56,17 @@
     path: "/etc/environment"
     line: "{{ item }}"
     create: true
-  with_items: 
+  with_items:
     - 'export PYENV_ROOT="$HOME/.pyenv"'
     - 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"'
     - 'eval "$(pyenv init -)"'
 
-- name: install python 3.12 
+- name: install python 3.12
   shell: "pyenv install --skip-existing {{ homeassistant.python_version }}"
   args:
     executable: /bin/bash
 
-- name: install python 3.12 
+- name: install python 3.12
   ansible.builtin.shell: "pyenv global {{ homeassistant.python_version }}"
   args:
     executable: /bin/bash

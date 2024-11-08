@@ -1,14 +1,12 @@
----
 
 - name: check if ntp has to be installed
   set_fact:
     install_ntp: no
-  
+
 - name: check if ntp has to be installed
   set_fact:
     install_ntp: yes
   when: ntp is defined and ntp.enabled is defined and ntp.enabled
-
 
 - name: be sure ntp is installed
   apt:

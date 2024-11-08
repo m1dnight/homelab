@@ -1,4 +1,3 @@
----
 # tailscale proxmox https://tailscale.com/kb/1130/lxc-unprivileged
 - name: add tailscale key
   ansible.builtin.apt_key:

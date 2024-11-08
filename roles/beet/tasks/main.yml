@@ -1,15 +1,14 @@
----
 # install beets
 - name: Ensure the virtual environment exists
   pip:
     name: "{{ item }}"
     virtualenv: "$HOME/venv"
     virtualenv_command: "python3 -m venv"
-  with_items: 
-     - "beets"
-     - "python3-discogs-client"
-     - "Pillow"
-     - "flask"
+  with_items:
+    - "beets"
+    - "python3-discogs-client"
+    - "Pillow"
+    - "flask"
 
 # config beets
 - name: create config directory

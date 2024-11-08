@@ -1,17 +1,16 @@
----
 #-------------------------------------------------------------------------------
 # role: common
 
 packages:
   - autoconf
   - build-essential
-  - curl 
+  - curl
   - ffmpeg
-  - ffmpeg 
+  - ffmpeg
   - gcc
-  - git-core 
+  - git-core
   - libatlas-base-dev
-  - libbz2-dev 
+  - libbz2-dev
   - libcap-dev
   - libcap2
   - libffi-dev
@@ -19,19 +18,19 @@ packages:
   - liblapack-dev
   - liblapack3
   - libopenjp2-7
-  - libreadline-dev 
-  - libsqlite3-dev 
+  - libreadline-dev
+  - libsqlite3-dev
   - libssl-dev
   - libtiff6
   - libturbojpeg0-dev
-  - make 
+  - make
   - python3-pip
   - python3-venv
   - python3.11
   - tmux
   - tzdata
   - zlib1g-dev
-  - zlib1g-dev 
+  - zlib1g-dev
 
 #-------------------------------------------------------------------------------
 # role: homeassistant

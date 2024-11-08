@@ -1,4 +1,3 @@
----
 
 - name: render Caddyfile into variable
   set_fact:
@@ -15,7 +14,7 @@
 - name: install caddy from role
   ansible.builtin.import_role:
     name: caddy_ansible.caddy_ansible
-  vars: 
+  vars:
     caddy_config: "{{ caddy_file_content }}"
   tags: caddy
 

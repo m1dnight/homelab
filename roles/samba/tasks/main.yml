@@ -1,4 +1,3 @@
----
 - name: create mountpoints
   become: yes
   file:

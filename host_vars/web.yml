@@ -1,4 +1,3 @@
----
 #-------------------------------------------------------------------------------
 # role: common
 
@@ -36,7 +35,7 @@ reverse_proxies:
     lan_only: yes
     to: "https://milkyway.localdomain:8006"
     debug: yes
-    tls: yes 
+    tls: yes
     tls_verify: no
 
   - name: "transmission"
@@ -72,7 +71,7 @@ reverse_proxies:
   - name: "synology"
     from: "synology.call-cc.be"
     lan_only: yes
-    tls: yes 
+    tls: yes
     tls_verify: no
     to: "pulsar.localdomain:8081"
 
@@ -98,5 +97,5 @@ reverse_proxies:
 
   - name: "weechat"
     from: "chat.call-cc.be"
-    lan_only: no
-    to: "weechat.localdomain:1234"    
+    lan_only: yes
+    to: "weechat.localdomain:1234"
