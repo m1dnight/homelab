@@ -23,3 +23,6 @@ homeassistant:
 
 pihole: 
 	$(ANSIBLE) --limit pihole
+
+tailscale: 
+	$(ANSIBLE) --limit tailscale

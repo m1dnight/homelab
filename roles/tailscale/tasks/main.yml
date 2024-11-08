@@ -1,0 +1,22 @@
+---
+# tailscale proxmox https://tailscale.com/kb/1130/lxc-unprivileged
+- name: add tailscale key
+  ansible.builtin.apt_key:
+    url: https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg
+    keyring: /usr/share/keyrings/tailscale-archive-keyring.gpg
+- name: add tailscale repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/debian bookworm main
+    state: present
+- name: install basic system packages
+  become: true
+  apt:
+    pkg: tailscale
+    state: latest
+    update_cache: true
+
+- name: reload systemctl daemon
+  become: yes
+  ansible.builtin.systemd_service:
+    name: tailscaled
+    daemon_reload: true

@@ -1,0 +1,10 @@
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - git
+  - net-tools
+  - ca-certificates
+  - tmux
+  - curl
+  - gpg
