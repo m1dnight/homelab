@@ -1,4 +1,7 @@
 # tailscale proxmox https://tailscale.com/kb/1130/lxc-unprivileged
+# echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+# echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+# sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
 - name: add tailscale key
   ansible.builtin.apt_key:
     url: https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg
@@ -14,8 +17,24 @@
     state: latest
     update_cache: true
 
+- name: enable ip forwarding 
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    reload: yes
+
+- name: enable ipv6 forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: 1
+    state: present
+    reload: yes
+
 - name: reload systemctl daemon
   become: yes
   ansible.builtin.systemd_service:
     name: tailscaled
     daemon_reload: true
+
+# tailscale up --advertise-connector --advertise-tags=tag:connector --advertise-routes=141.134.25.8/32  --advertise-exit-node
