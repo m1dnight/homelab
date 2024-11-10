@@ -1,0 +1,19 @@
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - git
+  - nginx
+  - php-fpm
+  - php-fileinfo
+  - php-ctype
+  - tree
+  - curl
+  - python3-passlib
+
+#-------------------------------------------------------------------------------
+# role: imagehost
+
+max_file_size: 10
+user: user
+password: "{{ secret.imagehost.password }}"

@@ -1,0 +1,58 @@
+# tasks file for imagehost
+- name: install config
+  template:
+    src: x0.conf.j2
+    dest: "/etc/nginx/sites-enabled/default"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: create x0 webdir
+  ansible.builtin.file:
+    path: /var/www/x0
+    state: directory
+    owner: "www-data"
+    group: "www-data"
+    mode: 0777
+
+- name: create x0 webdir
+  ansible.builtin.file:
+    path: /var/www/x0/files
+    state: directory
+    owner: "www-data"
+    group: "www-data"
+    mode: 0777
+
+- name: install index.php
+  template:
+    src: index.php.j2
+    dest: /var/www/x0/index.php
+    owner: "www-data"
+    group: "www-data"
+    mode: 0777
+
+- name: set upload_max_filesize in php.inio
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/php.ini
+    regexp: "^upload_max_filesize"
+    line: upload_max_filesize = {{ max_file_size }}M
+
+- name: set post_max_size in php.ini
+  ansible.builtin.lineinfile:
+    path: /etc/php/8.2/fpm/php.ini
+    regexp: "^post_max_size"
+    line: post_max_size = {{ max_file_size + 2 }}M
+
+- name: create user to post
+  community.general.htpasswd:
+    path: /etc/nginx/passwdfile
+    name: user
+    password: "{{ password }}"
+    owner: root
+    group: www-data
+    mode: 0640
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: restart fastcgi
+  service: name=php8.2-fpm state=restarted

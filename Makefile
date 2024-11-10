@@ -26,3 +26,6 @@ pihole:
 
 tailscale: 
 	$(ANSIBLE) --limit tailscale
+
+imagehost: 
+	$(ANSIBLE) --limit imagehost
