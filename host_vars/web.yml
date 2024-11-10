@@ -99,3 +99,8 @@ reverse_proxies:
     from: "chat.call-cc.be"
     lan_only: yes
     to: "weechat.localdomain:1234"
+
+  - name: "x0"
+    from: "x0.call-cc.be"
+    lan_only: no
+    to: "imagehost.isolated:80"
