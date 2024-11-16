@@ -14,6 +14,7 @@
   roles:
     - samba
     - beet
+    - mailer
 
 - hosts: pihole
   roles:

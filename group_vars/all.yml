@@ -1,0 +1,7 @@
+---
+mail_username: "{{ secret.smtp.username }}"
+mail_password: "{{ secret.smtp.password }}"
+mail_server: "{{ secret.smtp.server }}"
+mail_port: "{{ secret.smtp.port }}"
+mail_mailname: "{{ secret.smtp.mailname }}"
+mail_recipient: "{{ secret.smtp.recipient }}"

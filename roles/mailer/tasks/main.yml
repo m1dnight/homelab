@@ -1,0 +1,64 @@
+---
+- block:
+
+    - name: install postfix packages
+      apt:
+        pkg:
+          - postfix
+          - mailutils
+          - libsasl2-modules
+        state: latest
+        update_cache: true
+
+    - name: install mailname
+      ansible.builtin.template:
+        src: mailname.j2
+        dest: /etc/mailname
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: install main.cf
+      ansible.builtin.template:
+        src: main.cf.j2
+        dest: /etc/postfix/main.cf
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: install sasl_password
+      ansible.builtin.template:
+        src: sasl_password.j2
+        dest: /etc/postfix/sasl_password
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: install sasl_password.db
+      shell: postmap /etc/postfix/sasl_password
+      register: output
+      failed_when: output.rc != 0 and "There is an existing account" not in output.stderr
+
+    - name: ensure that all mails are forwarded to the default user
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: '^{{ ansible_user }}'
+        line: '{{ansible_user}}: {{mail_recipient}}'
+        state: present
+
+    - name: ensure that root mails are forwarded to the default user
+      ansible.builtin.lineinfile:
+        path: /etc/aliases
+        regexp: '^root'
+        line: 'root: {{ansible_user}}'
+        state: present
+
+    - name: update aliases
+      ansible.builtin.shell:
+        cmd: newaliases
+
+    - name: restart service postfix
+      ansible.builtin.service:
+        name: postfix
+        state: restarted
+  become: true
