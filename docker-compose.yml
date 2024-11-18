@@ -1,0 +1,14 @@
+x-logging-loki: &loki-logging
+  options:
+    loki-url: "http://grafana.isolated:3100/loki/api/v1/push"
+    loki-retries: 2
+  driver: loki
+
+services:
+  db:
+    image: postgres
+    logging: *loki-logging
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: loomy_db-development

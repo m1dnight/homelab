@@ -1,0 +1,59 @@
+
+logging {
+  level    = "debug"
+  format   = "json"
+  write_to = [loki.write.default.receiver]
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Logs
+
+loki.write "default" {
+  endpoint {
+    url = "http://localhost:3100/loki/api/v1/push"
+  }
+}
+
+loki.relabel "journal" {
+  forward_to = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+}
+
+loki.source.journal "read"  {
+  forward_to    = [loki.write.endpoint.receiver]
+  relabel_rules = loki.relabel.journal.rules
+  labels        = {component = "loki.source.journal", host = "{{ ansible_hostname }}"}
+}
+
+loki.write "endpoint" {
+  endpoint {
+    url ="http://localhost:3100/loki/api/v1/push"
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Scrape prometheus endpoints
+
+prometheus.scrape "alloy" {
+    targets = [{"__address__" = "localhost:12345", group = "infrastructure", service = "alloy", host = "{{ ansible_hostname }}"}]
+    forward_to = [prometheus.remote_write.mimir.receiver]
+    scrape_interval = "30s"
+    job_name = "alloy"
+}
+
+prometheus.scrape "loki" {
+    targets = [{"__address__" = "localhost:3100", group = "infrastructure", service = "loki", host = "{{ ansible_hostname }}"}]
+    forward_to = [prometheus.remote_write.mimir.receiver]
+    scrape_interval = "30s"
+    job_name = "loki"
+}
+
+prometheus.remote_write "mimir" {
+  endpoint {
+    url = "http://localhost:9009/api/v1/push"
+  }
+}

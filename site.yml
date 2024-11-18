@@ -31,3 +31,9 @@
 - hosts: imagehost
   roles:
     - imagehost
+
+- hosts: grafana
+  roles:
+    - prometheus.prometheus.prometheus
+    - prometheus.prometheus.pushgateway
+    - grafana

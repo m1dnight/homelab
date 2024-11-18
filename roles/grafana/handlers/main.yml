@@ -1,0 +1,31 @@
+---
+# handlers file for grafana
+- name: restart grafana-server
+  ansible.builtin.service:
+    name: grafana-server
+    state: restarted
+
+- name: restart alloy
+  ansible.builtin.service:
+    name: alloy
+    state: restarted
+
+- name: restart loki
+  ansible.builtin.service:
+    name: loki
+    state: restarted
+
+- name: restart mimir
+  ansible.builtin.service:
+    name: mimir
+    state: restarted
+
+- name: restart promtail
+  ansible.builtin.service:
+    name: promtail
+    state: restarted
+
+- name: restart influxdb
+  ansible.builtin.service:
+    name: influxdb
+    state: restarted
