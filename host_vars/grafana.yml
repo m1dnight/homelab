@@ -9,11 +9,14 @@ packages:
   - curl
   - tar
   - zip
+  - gpg
+  - htop
+  - tmux
 
 #-------------------------------------------------------------------------------
 # role: grafana
 
-root_url: "grafana.isolated:3000"
+root_url: "observability.call-cc.be"
 
 data_sources:
   - name: Loki

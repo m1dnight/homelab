@@ -65,24 +65,31 @@
   notify:
     - restart grafana-server
 
+- name: install loki config
+  template:
+    src: loki.yml.j2
+    dest: /etc/loki/config.yml
+  notify:
+    - restart loki
+
 ################################################################################
 # InfluxDB
 
-- name: add influxdb key
-  ansible.builtin.apt_key:
-    url: https://repos.influxdata.com/influxdata-archive.key
-    keyring: /usr/share/keyrings/influxdb.gpg
+# - name: add influxdb key
+#   ansible.builtin.apt_key:
+#     url: https://repos.influxdata.com/influxdata-archive.key
+#     keyring: /usr/share/keyrings/influxdb.gpg
 
-- name: add influxdb repo
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
-    state: present
+# - name: add influxdb repo
+#   ansible.builtin.apt_repository:
+#     repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
+#     state: present
 
-- name: install influxdb package
-  become: true
-  apt:
-    pkg: influxdb
-    state: latest
-    update_cache: true
-  notify:
-    - restart influxdb
+# - name: install influxdb package
+#   become: true
+#   apt:
+#     pkg: influxdb
+#     state: latest
+#     update_cache: true
+#   notify:
+#     - restart influxdb

@@ -80,16 +80,6 @@ reverse_proxies:
     lan_only: no
     to: "observability.localdomain:8000"
 
-  - name: "development.loomy.be"
-    from: "development.loomy.be"
-    lan_only: no
-    to: "192.168.1.153"
-
-  - name: "api.development.loomy.be"
-    from: "api.development.loomy.be"
-    lan_only: no
-    to: "192.168.1.153:8080"
-
   - name: "notifications.development.loomy.be"
     from: "notifications.development.loomy.be"
     lan_only: no
@@ -104,3 +94,20 @@ reverse_proxies:
     from: "x0.call-cc.be"
     lan_only: no
     to: "imagehost.isolated:80"
+
+  - name: "grafana"
+    from: "observability.call-cc.be"
+    lan_only: yes
+    to: "grafana.isolated:3000"
+
+  - name: "mimir"
+    from: "mimir.call-cc.be"
+    lan_only: yes
+    allowed_ips: ["49.12.39.165"]
+    to: "grafana.isolated:9009"
+
+  - name: "loki"
+    from: "loki.call-cc.be"
+    lan_only: yes
+    allowed_ips: ["49.12.39.165"]
+    to: "grafana.isolated:3100"
