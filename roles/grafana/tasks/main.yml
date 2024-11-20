@@ -75,21 +75,21 @@
 ################################################################################
 # InfluxDB
 
-# - name: add influxdb key
-#   ansible.builtin.apt_key:
-#     url: https://repos.influxdata.com/influxdata-archive.key
-#     keyring: /usr/share/keyrings/influxdb.gpg
+- name: add influxdb key
+  ansible.builtin.apt_key:
+    url: https://repos.influxdata.com/influxdata-archive.key
+    keyring: /usr/share/keyrings/influxdb.gpg
 
-# - name: add influxdb repo
-#   ansible.builtin.apt_repository:
-#     repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
-#     state: present
+- name: add influxdb repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
+    state: present
 
-# - name: install influxdb package
-#   become: true
-#   apt:
-#     pkg: influxdb
-#     state: latest
-#     update_cache: true
-#   notify:
-#     - restart influxdb
+- name: install influxdb package
+  become: true
+  apt:
+    pkg: influxdb2
+    state: latest
+    update_cache: true
+  notify:
+    - restart influxdb
