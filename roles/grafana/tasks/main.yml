@@ -2,68 +2,68 @@
 ################################################################################
 # Grafana
 
-- name: add grafana key
-  ansible.builtin.apt_key:
-    url: https://apt.grafana.com/gpg.key
-    keyring: /usr/share/keyrings/grafana.gpg
+# - name: add grafana key
+#   ansible.builtin.apt_key:
+#     url: https://apt.grafana.com/gpg.key
+#     keyring: /usr/share/keyrings/grafana.gpg
 
-- name: add grafana repo
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/grafana.gpg] https://apt.grafana.com stable main
-    state: present
+# - name: add grafana repo
+#   ansible.builtin.apt_repository:
+#     repo: deb [signed-by=/usr/share/keyrings/grafana.gpg] https://apt.grafana.com stable main
+#     state: present
 
-- name: install grafana packages
-  become: true
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-    update_cache: true
-  with_items:
-    - grafana
-    - loki
-    - promtail
-    - alloy
-    - mimir
+# - name: install grafana packages
+#   become: true
+#   apt:
+#     pkg: "{{ item }}"
+#     state: latest
+#     update_cache: true
+#   with_items:
+#     - grafana
+#     - loki
+#     - promtail
+#     - alloy
+#     - mimir
 
-- name: ensure services enabled and started
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: started
-    enabled: true
-  with_items:
-    - grafana-server
-    - loki
-    - promtail
-    - alloy
-    - mimir
+# - name: ensure services enabled and started
+#   ansible.builtin.service:
+#     name: "{{ item }}"
+#     state: started
+#     enabled: true
+#   with_items:
+#     - grafana-server
+#     - loki
+#     - promtail
+#     - alloy
+#     - mimir
 
-- name: install alloy config
-  template:
-    src: alloy.j2
-    dest: /etc/alloy/config.alloy
-  notify:
-    - restart alloy
+# - name: install alloy config
+#   template:
+#     src: alloy.j2
+#     dest: /etc/alloy/config.alloy
+#   notify:
+#     - restart alloy
 
-- name: install mimir config
-  template:
-    src: mimir.j2
-    dest: /etc/mimir/config.yml
-  notify:
-    - restart mimir
+# - name: install mimir config
+#   template:
+#     src: mimir.j2
+#     dest: /etc/mimir/config.yml
+#   notify:
+#     - restart mimir
 
-- name: install grafana data sources
-  template:
-    src: datasource.yml.j2
-    dest: /etc/grafana/provisioning/datasources/provision.yml
-  notify:
-    - restart grafana-server
+# - name: install grafana data sources
+#   template:
+#     src: datasource.yml.j2
+#     dest: /etc/grafana/provisioning/datasources/provision.yml
+#   notify:
+#     - restart grafana-server
 
-- name: install grafana config
-  template:
-    src: grafana.j2
-    dest: /etc/grafana/grafana.ini
-  notify:
-    - restart grafana-server
+# - name: install grafana config
+#   template:
+#     src: grafana.j2
+#     dest: /etc/grafana/grafana.ini
+#   notify:
+#     - restart grafana-server
 
 - name: install loki config
   template:
@@ -72,24 +72,24 @@
   notify:
     - restart loki
 
-################################################################################
-# InfluxDB
+# ################################################################################
+# # InfluxDB
 
-- name: add influxdb key
-  ansible.builtin.apt_key:
-    url: https://repos.influxdata.com/influxdata-archive.key
-    keyring: /usr/share/keyrings/influxdb.gpg
+# - name: add influxdb key
+#   ansible.builtin.apt_key:
+#     url: https://repos.influxdata.com/influxdata-archive.key
+#     keyring: /usr/share/keyrings/influxdb.gpg
 
-- name: add influxdb repo
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
-    state: present
+# - name: add influxdb repo
+#   ansible.builtin.apt_repository:
+#     repo: deb [signed-by=/usr/share/keyrings/influxdb.gpg] https://repos.influxdata.com/debian stable main
+#     state: present
 
-- name: install influxdb package
-  become: true
-  apt:
-    pkg: influxdb
-    state: latest
-    update_cache: true
-  notify:
-    - restart influxdb
+# - name: install influxdb package
+#   become: true
+#   apt:
+#     pkg: influxdb
+#     state: latest
+#     update_cache: true
+#   notify:
+#     - restart influxdb

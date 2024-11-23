@@ -34,6 +34,6 @@
 
 - hosts: grafana
   roles:
-    - prometheus.prometheus.prometheus
-    - prometheus.prometheus.pushgateway
+    # - prometheus.prometheus.prometheus
+    # - prometheus.prometheus.pushgateway
     - grafana
