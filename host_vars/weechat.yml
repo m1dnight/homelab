@@ -1,3 +1,4 @@
+---
 #-------------------------------------------------------------------------------
 # role: common
 
@@ -25,23 +26,29 @@ default_username: "m1dnight"
 
 relay:
   port: 1234
-  password: {? {secret.weechat.relay_password: ''} : ''}
+  password: "{{ secret.weechat.relay_password }}"
 
 plugins:
-  - "go.py"
-  - "grep.py"
-  - "highmon.pl"
-  - "buffers.pl"
+  - go.py
+  - grep.py
+  - highmon.pl
+  - buffers.pl
+  - autosort.py
 
 various_commands:
   - "/set irc.look.smart_filter on"
   - "/filter add irc_smart * irc_smart_filter *"
   - "/set irc.look.smart_filter_delay 5"
+  - "/set irc.look.smart_filter_delay 5"
+  - "/set buflist.look.sort \"number,-active\""
+  - "/set irc.look.server_buffer independent"
 
 servers:
   - name: libera
     address: "irc.libera.chat/6697"
-    autoconnect: yes
+    sasl_password: "{{ secret.sasl.libera.password }}"
+    sasl_username: "{{ secret.sasl.libera.username }}"
+    autoconnect: no
     tls: yes
     autojoin:
       - "#elixir"
@@ -91,7 +98,8 @@ servers:
 
   - name: quakenet
     address: "irc.quakenet.org/6667"
-    autoconnect: yes
+    autoconnect: no
+    command: "{{ secret.commands.quakenet.command}}"
     tls: no
     autojoin:
       - "#quakelive"
@@ -100,10 +108,7 @@ servers:
 
   - name: tweakers
     address: "irc.tweakers.net/6697"
-    autoconnect: yes
-    nicknames:
-      - "m1dnight"
-      - "m1dnight_"
+    autoconnect: no
     tls: yes
     autojoin:
       - "#tweakers"
@@ -111,15 +116,22 @@ servers:
 
   - name: ulyssis
     address: "irc.ulyssis.org/6668"
-    autoconnect: yes
+    autoconnect: no
     tls: yes
     autojoin:
       - "#ulyssis"
 
   - name: torrentleech
     address: "irc.torrentleech.org/7021"
-    autoconnect: yes
+    command: "{{ secret.commands.torrentleech.command }}"
+    autoconnect: no
     tls: yes
     tls_verify: no
     autojoin:
-      - "#ulyssis"
+      - "#torrentleech"
+
+  - name: kreynet
+    address: "irc.krey.net/6697"
+    autoconnect: no
+    tls: yes
+    tls_verify: no

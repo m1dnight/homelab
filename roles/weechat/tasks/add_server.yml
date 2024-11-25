@@ -51,18 +51,18 @@
   tags: weechat
 
 - name: set the command to run at the start of connection
-  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.command {{ commands[item.name].command }};/quit'"
-  when: commands[item.name].command is defined
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.command {{ item.command }};/quit'"
+  when: item.command is defined
   tags: weechat
 
 - name: set the sasl username
-  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_username {{ sasl[item.name].username }};/quit'"
-  when: sasl[item.name].username is defined
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_username {{ item.sasl_username }};/quit'"
+  when: item.sasl_username is defined
   tags: weechat
 
 - name: set the sasl password
-  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_password {{ sasl[item.name].password }};/quit'"
-  when: sasl[item.name].password is defined
+  ansible.builtin.shell: "weechat -r '/set irc.server.{{ item.name }}.sasl_password {{ item.sasl_password }};/quit'"
+  when: item.sasl_password is defined
   tags: weechat
 
 - name: set the autojoin channels

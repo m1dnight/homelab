@@ -3,8 +3,12 @@ VAULT_PASSFILE=~/.secrets/vault_password
 VAULT_ARGS=--extra-vars @$(VAULT) --vault-password-file=$(VAULT_PASSFILE)
 
 ANSIBLE=ansible-playbook site.yml $(VAULT_ARGS) -i production
+
 edit_vault:
 	ansible-vault edit $(VAULT) --vault-password-file=$(VAULT_PASSFILE)
+
+format:
+	@yamlfmt -formatter retain_line_breaks_single=true */**/*.yml
 
 beets:
 	$(ANSIBLE) --limit beets

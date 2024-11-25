@@ -4,6 +4,12 @@
   ignore_errors: yes
   tags: weechat
 
+- name: make backup of .weechat directory
+  copy:
+    remote_src: yes
+    src: "/{{ ansible_user }}/.weechat"
+    dest: "/{{ ansible_user }}/.weechat.{{ ansible_date_time.epoch }}"
+
 - name: add all the servers in the config
   with_items: "{{ servers }}"
   include_tasks: "add_server.yml"
@@ -25,13 +31,13 @@
   tags: weechat
 
 - name: install plugins
-  ansible.builtin.shell: "weechat -r '/script install {{ item }};/quit'"
+  ansible.builtin.shell: weechat -r "/script install {{ item }};/quit"
   with_items: "{{ plugins }}"
   when: plugins is defined
   tags: weechat
 
 - name: disable download plugins
-  ansible.builtin.shell: "weechat -r '/set script.scripts.download_enabled off;/quit'"
+  ansible.builtin.shell: weechat -r "/set script.scripts.download_enabled off;/quit"
   when: plugins is defined
   tags: weechat
 
