@@ -15,6 +15,7 @@ packages:
   - weechat-python
   - weechat-perl
   - tmux
+
 #-------------------------------------------------------------------------------
 # role: weechat
 
@@ -40,7 +41,7 @@ various_commands:
   - "/filter add irc_smart * irc_smart_filter *"
   - "/set irc.look.smart_filter_delay 5"
   - "/set irc.look.smart_filter_delay 5"
-  - "/set buflist.look.sort \"number,-active\""
+  - '/set buflist.look.sort "number,-active"'
   - "/set irc.look.server_buffer independent"
 
 servers:

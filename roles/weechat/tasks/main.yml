@@ -1,4 +1,3 @@
-
 - name: stop running weechat
   ansible.builtin.shell: "pkill -f weechat"
   ignore_errors: yes
@@ -9,6 +8,13 @@
     remote_src: yes
     src: "/{{ ansible_user }}/.weechat"
     dest: "/{{ ansible_user }}/.weechat.{{ ansible_date_time.epoch }}"
+
+- name: remove config files that will be modified
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/{{ ansible_user }}/.weechat/irc.conf"
 
 - name: add all the servers in the config
   with_items: "{{ servers }}"
@@ -57,4 +63,3 @@
 - name: start weechat in a tmux on boot
   ansible.builtin.shell: "tmux new-session -d -s weechat 'weechat'"
   tags: weechat
-
