@@ -54,9 +54,9 @@ query_range:
     cache:
       embedded_cache:
         enabled: true
-        max_size_mb: 1024
-        max_size_items: 1024
-        ttl: 1h
+        max_size_mb: 4096
+        max_size_items: 4096
+        ttl: 24h
 
 compactor:
   working_directory: "/tmp/deleted"
