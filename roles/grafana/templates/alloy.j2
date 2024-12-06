@@ -45,6 +45,13 @@ prometheus.scrape "alloy" {
     job_name = "alloy"
 }
 
+prometheus.scrape "memcached" {
+    targets = [{"__address__" = "localhost:9150", group = "infrastructure", service = "memcached", host = "{{ ansible_hostname }}"}]
+    forward_to = [prometheus.remote_write.mimir.receiver]
+    scrape_interval = "30s"
+    job_name = "memcached"
+}
+
 prometheus.scrape "loki" {
     targets = [{"__address__" = "localhost:3100", group = "infrastructure", service = "loki", host = "{{ ansible_hostname }}"}]
     forward_to = [prometheus.remote_write.mimir.receiver]

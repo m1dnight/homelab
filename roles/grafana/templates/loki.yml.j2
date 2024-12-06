@@ -1,4 +1,3 @@
-
 # This is a complete configuration to deploy Loki backed by the filesystem.
 # The index will be shipped to the storage via tsdb-shipper.
 
@@ -18,18 +17,25 @@ common:
 
 schema_config:
   configs:
-  - from: 2020-05-15
-    store: tsdb
-    object_store: filesystem
-    schema: v13
-    index:
-      prefix: index_
-      period: 24h
+    - from: 2020-05-15
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
 
 storage_config:
   filesystem:
     directory: /tmp/loki/chunks
-
+  index_queries_cache_config:
+    memcached:
+      batch_size: 100
+      parallelism: 100
+    memcached_client:
+      host: 127.0.0.1
+      addresses: "dns+127.0.0.1:11211"
+      consistent_hash: true
 querier:
   # Each `querier` component process runs a number of parallel workers to process queries simultaneously.
   # You may want to adjust this up or down depending on your resource usage
@@ -40,24 +46,30 @@ querier:
 ingester:
   chunk_encoding: snappy
 
-#chunk_store_config:
-#  chunk_cache_config:
-#    embedded_cache:
-#      enabled: true
-#      max_size_mb: 1024
-#      max_size_items: 1024
-#      ttl: 1h
-
 query_range:
   cache_results: true
   results_cache:
     cache:
-      embedded_cache:
-        enabled: true
-        max_size_mb: 4096
-        max_size_items: 4096
-        ttl: 24h
-
+      memcached_client:
+        consistent_hash: true
+        host: 127.0.0.1
+        addresses: "dns+127.0.0.1:11211"
+        max_idle_conns: 16
+        timeout: 500ms
+        update_interval: 1m
+chunk_store_config:
+  chunk_cache_config:
+    memcached:
+      batch_size: 2
+      parallelism: 2
+    memcached_client:
+      host: 127.0.0.1
+      timeout: 60s
+      addresses: "dns+127.0.0.1:11211"
+    background:
+      writeback_goroutines: 1
+      writeback_buffer: 1000
+      writeback_size_limit: 500MB
 compactor:
   working_directory: "/tmp/deleted"
   retention_enabled: true

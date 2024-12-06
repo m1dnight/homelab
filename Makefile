@@ -4,6 +4,7 @@ VAULT_ARGS=--extra-vars @$(VAULT) --vault-password-file=$(VAULT_PASSFILE)
 
 ANSIBLE=ansible-playbook site.yml $(VAULT_ARGS) -i production
 
+tags:="all"
 edit_vault:
 	ansible-vault edit $(VAULT) --vault-password-file=$(VAULT_PASSFILE)
 
@@ -11,28 +12,28 @@ format:
 	@yamlfmt -formatter retain_line_breaks_single=true */**/*.yml
 
 beets:
-	$(ANSIBLE) --limit beets
+	$(ANSIBLE) --limit beets --tags=$(tags)
 
 web:
-	$(ANSIBLE) --limit web
+	$(ANSIBLE) --limit web --tags=$(tags)
 
 weechat:
-	$(ANSIBLE) --limit weechat
+	$(ANSIBLE) --limit weechat --tags=$(tags)
 
 butler:
-	$(ANSIBLE) --limit butler
+	$(ANSIBLE) --limit butler --tags=$(tags)
 
 homeassistant:
-	$(ANSIBLE) --limit homeassistant
+	$(ANSIBLE) --limit homeassistant --tags=$(tags)
 
 pihole:
-	$(ANSIBLE) --limit pihole
+	$(ANSIBLE) --limit pihole --tags=$(tags)
 
 tailscale:
-	$(ANSIBLE) --limit tailscale
+	$(ANSIBLE) --limit tailscale --tags=$(tags)
 
 imagehost:
-	$(ANSIBLE) --limit imagehost
+	$(ANSIBLE) --limit imagehost --tags=$(tags)
 
 grafana:
-	OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES $(ANSIBLE) --limit grafana
+	OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES $(ANSIBLE) --limit grafana --tags=$(tags)

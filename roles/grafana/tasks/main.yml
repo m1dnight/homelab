@@ -1,5 +1,16 @@
 ---
 ################################################################################
+# Memcached
+
+- name: install memcached config
+  template:
+    src: memcached.conf.j2
+    dest: /etc/memcached.conf
+  notify:
+    - restart memcached
+  tags: memcached
+
+################################################################################
 # Grafana
 
 - name: add grafana key
@@ -24,6 +35,7 @@
     - promtail
     - alloy
     - mimir
+    - memcached
 
 - name: ensure services enabled and started
   ansible.builtin.service:
@@ -43,6 +55,7 @@
     dest: /etc/alloy/config.alloy
   notify:
     - restart alloy
+  tags: alloy
 
 - name: install mimir config
   template:
@@ -71,6 +84,7 @@
     dest: /etc/loki/config.yml
   notify:
     - restart loki
+  tags: loki
 
 ################################################################################
 # InfluxDB
