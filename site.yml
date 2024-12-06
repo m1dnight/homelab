@@ -36,4 +36,5 @@
   roles:
     - prometheus.prometheus.prometheus
     - prometheus.prometheus.pushgateway
+    - prometheus.prometheus.memcached_exporter
     - grafana

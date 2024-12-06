@@ -29,3 +29,8 @@
   ansible.builtin.service:
     name: influxdb
     state: restarted
+
+- name: restart memcached
+  ansible.builtin.service:
+    name: memcached
+    state: restarted
