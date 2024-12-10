@@ -50,6 +50,11 @@ query_range:
   cache_results: true
   results_cache:
     cache:
+      default_validity: 72h
+      memcached:
+        expiration: 72h
+        batch_size: 2
+        parallelism: 5
       memcached_client:
         consistent_hash: true
         host: 127.0.0.1
@@ -60,9 +65,11 @@ query_range:
 
 chunk_store_config:
   chunk_cache_config:
+    default_validity: 72h
     memcached:
+      expiration: 72h
       batch_size: 2
-      parallelism: 2
+      parallelism: 5
     memcached_client:
       host: 127.0.0.1
       timeout: 60s
