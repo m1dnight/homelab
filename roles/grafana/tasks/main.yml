@@ -78,6 +78,14 @@
   notify:
     - restart grafana-server
 
+- name: create loki data directory
+  ansible.builtin.file:
+    path: "/var/lib/loki"
+    state: directory
+    owner: loki
+    group: root
+  tags: loki
+
 - name: install loki config
   template:
     src: loki.yml.j2

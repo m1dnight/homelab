@@ -13,7 +13,7 @@ common:
     kvstore:
       store: inmemory
   replication_factor: 1
-  path_prefix: /tmp/loki
+  path_prefix: /var/lib/loki/data
 
 schema_config:
   configs:
@@ -27,7 +27,7 @@ schema_config:
 
 storage_config:
   filesystem:
-    directory: /tmp/loki/chunks
+    directory: /var/lib/loki/chunks
   index_queries_cache_config:
     memcached:
       batch_size: 100
@@ -70,8 +70,9 @@ chunk_store_config:
       writeback_goroutines: 1
       writeback_buffer: 1000
       writeback_size_limit: 500MB
+
 compactor:
-  working_directory: "/tmp/deleted"
+  working_directory: "/var/lib/loki/deleted"
   retention_enabled: true
   delete_request_store: filesystem
 
