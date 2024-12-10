@@ -9,7 +9,7 @@ edit_vault:
 	ansible-vault edit $(VAULT) --vault-password-file=$(VAULT_PASSFILE)
 
 format:
-	@yamlfmt -formatter retain_line_breaks_single=true */**/*.yml
+	@yamlfmt -formatter retain_line_breaks_single=true */**/*.yml */**/*.yml.j2 */**/*.yaml */**/*.yaml.j2
 
 beets:
 	$(ANSIBLE) --limit beets --tags=$(tags)
