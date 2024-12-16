@@ -186,12 +186,12 @@ root_url = grafana.isolated:3000
 #################################### Cache server #############################
 [remote_cache]
 # Either "redis", "memcached" or "database" default is "database"
-;type = database
+type = memcached
 
 # cache connectionstring options
 # database: will use Grafana primary database.
 # redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=0,ssl=false`. Only addr is required. ssl may be 'true', 'false', or 'insecure'.
-# memcache: 127.0.0.1:11211
+memcache: 127.0.0.1:11211
 ;connstr =
 
 # prefix prepended to all the keys in the remote cache
@@ -457,7 +457,7 @@ root_url = grafana.isolated:3000
 # Number of queries to be executed concurrently. Only for the datasource supports concurrency.
 # For now only Loki and InfluxDB (with influxql) are supporting concurrency behind the feature flags.
 # Check datasource documentations for enabling concurrency.
-;concurrent_query_count = 10
+concurrent_query_count = 20
 
 ################################### SQL Data Sources #####################
 [sql_datasources]
@@ -1519,7 +1519,7 @@ timeout = 30s
 #################################### Query #############################
 [query]
 # Set the number of data source queries that can be executed concurrently in mixed queries. Default is the number of CPUs.
-;concurrent_query_limit =
+concurrent_query_limit = 12
 
 #################################### Query History #############################
 [query_history]
