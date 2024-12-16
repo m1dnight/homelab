@@ -8,3 +8,4 @@ pihole ansible_host=pihole.isolated ansible_user=root
 tailscale ansible_host=tailscale.localdomain ansible_user=root
 imagehost ansible_host=imagehost.isolated ansible_user=root
 grafana ansible_host=grafana.isolated ansible_user=root
+minio ansible_host=minio.isolated ansible_user=root

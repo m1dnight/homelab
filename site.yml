@@ -38,3 +38,8 @@
     - prometheus.prometheus.pushgateway
     - prometheus.prometheus.memcached_exporter
     - grafana
+
+- hosts: minio
+  roles:
+    - geerlingguy.docker
+    - minio

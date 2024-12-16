@@ -37,3 +37,6 @@ imagehost:
 
 grafana:
 	OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES $(ANSIBLE) --limit grafana --tags=$(tags)
+
+minio:
+	$(ANSIBLE) --limit minio --tags=$(tags)
