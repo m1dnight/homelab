@@ -4,6 +4,9 @@
   ansible.builtin.file:
     path: "/root/.minio"
     state: directory
+    owner: 1001
+    group: 1001
+    mode: 0777
 
 - name: create minio container
   community.docker.docker_container:
@@ -14,5 +17,6 @@
       - "9001:9001"
     env:
         MINIO_PROMETHEUS_AUTH_TYPE: "public"
+        MINIO_DEFAULT_BUCKETS: "mimir-blocks-storage,mimir-ruler-storage,loki-common,loki-storage"
     volumes:
-      - /root/
+      - /root/.minio:/bitnami/minio/data
