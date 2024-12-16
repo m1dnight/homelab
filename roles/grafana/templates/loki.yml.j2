@@ -24,6 +24,28 @@ schema_config:
         prefix: index_
         period: 24h
 
+ruler:
+  storage:
+    type: s3
+    local:
+      directory: /var/lib/loki/ruler
+  rule_path: /tmp/scratch
+  alertmanager_url: http://localhost
+  ring:
+    kvstore:
+      store: inmemory
+  enable_api: true
+
+querier:
+  # Each `querier` component process runs a number of parallel workers to process queries simultaneously.
+  # You may want to adjust this up or down depending on your resource usage
+  # (more available cpu and memory can tolerate higher values and vice versa),
+  # but we find the most success running at around `16` with tsdb
+  max_concurrent: 16
+
+ingester:
+  chunk_encoding: snappy
+
 storage_config:
   filesystem:
     directory: /var/lib/loki/chunks
@@ -35,16 +57,6 @@ storage_config:
       host: 127.0.0.1
       addresses: "dns+127.0.0.1:11211"
       consistent_hash: true
-
-querier:
-  # Each `querier` component process runs a number of parallel workers to process queries simultaneously.
-  # You may want to adjust this up or down depending on your resource usage
-  # (more available cpu and memory can tolerate higher values and vice versa),
-  # but we find the most success running at around `16` with tsdb
-  max_concurrent: 16
-
-ingester:
-  chunk_encoding: snappy
 
 query_range:
   cache_results: true
@@ -68,22 +80,18 @@ chunk_store_config:
     default_validity: 72h
     memcached:
       expiration: 72h
-      batch_size: 2
-      parallelism: 5
+      batch_size: 256
+      parallelism: 10
     memcached_client:
       host: 127.0.0.1
       timeout: 60s
       addresses: "dns+127.0.0.1:11211"
-    background:
-      writeback_goroutines: 1
-      writeback_buffer: 1000
-      writeback_size_limit: 500MB
 
 compactor:
   working_directory: "/var/lib/loki/deleted"
   retention_enabled: true
   delete_request_store: filesystem
-  
+
 table_manager:
   retention_deletes_enabled: true
   retention_period: 1d
