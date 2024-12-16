@@ -39,22 +39,32 @@ ingester:
     replication_factor: 1
 
 blocks_storage:
-  tsdb:
-    dir: /tmp/mimir/tsdb
+  backend: s3
+  s3:
+    bucket_name: "mimir-blocks-storage"
+    bucket_lookup_type: path
+    insecure: {{ s3_insecure }}
+    endpoint: {{ s3_endpoint }}
+    region: {{ s3_region }}
+    access_key_id: {{ s3_access_key }}
+    secret_access_key: {{ s3_secret_key }}
 
-  bucket_store:
-    sync_dir: /tmp/mimir/tsdb-sync
-
-  # You can choose between local storage and Amazon S3, Google GCS and Azure storage. Each option requires additional configuration
-  # as shown below. All options can be configured via flags as well which might be handy for secret inputs.
-  backend: filesystem # s3, gcs, azure or filesystem are valid options
-  filesystem:
-    dir: ./data/tsdb
+  # # You can choose between local storage and Amazon S3, Google GCS and Azure storage. Each option requires additional configuration
+  # # as shown below. All options can be configured via flags as well which might be handy for secret inputs.
+  # backend: filesystem # s3, gcs, azure or filesystem are valid options
+  # filesystem:
+  #   dir: ./data/tsdb
 
 compactor:
   data_dir: /tmp/mimir/compactor
 
 ruler_storage:
-  backend: local
-  local:
-    directory: /tmp/mimir/rules
+  backend: s3
+  s3:
+    bucket_name: "mimir-ruler-storage"
+    bucket_lookup_type: path
+    insecure: {{ s3_insecure }}
+    endpoint: {{ s3_endpoint }}
+    region: {{ s3_region }}
+    access_key_id: {{ s3_access_key }}
+    secret_access_key: {{ s3_secret_key }}

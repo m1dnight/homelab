@@ -59,10 +59,11 @@
 
 - name: install mimir config
   template:
-    src: mimir.j2
+    src: mimir.yml.j2
     dest: /etc/mimir/config.yml
   notify:
     - restart mimir
+  tags: mimir
 
 - name: install grafana data sources
   template:

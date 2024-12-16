@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: create minio data directory
+  ansible.builtin.file:
+    path: "/root/.minio"
+    state: directory
+
+- name: create minio container
+  community.docker.docker_container:
+    name: minio
+    image: bitnami/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env:
+        MINIO_PROMETHEUS_AUTH_TYPE: "public"
+    volumes:
+      - /root/

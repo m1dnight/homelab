@@ -16,6 +16,12 @@ packages:
 #-------------------------------------------------------------------------------
 # role: grafana
 
+s3_endpoint: minio.isolated:9000
+s3_access_key: "{{ secret.s3.access_key }}"
+s3_secret_key: "{{ secret.s3.secret_key }}"
+s3_insecure: true
+s3_region: us-west
+
 root_url: "observability.call-cc.be"
 
 data_sources:
