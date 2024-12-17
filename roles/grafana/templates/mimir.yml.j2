@@ -1,10 +1,3 @@
-
-# Configuration for running Mimir in single-process mode.
-# This should not be used in production.  It is only for getting started
-# and development.
-
-# Disable the requirement that every request to Mimir has a
-# X-Scope-OrgID header. `anonymous` will be substituted in instead.
 multitenancy_enabled: false
 
 server:
@@ -30,21 +23,12 @@ common:
 distributor:
   ring:
     kvstore:
-      store: memberlist
+      store: inmemory
   pool:
     health_check_ingesters: true
 
 ingester:
   ring:
-    # The address to advertise for this ingester.  Will be autodiscovered by
-    # looking up address on eth0 or en0; can be specified if this fails.
-    # address: 127.0.0.1
-
-    # We want to start immediately and flush on shutdown.
-    min_ready_duration: 0s
-    final_sleep: 0s
-    num_tokens: 512
-
     # Use an in memory ring store, so we don't need to launch a Consul.
     kvstore:
       store: inmemory
@@ -55,16 +39,8 @@ ruler_storage:
   s3:
     bucket_name: "mimir-ruler-storage"
 
+# https://grafana.com/docs/mimir/latest/configure/configuration-parameters/#compactor
 blocks_storage:
   backend: s3
   s3:
     bucket_name: "mimir-blocks-storage"
-
-#   # # You can choose between local storage and Amazon S3, Google GCS and Azure storage. Each option requires additional configuration
-#   # # as shown below. All options can be configured via flags as well which might be handy for secret inputs.
-#   # backend: filesystem # s3, gcs, azure or filesystem are valid options
-#   # filesystem:
-#   #   dir: ./data/tsdb
-
-# compactor:
-#   data_dir: /tmp/mimir/compactor
