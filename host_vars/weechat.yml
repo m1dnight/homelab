@@ -49,10 +49,12 @@ servers:
     address: "irc.libera.chat/6697"
     sasl_password: "{{ secret.sasl.libera.password }}"
     sasl_username: "{{ secret.sasl.libera.username }}"
-    autoconnect: no
+    autoconnect: yes
     tls: yes
     autojoin:
       - "#elixir"
+      - "#lispcafe"
+      - "#em.slashem.me"
       - "#nginx"
       - "#linux"
       - "#motorcycles"
@@ -99,7 +101,7 @@ servers:
 
   - name: quakenet
     address: "irc.quakenet.org/6667"
-    autoconnect: no
+    autoconnect: yes
     command: "{{ secret.commands.quakenet.command}}"
     tls: no
     autojoin:
@@ -109,7 +111,7 @@ servers:
 
   - name: tweakers
     address: "irc.tweakers.net/6697"
-    autoconnect: no
+    autoconnect: yes
     tls: yes
     autojoin:
       - "#tweakers"
@@ -117,7 +119,7 @@ servers:
 
   - name: ulyssis
     address: "irc.ulyssis.org/6668"
-    autoconnect: no
+    autoconnect: yes
     tls: yes
     autojoin:
       - "#ulyssis"
@@ -125,7 +127,7 @@ servers:
   - name: torrentleech
     address: "irc.torrentleech.org/7021"
     command: "{{ secret.commands.torrentleech.command }}"
-    autoconnect: no
+    autoconnect: yes
     tls: yes
     tls_verify: no
     autojoin:
@@ -133,6 +135,6 @@ servers:
 
   - name: kreynet
     address: "irc.krey.net/6697"
-    autoconnect: no
+    autoconnect: yes
     tls: yes
     tls_verify: no
