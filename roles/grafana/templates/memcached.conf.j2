@@ -50,16 +50,16 @@ logfile /var/log/memcached.log
 -P /var/run/memcached/memcached.pid
 
 
-# maximum item size 
--I 1024m 
+# maximum item size
+-I 1024m
 
 
-# connecion limit 
+# connecion limit
 -c 1024
 
 # https://docs.memcached.org/advisories/grafanaloki/
 -o ext_wbuf_size=32
 -o ext_threads=10
--o ext_max_sleep=10001
+-o ext_max_sleep=10000
 -o slab_automove_freeratio=0.10
 -o ext_recache_rate=0

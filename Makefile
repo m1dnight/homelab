@@ -11,6 +11,9 @@ edit_vault:
 format:
 	yamlfmt -formatter retain_line_breaks_single=true */**/*.yml */**/*.yml.j2 */**/*.yaml */**/*.yaml.j2
 
+all:
+	$(ANSIBLE) --tags=$(tags) -f 10
+
 beets:
 	$(ANSIBLE) --limit beets --tags=$(tags)
 

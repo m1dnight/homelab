@@ -22,17 +22,17 @@
   tags: weechat
 
 - name: set the relay password
-  ansible.builtin.shell: "weechat -r '/relay add weechat {{ relay.port }};/quit'"
+  ansible.builtin.shell: weechat -r "/relay add weechat {{ relay.port }};/quit"
   when: relay.port is defined
   tags: weechat
 
 - name: set the relay password
-  ansible.builtin.shell: "weechat -r '/set relay.network.password {{ relay.password }};/quit'"
+  ansible.builtin.shell: weechat -r "/set relay.network.password {{ relay.password }};/quit"
   when: relay.password is defined
   tags: weechat
 
 - name: enable download plugins
-  ansible.builtin.shell: "weechat -r '/set script.scripts.download_enabled on;/quit'"
+  ansible.builtin.shell: weechat -r "/set script.scripts.download_enabled on;/quit"
   when: plugins is defined
   tags: weechat
 

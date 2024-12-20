@@ -6,3 +6,16 @@
 - name: install packages
   include_tasks: packages.yml
   tags: packages
+
+# https://stackoverflow.com/questions/9457233/unlimited-bash-history
+- name: set bash history
+  blockinfile:
+    path: "$HOME/.bashrc"
+    block: |
+      export HISTFILESIZE=
+      export HISTSIZE=
+      export HISTTIMEFORMAT="[%F %T] "
+      export HISTFILE=~/.bash_eternal_history
+      PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+    state: present
+    create: true
