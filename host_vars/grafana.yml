@@ -22,6 +22,9 @@ s3_secret_key: "{{ secret.s3.secret_key }}"
 s3_insecure: true
 s3_region: us-west
 
+home_assistant_url: "homeassistant.call-cc.be"
+home_assistant_key: "{{ secret.ha.token }}"
+
 root_url: "observability.call-cc.be"
 
 data_sources:

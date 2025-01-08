@@ -66,6 +66,31 @@ prometheus.scrape "loki" {
     job_name = "loki"
 }
 
+
+discovery.relabel "metrics_integrations_integrations_hass" {
+	targets = [{
+		__address__ = "{{ home_assistant_url }}",
+	}]
+
+	rule {
+		target_label = "instance"
+		replacement  = constants.hostname
+	}
+}
+
+prometheus.scrape "metrics_integrations_integrations_hass" {
+	targets      = discovery.relabel.metrics_integrations_integrations_hass.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+	job_name     = "integrations/hass"
+	metrics_path = "/api/prometheus"
+	scheme       = "https"
+
+	authorization {
+		type        = "Bearer"
+		credentials = "{{ home_assistant_key }}"
+	}
+}
+
 prometheus.remote_write "mimir" {
   endpoint {
     url = "http://localhost:9009/api/v1/push"
