@@ -1,3 +1,4 @@
+---
 #-------------------------------------------------------------------------------
 # role: common
 
@@ -111,3 +112,8 @@ reverse_proxies:
     lan_only: yes
     allowed_ips: ["49.12.39.165"]
     to: "grafana.isolated:3100"
+
+  - name: "minio"
+    from: "minio.call-cc.be"
+    lan_only: yes
+    to: "minio.isolated:9001"
