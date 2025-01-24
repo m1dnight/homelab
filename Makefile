@@ -26,9 +26,6 @@ weechat:
 butler:
 	$(ANSIBLE) --limit butler --tags=$(tags)
 
-homeassistant:
-	$(ANSIBLE) --limit homeassistant --tags=$(tags)
-
 pihole:
 	$(ANSIBLE) --limit pihole --tags=$(tags)
 

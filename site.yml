@@ -20,10 +20,6 @@
   roles:
     - pihole
 
-- hosts: homeassistant
-  roles:
-    - homeassistant
-
 - hosts: tailscale
   roles:
     - tailscale
