@@ -117,3 +117,11 @@ reverse_proxies:
     from: "minio.call-cc.be"
     lan_only: yes
     to: "minio.isolated:9001"
+
+  - name: "kimber.be"
+    from: "kimber.be"
+    lan_only: no
+    to: "https://kimber-be.webflow.io"
+    debug: no
+    tls: yes
+    tls_verify: no
