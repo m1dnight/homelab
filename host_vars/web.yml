@@ -121,7 +121,18 @@ reverse_proxies:
   - name: "kimber.be"
     from: "kimber.be"
     lan_only: no
+    set_remote_host: "kimber-be.webflow.io"
     to: "https://kimber-be.webflow.io"
     debug: no
     tls: yes
     tls_verify: no
+
+  - name: "s3"
+    from: "s3.call-cc.be"
+    lan_only: yes
+    to: "minio.isolated:9000"
+
+  - name: "coolify"
+    from: "coolify.call-cc.be"
+    lan_only: yes
+    to: "coolify.localdomain:8000"

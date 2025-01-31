@@ -8,6 +8,7 @@
 	abort @denied
 {% endif %}
 
+
 {% if proxy.debug is defined and proxy.debug == 1 %}
 	log {
 		level DEBUG
@@ -17,6 +18,9 @@
 
 {% if proxy.tls is defined and proxy.tls == 1 %}
 	 reverse_proxy {{ proxy.to }} {
+		{% if proxy.set_remote_host is defined %}
+			header_up Host "{{ proxy.set_remote_host }}"
+		{% endif %}
 		transport http {
 			tls
 {% if proxy.tls_verify is defined and proxy.tls_verify == 0 %}
