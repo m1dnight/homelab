@@ -29,7 +29,7 @@ reverse_proxies:
   - name: "exbin"
     from: "exbin.call-cc.be"
     lan_only: no
-    to: "exbin.localdomain:5000"
+    to: "coolify.localdomain:5000"
 
   - name: "proxmox"
     from: "proxmox.call-cc.be"
@@ -136,3 +136,9 @@ reverse_proxies:
     from: "coolify.call-cc.be"
     lan_only: yes
     to: "coolify.localdomain:8000"
+
+  - name: "butler"
+    from: "butler.call-cc.be"
+    set_remote_host: "butler.call-cc.be"
+    lan_only: no
+    to: "coolify.localdomain:4000"

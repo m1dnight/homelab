@@ -40,3 +40,6 @@ grafana:
 
 minio:
 	$(ANSIBLE) --limit minio --tags=$(tags)
+
+pirate:
+	$(ANSIBLE) --limit pirate --tags=$(tags) $(extra)

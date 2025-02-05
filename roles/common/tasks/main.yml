@@ -1,11 +1,16 @@
 
+- name: install packages
+  include_tasks: packages.yml
+  tags: packages
+
 - name: configure ntp
   include_tasks: ntp.yml
   tags: ntp
 
-- name: install packages
-  include_tasks: packages.yml
-  tags: packages
+- name: configure nfs mounts
+  include_tasks: nfs.yml
+  tags: nfs
+
 
 # https://stackoverflow.com/questions/9457233/unlimited-bash-history
 - name: set bash history

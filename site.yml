@@ -1,6 +1,6 @@
-- hosts: all
-  roles:
-    - common
+# - hosts: all
+#   roles:
+#     - common
 
 - hosts: web
   roles:
@@ -39,3 +39,8 @@
   roles:
     - geerlingguy.docker
     - minio
+
+- hosts: pirate
+  roles:
+    # - geerlingguy.docker
+    - transmission

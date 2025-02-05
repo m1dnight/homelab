@@ -1,0 +1,47 @@
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - python3
+  - python3-pip
+  - python3-venv
+  - tmux
+  - nfs-common
+  - software-properties-common
+
+nfs_mounts:
+  - src: pulsar.localdomain
+    path: /volume2/torrents
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/torrents
+
+  - src: pulsar.localdomain
+    path: /volume2/tv-shows
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/series
+
+
+  - src: pulsar.localdomain
+    path: /volume2/movies
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/movies
+
+#-------------------------------------------------------------------------------
+# role: transmission
+
+transmission_rpc_username: "transmission"
+transmission_rpc_password: "transmission"
+transmission_rpc_port:  9091
+transmission_dht_enabled: false
+transmission_max_peers_global: 200
+transmission_ratio_limit: 0
+transmission_torrent_done_script: /config/unrar.sh
+transmission_upload_slots_per_torrent: 200
+
+timezone: "Europe/Brussels"

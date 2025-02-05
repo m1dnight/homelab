@@ -1,0 +1,59 @@
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID="{{ ansible_user_uid }}"
+      - PGID="{{ ansible_user_gid}}"
+      - TZ="{{ timezone }}"
+    volumes:
+      - ./volumes/sonarr:/config
+      - /mnt/series:/tv
+      - /mnt/torrents:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    restart: unless-stopped
+    container_name: radarr
+    environment:
+      - PUID="{{ ansible_user_uid }}"
+      - PGID="{{ ansible_user_gid}}"
+      - TZ="{{ timezone }}"
+    volumes:
+      - ./volumes/radarr:/config
+      - /mnt/movies:/movies
+      - /mnt/torrents:/downloads
+    ports:
+      - 7878:7878
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    restart: unless-stopped
+    container_name: bazarr
+    environment:
+      - PUID="{{ ansible_user_uid }}"
+      - PGID="{{ ansible_user_gid}}"
+      - TZ="{{ timezone }}"
+    volumes:
+      - ./volumes/bazarr:/config
+      - /mnt/movies:/movies
+      - /mnt/series:/tv
+    ports:
+      - 6767:6767
+
+  jackett:
+    image: lscr.io/linuxserver/jackett
+    restart: unless-stopped
+    container_name: jackett
+    environment:
+      - PUID="{{ ansible_user_uid }}"
+      - PGID="{{ ansible_user_gid}}"
+      - TZ="{{ timezone }}"
+      - AUTO_UPDATE=true
+    volumes:
+      - ./volumes/jackett:/config
+    ports:
+      - 9117:9117
