@@ -35,12 +35,37 @@ nfs_mounts:
 #-------------------------------------------------------------------------------
 # role: transmission
 
+# create backup on the remote
+# for d in $(ls); do tar -czf "/tmp/$d.tar.gz" $d; done
+# pull them in locally
+# scp root@pirate.localdomain:/tmp/jackett.tar.gz /tmp/                                                                     11:41:23
+# scp root@pirate.localdomain:/tmp/sonarr.tar.gz /tmp/
+# scp root@pirate.localdomain:/tmp/radarr.tar.gz /tmp/
+# scp root@pirate.localdomain:/tmp/bazarr.tar.gz /tmp/
+backups:
+    - defined: "{{ true if radarr_backup is defined else false }}"
+      name: radarr
+      source: "{{ radarr_backup if radarr_backup is defined else '' }}"
+
+    - defined: "{{ true if sonarr_backup is defined else false }}"
+      name: sonarr
+      source: "{{ sonarr_backup if sonarr_backup is defined else '' }}"
+
+    - defined: "{{ true if bazarr_backup is defined else false }}"
+      name: bazarr
+      source: "{{ bazarr_backup if bazarr_backup is defined else '' }}"
+
+    - defined: "{{ true if jackett_backup is defined else false }}"
+      name: jackett
+      source: "{{ jackett_backup if jackett_backup is defined else '' }}"
+
+
 rpc_username: "transmission"
 rpc_password: "transmission"
 rpc_port:  9091
 dht_enabled: false
 ratio_limit_enabled: false
-script_torrent_done_filename: /config/unrar.sh
+script_torrent_done_filename: "/usr/local/bin/unrar.sh"
 upload_slots_per_torrent: 200
 incomplete_dir: /mnt/torrents/incomplete
 download_dir: /mnt/torrents/complete

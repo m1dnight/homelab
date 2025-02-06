@@ -1,14 +1,13 @@
 #!/bin/bash
 
-apk add rsync
-
 src="$TR_TORRENT_DIR/$TR_TORRENT_NAME"
+
+echo "running unrar for ${src}"
+
 tmp=$(mktemp -d)
 
-touch /tmp/unrar_log.txt
+find "${src}" -name '*.rar' -execdir bash -c 'unrar e $0 "${tmp}"' {} \;
 
-echo  "${src}"
-find "${src}" -name '*.rar' -execdir bash -c 'unrar e $0 "${tmp}"' {} \; >> /tmp/unrar_log.txt
-rsync -r "${tmp}/" "${src}/" >> /tmp/unrar_log.txt
+rsync -r "${tmp}/" "${src}/"
 
 touch "${src}/.unrarred"
