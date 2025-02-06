@@ -39,3 +39,8 @@
   roles:
     - geerlingguy.docker
     - minio
+
+- hosts: pirate
+  roles:
+    - geerlingguy.docker
+    - transmission
