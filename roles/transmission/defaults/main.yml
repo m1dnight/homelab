@@ -1,5 +1,7 @@
 #SPDX-License-Identifier: MIT-0
 ---
+backups: []
+timezone: "Europe/Brussels"
 # defaults file for transmission
 alt_speed_down: 6000
 alt_speed_enabled: false

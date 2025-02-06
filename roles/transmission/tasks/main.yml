@@ -15,9 +15,11 @@
   with_items:
     - transmission-daemon
     - unrar
+    - rsync
 
 ################################################################################
 # transmission daemon
+
 - block:
     - name: stop transmission-deamon if running
       ansible.builtin.service:
@@ -29,11 +31,14 @@
         src: settings.json.j2
         dest: /etc/transmission-daemon/settings.json
 
+    - name: "debug"
+      debug:
+        msg: "{{ script_torrent_done_filename }}"
     - name: copy unrar.sh script
       ansible.builtin.template:
         src: unrar.sh.j2
-        dest: "$HOME/unrar.sh"
-        mode: "0755"
+        dest: "{{ script_torrent_done_filename }}"
+        mode: "0777"
 
     - name: enable transmission-daemon
       ansible.builtin.service:
@@ -45,120 +50,75 @@
         name: transmission-daemon
         state: restarted
   tags: transmission-daemon
-################################################################################
-# sonarr etc
 
-- block:
-    ############################################################################
-    # jackett backup
-    - block:
-      - name: check for jackett backup file
-        debug:
-          msg: "jackett file: {{ jackett_backup }}"
+############################################################################
+# restore backups if any
 
-      - name: restore jackett backup
-        ansible.builtin.copy:
-          src: "{{ jackett_backup }}"
-          dest: "/tmp/jackett_backup.tar.gz"
-          owner: "{{ ansible_user_uid }}"
-          group: "{{ ansible_user_gid }}"
-          mode: "0744"
+- name: copy the tarball to the destination
+  ansible.builtin.copy:
+    src: "{{ item.source }}"
+    dest: "/tmp/{{ item.name }}.tar.gz"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0744"
+  when: item.defined == true
+  with_items: "{{ backups }}"
 
-      - name: Creates directory
-        ansible.builtin.file:
-          path: "{{ ansible_user_dir }}/services/volumes/jackett"
-          state: directory
+- name: create target directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/services/volumes/{{ item.name }}"
+    state: directory
+  when: item.defined == true
+  with_items: "{{ backups }}"
 
-      - name: extract jackett backup
-        command: "tar -xzf /tmp/jackett_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: jackett_backup is defined and jackett_backup != ""
+- name: extract the tarball on the remote
+  command: "tar -xzf /tmp/{{ item.name }}.tar.gz -C {{ ansible_user_dir }}/services/volumes"
+  when: item.defined == true
+  with_items: "{{ backups }}"
 
-    ############################################################################
-    # sonarr backup
-    - block:
-      - name: restore sonarr backup
-        ansible.builtin.copy:
-          src: "{{ sonarr_backup }}"
-          dest: "/tmp/sonarr_backup.tar.gz"
-          owner: "{{ ansible_user_uid }}"
-          group: "{{ ansible_user_gid }}"
-          mode: "0744"
+- name: extract the tarball on the remote
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/services/volumes/{{ item.name }}"
+    state: directory
+    recurse: yes
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+  with_items: "{{ backups }}"
 
-      - name: Creates directory
-        ansible.builtin.file:
-          path: "{{ ansible_user_dir }}/services/volumes/sonarr"
-          state: directory
+############################################################################
+# services
 
-      - name: extract sonarr backup
-        command: "tar -xzf /tmp/sonarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: sonarr_backup is defined and sonarr_backup != ""
+- name: stop all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ ansible_user_dir }}/services"
+    state: stopped
+  register: output
 
-    ############################################################################
-    # bazarr backup
+- name: create directory for services
+  file:
+    path: "{{ item }}"
+    recurse: true
+    state: directory
+    mode: "0775"
+    owner: "{{ ansible_user_uid }}"
+    group: "{{ ansible_user_gid }}"
+  with_items:
+    - "{{ ansible_user_dir }}/services"
 
-    - block:
-      - name: restore bazarr backup
-        ansible.builtin.copy:
-          src: "{{ bazarr_backup }}"
-          dest: "/tmp/bazarr_backup.tar.gz"
-          owner: "{{ ansible_user_uid }}"
-          group: "{{ ansible_user_gid }}"
-          mode: "0744"
+- name: install docker-compose for services
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ ansible_user_dir }}/services/docker-compose.yaml"
+    mode: "0775"
+    owner: "{{ ansible_user }}"
+    group: root
 
-      - name: Creates directory
-        ansible.builtin.file:
-          path: "{{ ansible_user_dir }}/services/volumes/bazarr"
-          state: directory
+- name: pull the containers
+  command: "docker compose pull"
+  args:
+    chdir: "{{ ansible_user_dir }}/services"
 
-      - name: extract bazarr backup
-        command: "tar -xzf /tmp/bazarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: bazarr_backup is defined and bazarr_backup != ""
-
-    ############################################################################
-    # radarr backup
-
-    - block:
-      - name: restore radarr backup
-        ansible.builtin.copy:
-          src: "{{ radarr_backup }}"
-          dest: "/tmp/radarr_backup.tar.gz"
-          owner: "{{ ansible_user_uid }}"
-          group: "{{ ansible_user_gid }}"
-          mode: "0744"
-
-      - name: Creates directory
-        ansible.builtin.file:
-          path: "{{ ansible_user_dir }}/services/volumes/radarr"
-          state: directory
-
-      - name: extract radarr backup
-        command: "tar -xzf /tmp/radarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: radarr_backup is defined and radarr_backup != ""
-
-    ############################################################################
-    # services
-
-    - name: create directory for services
-      file:
-        path: "{{ item }}"
-        recurse: true
-        state: directory
-        mode: "0775"
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
-      with_items:
-        - "{{ ansible_user_dir }}/services"
-
-    - name: install docker-compose for services
-      template:
-        src: docker-compose.yml.j2
-        dest: "{{ ansible_user_dir }}/services/docker-compose.yaml"
-        mode: "0775"
-        owner: "{{ ansible_user }}"
-        group: root
-
-    - name: pull the containers
-      command: "docker compose pull"
-      args:
-        chdir: "{{ ansible_user_dir }}/services"
-  tags: sonarr
+- name: start all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ ansible_user_dir }}/services"
+    state: restarted

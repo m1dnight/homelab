@@ -1,15 +1,15 @@
 - name: create mountpoints for nfs
   ansible.builtin.file:
-    path: "/root/.minio"
+    path: "{{ item.mountpoint }}"
     state: directory
   with_items: "{{ nfs_mounts }}"
 
-- name: unmount all nfs mounts
+- name: ensure all nfs mounts are defined
   ansible.posix.mount:
     src: "{{ item.src}}:{{ item.path }}"
     path: "{{ item.mountpoint }}"
     opts: "{{ item.opts }}"
-    state: unmounted
+    state: present
     fstype: nfs
   with_items: "{{ nfs_mounts }}"
 
@@ -18,7 +18,6 @@
     src: "{{ item.src}}:{{ item.path }}"
     path: "{{ item.mountpoint }}"
     opts: "{{ item.opts }}"
-    state: mounted
+    state: present
     fstype: nfs
   with_items: "{{ nfs_mounts }}"
-  when: ansible_mounts | selectattr('mount', 'equalto', item.mountpoint) | list | length == 0
