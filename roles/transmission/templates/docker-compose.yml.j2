@@ -36,7 +36,7 @@ services:
     environment:
       - PUID="{{ ansible_user_uid }}"
       - PGID="{{ ansible_user_gid}}"
-      - TZ="{{ timezone }}"
+      # - TZ={{ timezone }}
     volumes:
       - ./volumes/bazarr:/config
       - /mnt/movies:/movies
@@ -51,7 +51,7 @@ services:
     environment:
       - PUID="{{ ansible_user_uid }}"
       - PGID="{{ ansible_user_gid}}"
-      - TZ="{{ timezone }}"
+      - TZ={{ timezone }}
       - AUTO_UPDATE=true
     volumes:
       - ./volumes/jackett:/config

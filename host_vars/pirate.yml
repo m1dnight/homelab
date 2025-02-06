@@ -35,13 +35,14 @@ nfs_mounts:
 #-------------------------------------------------------------------------------
 # role: transmission
 
-transmission_rpc_username: "transmission"
-transmission_rpc_password: "transmission"
-transmission_rpc_port:  9091
-transmission_dht_enabled: false
-transmission_max_peers_global: 200
-transmission_ratio_limit: 0
-transmission_torrent_done_script: /config/unrar.sh
-transmission_upload_slots_per_torrent: 200
+rpc_username: "transmission"
+rpc_password: "transmission"
+rpc_port:  9091
+dht_enabled: false
+ratio_limit_enabled: false
+script_torrent_done_filename: /config/unrar.sh
+upload_slots_per_torrent: 200
+incomplete_dir: /mnt/torrents/incomplete
+download_dir: /mnt/torrents/complete
 
 timezone: "Europe/Brussels"

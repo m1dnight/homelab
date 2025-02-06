@@ -43,3 +43,4 @@ minio:
 
 pirate:
 	$(ANSIBLE) --limit pirate --tags=$(tags) $(extra)
+# make pirate extra:="--extra-vars jackett_backup=/tmp/jackett.tar.gz --extra-vars sonarr_backup=/tmp/sonarr.tar.gz --extra-vars bazarr_backup=/tmp/bazarr.tar.gz --extra-vars radarr_backup=/tmp/radarr.tar.gz"

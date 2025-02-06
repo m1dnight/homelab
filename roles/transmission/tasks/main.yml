@@ -18,129 +18,122 @@
 
 ################################################################################
 # transmission daemon
+- block:
+    - name: stop transmission-deamon if running
+      ansible.builtin.service:
+        name: transmission-daemon
+        state: stopped
 
-- name: stop transmission-deamon if running
-  ansible.builtin.service:
-    name: transmission-daemon
-    state: stopped
+    - name: copy settings.json
+      ansible.builtin.template:
+        src: settings.json.j2
+        dest: /etc/transmission-daemon/settings.json
 
-- name: copy settings.json
-  ansible.builtin.template:
-    src: settings.json.j2
-    dest: /etc/transmission-daemon/settings.json
+    - name: copy unrar.sh script
+      ansible.builtin.template:
+        src: unrar.sh.j2
+        dest: "$HOME/unrar.sh"
+        mode: "0755"
 
-- name: copy unrar.sh script
-  ansible.builtin.template:
-    src: unrar.sh.j2
-    dest: "$HOME/unrar.sh"
-    mode: "0755"
+    - name: enable transmission-daemon
+      ansible.builtin.service:
+        name: transmission-daemon
+        enabled: yes
 
-- name: enable transmission-daemon
-  ansible.builtin.service:
-    name: transmission-daemon
-    enabled: yes
-
-- name: restart transmission-daemon
-  ansible.builtin.service:
-    name: transmission-daemon
-    state: restarted
-
+    - name: restart transmission-daemon
+      ansible.builtin.service:
+        name: transmission-daemon
+        state: restarted
+  tags: transmission-daemon
 ################################################################################
 # sonarr etc
 
 - block:
-    - name: check for jackett backup file
-      debug:
-        msg: "jackett file: {{ jackett_backup }}"
-      when: jackett_backup != ""
-
     ############################################################################
     # jackett backup
+    - block:
+      - name: check for jackett backup file
+        debug:
+          msg: "jackett file: {{ jackett_backup }}"
 
-    - name: restore jackett backup
-      ansible.builtin.copy:
-        src: "{{ jackett_backup }}"
-        dest: "/tmp/jackett_backup.tar.gz"
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
-        mode: "0744"
-      when: jackett_backup != ""
+      - name: restore jackett backup
+        ansible.builtin.copy:
+          src: "{{ jackett_backup }}"
+          dest: "/tmp/jackett_backup.tar.gz"
+          owner: "{{ ansible_user_uid }}"
+          group: "{{ ansible_user_gid }}"
+          mode: "0744"
 
-    - name: Creates directory
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/services/volumes/jackett"
-        state: directory
-      when: jackett_backup != ""
+      - name: Creates directory
+        ansible.builtin.file:
+          path: "{{ ansible_user_dir }}/services/volumes/jackett"
+          state: directory
 
-    - name: extract jackett backup
-      command: "tar -xzf /tmp/jackett_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: jackett_backup != ""
+      - name: extract jackett backup
+        command: "tar -xzf /tmp/jackett_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
+      when: jackett_backup is defined and jackett_backup != ""
 
     ############################################################################
     # sonarr backup
+    - block:
+      - name: restore sonarr backup
+        ansible.builtin.copy:
+          src: "{{ sonarr_backup }}"
+          dest: "/tmp/sonarr_backup.tar.gz"
+          owner: "{{ ansible_user_uid }}"
+          group: "{{ ansible_user_gid }}"
+          mode: "0744"
 
-    - name: restore sonarr backup
-      ansible.builtin.copy:
-        src: "{{ sonarr_backup }}"
-        dest: "/tmp/sonarr_backup.tar.gz"
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
-        mode: "0744"
-      when: sonarr_backup != ""
+      - name: Creates directory
+        ansible.builtin.file:
+          path: "{{ ansible_user_dir }}/services/volumes/sonarr"
+          state: directory
 
-    - name: Creates directory
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/services/volumes/sonarr"
-        state: directory
-      when: sonarr_backup != ""
-
-    - name: extract sonarr backup
-      command: "tar -xzf /tmp/sonarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: sonarr_backup != ""
+      - name: extract sonarr backup
+        command: "tar -xzf /tmp/sonarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
+      when: sonarr_backup is defined and sonarr_backup != ""
 
     ############################################################################
     # bazarr backup
 
-    - name: restore bazarr backup
-      ansible.builtin.copy:
-        src: "{{ bazarr_backup }}"
-        dest: "/tmp/bazarr_backup.tar.gz"
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
-        mode: "0744"
-      when: bazarr_backup != ""
+    - block:
+      - name: restore bazarr backup
+        ansible.builtin.copy:
+          src: "{{ bazarr_backup }}"
+          dest: "/tmp/bazarr_backup.tar.gz"
+          owner: "{{ ansible_user_uid }}"
+          group: "{{ ansible_user_gid }}"
+          mode: "0744"
 
-    - name: Creates directory
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/services/volumes/bazarr"
-        state: directory
-      when: bazarr_backup != ""
+      - name: Creates directory
+        ansible.builtin.file:
+          path: "{{ ansible_user_dir }}/services/volumes/bazarr"
+          state: directory
 
-    - name: extract bazarr backup
-      command: "tar -xzf /tmp/bazarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: bazarr_backup != ""
+      - name: extract bazarr backup
+        command: "tar -xzf /tmp/bazarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
+      when: bazarr_backup is defined and bazarr_backup != ""
 
     ############################################################################
     # radarr backup
 
-    - name: restore radarr backup
-      ansible.builtin.copy:
-        src: "{{ radarr_backup }}"
-        dest: "/tmp/radarr_backup.tar.gz"
-        owner: "{{ ansible_user_uid }}"
-        group: "{{ ansible_user_gid }}"
-        mode: "0744"
-      when: radarr_backup != ""
+    - block:
+      - name: restore radarr backup
+        ansible.builtin.copy:
+          src: "{{ radarr_backup }}"
+          dest: "/tmp/radarr_backup.tar.gz"
+          owner: "{{ ansible_user_uid }}"
+          group: "{{ ansible_user_gid }}"
+          mode: "0744"
 
-    - name: Creates directory
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/services/volumes/radarr"
-        state: directory
-      when: radarr_backup != ""
+      - name: Creates directory
+        ansible.builtin.file:
+          path: "{{ ansible_user_dir }}/services/volumes/radarr"
+          state: directory
 
-    - name: extract radarr backup
-      command: "tar -xzf /tmp/radarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
-      when: radarr_backup != ""
+      - name: extract radarr backup
+        command: "tar -xzf /tmp/radarr_backup.tar.gz -C {{ ansible_user_dir }}/services/volumes"
+      when: radarr_backup is defined and radarr_backup != ""
 
     ############################################################################
     # services
