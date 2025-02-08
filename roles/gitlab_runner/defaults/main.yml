@@ -1,0 +1,3 @@
+---
+# defaults file for gitlab_runner
+gitlab_runner_tokens: []

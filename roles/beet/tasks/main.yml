@@ -9,6 +9,7 @@
     - "python3-discogs-client"
     - "Pillow"
     - "flask"
+    - "typing_extensions"
 
 # config beets
 - name: create config directory

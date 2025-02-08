@@ -42,5 +42,15 @@
 
 - hosts: pirate
   roles:
-    # - geerlingguy.docker
+    - geerlingguy.docker
     - transmission
+
+- hosts: gitlab
+  roles:
+    - geerlingguy.docker
+    - gitlab_runner
+
+- hosts: coolify
+  roles:
+    # - geerlingguy.docker
+    - coolify
