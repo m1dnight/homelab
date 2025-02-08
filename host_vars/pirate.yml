@@ -65,6 +65,7 @@ rpc_password: "{{ secret.transmission.rpc_password }}"
 rpc_port:  9091
 dht_enabled: false
 ratio_limit_enabled: false
+rpc_whitelist_enabled: false
 script_torrent_done_filename: "/usr/local/bin/unrar.sh"
 upload_slots_per_torrent: 200
 incomplete_dir: /mnt/torrents/incomplete
