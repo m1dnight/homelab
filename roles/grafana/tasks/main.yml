@@ -37,18 +37,6 @@
     - mimir
     - memcached
 
-- name: ensure services enabled and started
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: started
-    enabled: true
-  with_items:
-    - grafana-server
-    - loki
-    - promtail
-    - alloy
-    - mimir
-
 - name: install alloy config
   template:
     src: alloy.j2
@@ -94,6 +82,18 @@
   notify:
     - restart loki
   tags: loki
+
+- name: ensure services enabled and started
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - grafana-server
+    - loki
+    - promtail
+    - alloy
+    - mimir
 
 ################################################################################
 # InfluxDB
