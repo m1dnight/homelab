@@ -7,6 +7,7 @@ packages:
   - python3-pip
   - python3-venv
   - tmux
+  - nfs-common
 
 nfs_mounts:
   - src: pulsar.localdomain
@@ -17,11 +18,12 @@ nfs_mounts:
     mountpoint: /mnt/torrents
 
   - src: pulsar2.localdomain
-    path: /volume2/music
+    path: /volume1/music
     opts: rw,sync,hard
     state: mounted
     fstype: nfs
     mountpoint: /mnt/music
+
 #-------------------------------------------------------------------------------
 # role: beets
 
@@ -35,4 +37,3 @@ beet:
     - "web"
     - "discogs"
   discogs_token: "{{ secret.beet.discogs_token }}"
-

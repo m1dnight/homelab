@@ -1,0 +1,61 @@
+---
+# tasks file for gitlab_runner
+- block:
+    - name: install gitlab-runner-helper-images from deb
+      ansible.builtin.apt:
+        deb: "https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/deb/gitlab-runner-helper-images.deb"
+        state: present
+
+    - name: install gitlab-runner from deb
+      ansible.builtin.apt:
+        deb: "https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb"
+        state: present
+
+    - name: copy empty config
+      copy:
+        src: files/config.toml
+        dest: /etc/gitlab-runner/config.toml
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: copy registration template
+      copy:
+        src: files/registration_template.toml
+        dest: /tmp/registration_template.toml
+
+    # - name: register the gitlab runner
+    #   ansible.builtin.shell: |
+    #     gitlab-runner register \
+    #       --template-config /tmp/registration_template.toml \
+    #       --non-interactive \
+    #       --url "https://gitlab.com/" \
+    #       --token "{{ gitlab_runner_token }}" \
+    #       --executor "docker" \
+    #       --docker-image alpine:latest \
+    #       --description "docker-runner"
+
+    - name: register the gitlab runners
+      ansible.builtin.shell: |
+        gitlab-runner register \
+          --template-config /tmp/registration_template.toml \
+          --non-interactive \
+          --url "https://gitlab.com/" \
+          --token "{{ item }}" \
+          --executor "docker" \
+          --docker-image alpine:latest \
+          --description "docker-runner"
+      with_items: "{{ gitlab_runner_tokens }}"
+
+    - name: clean out the docker images periodically
+      ansible.builtin.cron:
+        name: "cleanup old docker images"
+        special_time: "daily"
+        job: "docker system prune -f > /dev/null"
+
+    - name: restart gitlab-runner
+      ansible.builtin.service:
+        name: gitlab-runner
+        state: restarted
+
+  become: true

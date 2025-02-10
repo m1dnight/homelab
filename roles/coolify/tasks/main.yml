@@ -1,0 +1,96 @@
+---
+# tasks file for coolify
+
+#-------------------------------------------------------------------------------
+
+- name: copy the docker configuration file
+  ansible.builtin.copy:
+    src: dockerconfig.json
+    dest: /etc/docker/daemon.json
+
+- name: restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+
+#-------------------------------------------------------------------------------
+
+- name: create coolify directories
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  with_items:
+    - bash -c "mkdir -p /data/coolify/{source,ssh,applications,databases,backups,services,proxy,webhooks-during-maintenance}"
+    - bash -c "mkdir -p /data/coolify/ssh/{keys,mux}"
+    - bash -c "mkdir -p /data/coolify/proxy/dynamic"
+
+#-------------------------------------------------------------------------------
+
+- name: check if ssh key exists
+  stat:
+    path: "/data/coolify/ssh/keys/id.root@host.docker.internal"
+  register: result
+
+- name: print debug
+  debug:
+    msg: "The file does not exist!"
+  when: not result.stat.exists
+
+- name: create coolify ssh key
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  when: not result.stat.exists
+  with_items:
+    - bash -c "ssh-keygen -f /data/coolify/ssh/keys/id.root@host.docker.internal -t ed25519 -N '' -C root@coolify"
+    - bash -c "cat /data/coolify/ssh/keys/id.root@host.docker.internal.pub >>~/.ssh/authorized_keys"
+    - bash -c "chmod 600 ~/.ssh/authorized_keys"
+
+#-------------------------------------------------------------------------------
+
+- name: check if template files exist
+  stat:
+    path: "/data/coolify/source/docker-compose.yml"
+  register: exists
+
+- name: configure templates
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  when: not exists.stat.exists
+  with_items:
+    - curl -fsSL https://cdn.coollabs.io/coolify/docker-compose.yml -o /data/coolify/source/docker-compose.yml
+    - curl -fsSL https://cdn.coollabs.io/coolify/docker-compose.prod.yml -o /data/coolify/source/docker-compose.prod.yml
+    - curl -fsSL https://cdn.coollabs.io/coolify/.env.production -o /data/coolify/source/.env
+    - curl -fsSL https://cdn.coollabs.io/coolify/upgrade.sh -o /data/coolify/source/upgrade.sh
+    - chown -R 9999:root /data/coolify
+    - chmod -R 700 /data/coolify
+    - sed -i "s|APP_ID=.*|APP_ID=$(openssl rand -hex 16)|g" /data/coolify/source/.env
+    - sed -i "s|APP_KEY=.*|APP_KEY=base64:$(openssl rand -base64 32)|g" /data/coolify/source/.env
+    - sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=$(openssl rand -base64 32)|g" /data/coolify/source/.env
+    - sed -i "s|REDIS_PASSWORD=.*|REDIS_PASSWORD=$(openssl rand -base64 32)|g" /data/coolify/source/.env
+    - sed -i "s|PUSHER_APP_ID=.*|PUSHER_APP_ID=$(openssl rand -hex 32)|g" /data/coolify/source/.env
+    - sed -i "s|PUSHER_APP_KEY=.*|PUSHER_APP_KEY=$(openssl rand -hex 32)|g" /data/coolify/source/.env
+    - sed -i "s|PUSHER_APP_SECRET=.*|PUSHER_APP_SECRET=$(openssl rand -hex 32)|g" /data/coolify/source/.env
+
+#-------------------------------------------------------------------------------
+
+- name: configure templates
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  with_items:
+    - sed -i "s|ROOT_USERNAME=.*|ROOT_USERNAME={{ coolify_root }}|g" /data/coolify/source/.env
+    - sed -i "s|ROOT_USER_EMAIL=.*|ROOT_USER_EMAIL={{ coolify_email }}|g" /data/coolify/source/.env
+    - sed -i "s|ROOT_USER_PASSWORD=.*|ROOT_USER_PASSWORD={{ coolify_pass }}|g" /data/coolify/source/.env
+
+#-------------------------------------------------------------------------------
+
+- name: create docker network
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  ignore_errors: true
+  with_items:
+    - docker network create --attachable coolify || exit 0
+
+- name: create docker services
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  with_items:
+    - docker compose --env-file /data/coolify/source/.env -f /data/coolify/source/docker-compose.yml -f /data/coolify/source/docker-compose.prod.yml up -d --pull always --remove-orphans --force-recreate

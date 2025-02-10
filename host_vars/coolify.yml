@@ -1,0 +1,15 @@
+#-------------------------------------------------------------------------------
+# role: common
+
+packages:
+  - curl
+  - wget
+  - tmux
+  - git
+
+#-------------------------------------------------------------------------------
+# role: coolify
+
+coolify_root: "{{ secret.coolify.root }}"
+coolify_pass: "{{ secret.coolify.pass }}"
+coolify_email: "{{ secret.coolify.email }}"
