@@ -8,12 +8,20 @@ packages:
   - python3-venv
   - tmux
 
-#-------------------------------------------------------------------------------
-# role: samba
-samba_shares:
-  - {name: "music", path: "/mnt/music", username: "{{ secret.samba.music.username }}", password: "{{ secret.samba.music.password }}", share: "//pulsar.localdomain/music", extra_opts: "vers=3.0,file_mode=0777,dir_mode=0777,iocharset=utf8"}
-  - {name: "home", path: "/mnt/home", username: "{{ secret.samba.home.username }}", password: "{{ secret.samba.home.password }}", share: "//pulsar.localdomain/home", extra_opts: "vers=3.0,file_mode=0777,dir_mode=0777,iocharset=utf8",}
+nfs_mounts:
+  - src: pulsar.localdomain
+    path: /volume2/torrents
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/torrents
 
+  - src: pulsar2.localdomain
+    path: /volume2/music
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/music
 #-------------------------------------------------------------------------------
 # role: beets
 
