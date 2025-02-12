@@ -29,7 +29,7 @@ reverse_proxies:
   - name: "exbin"
     from: "exbin.call-cc.be"
     lan_only: no
-    to: "coolify.localdomain:5000"
+    to: "clfy.localdomain:5001"
 
   - name: "proxmox"
     from: "proxmox.call-cc.be"
@@ -42,32 +42,32 @@ reverse_proxies:
   - name: "transmission"
     from: "transmission.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:9091"
+    to: "pirate.localdomain:9091"
 
   - name: "bazarr"
     from: "bazarr.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:6767"
+    to: "pirate.localdomain:6767"
 
   - name: "jackett"
     from: "jackett.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:9117"
+    to: "pirate.localdomain:9117"
 
   - name: "radarr"
     from: "radarr.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:7878"
+    to: "pirate.localdomain:7878"
 
   - name: "lidarr"
     from: "lidarr.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:8686"
+    to: "pirate.localdomain:8686"
 
   - name: "sonarr"
     from: "sonarr.call-cc.be"
     lan_only: yes
-    to: "torrents.localdomain:8989"
+    to: "pirate.localdomain:8989"
 
   - name: "synology"
     from: "synology.call-cc.be"
@@ -110,7 +110,7 @@ reverse_proxies:
   - name: "loki"
     from: "loki.call-cc.be"
     lan_only: yes
-    allowed_ips: ["49.12.39.165"]
+    allowed_ips: ["49.12.39.165", "34.76.76.180"]
     to: "grafana.isolated:3100"
 
   - name: "minio"
@@ -135,10 +135,10 @@ reverse_proxies:
   - name: "coolify"
     from: "coolify.call-cc.be"
     lan_only: yes
-    to: "coolify.localdomain:8000"
+    to: "clfy.localdomain:8000"
 
   - name: "butler"
     from: "butler.call-cc.be"
     set_remote_host: "butler.call-cc.be"
     lan_only: no
-    to: "coolify.localdomain:4000"
+    to: "clfy.localdomain:4000"
