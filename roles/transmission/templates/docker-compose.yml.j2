@@ -1,4 +1,18 @@
 services:
+  #-----------------------------------------------------------
+  # Watchtower
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: unless-stopped
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=6
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  #-----------------------------------------------------------
+  # Sonarr
+
   sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
@@ -13,6 +27,9 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
+
+  #-----------------------------------------------------------
+  # Radarr
 
   radarr:
     image: lscr.io/linuxserver/radarr
@@ -29,6 +46,9 @@ services:
     ports:
       - 7878:7878
 
+  #-----------------------------------------------------------
+  # Bazarr
+
   bazarr:
     image: lscr.io/linuxserver/bazarr
     restart: unless-stopped
@@ -43,6 +63,9 @@ services:
       - /mnt/series:/tv
     ports:
       - 6767:6767
+
+  #-----------------------------------------------------------
+  # Jackett
 
   jackett:
     image: lscr.io/linuxserver/jackett
