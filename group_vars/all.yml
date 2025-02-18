@@ -5,3 +5,6 @@ mail_server: "{{ secret.smtp.server }}"
 mail_port: "{{ secret.smtp.port }}"
 mail_mailname: "{{ secret.smtp.mailname }}"
 mail_recipient: "{{ secret.smtp.recipient }}"
+
+system_locale: "en_US.UTF-8"
+system_language: "en_US.UTF-8"
