@@ -7,6 +7,14 @@ packages:
   - tmux
   - git
 
+nfs_mounts:
+  - src: pulsar.localdomain
+    path: /volume1/music
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/music
+
 #-------------------------------------------------------------------------------
 # role: coolify
 
