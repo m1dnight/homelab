@@ -142,3 +142,9 @@ reverse_proxies:
     set_remote_host: "butler.call-cc.be"
     lan_only: no
     to: "clfy.localdomain:4000"
+
+  - name: "music"
+    from: "music.call-cc.be"
+    set_remote_host: "music.call-cc.be"
+    lan_only: yes
+    to: "clfy.localdomain:4533"
