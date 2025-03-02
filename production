@@ -11,3 +11,4 @@ minio ansible_host=minio.isolated ansible_user=root
 pirate ansible_host=pirate.localdomain ansible_user=root
 gitlab ansible_host=gitlab.localdomain ansible_user=root
 coolify ansible_host=clfy.localdomain ansible_user=root
+proxmox ansible_host=milkyway.localdomain ansible_user=root

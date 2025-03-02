@@ -1,0 +1,18 @@
+- block:
+  - name: copy prometheus.yml to /etc/prometheus/prometheus.yml
+    become: true
+    ansible.builtin.template:
+      src: prometheus.yml.j2
+      dest: /etc/prometheus/prometheus.yml
+      owner: prometheus
+      group: prometheus
+      mode: 0644
+
+  - name: make sure 'prometheus' service is started and enabled
+    become: true
+    systemd:
+      name: prometheus
+      state: restarted
+      enabled: yes
+      daemon_reload: yes
+  become: true

@@ -12,6 +12,11 @@
   tags: nfs
 
 
+- name: configure prometheus
+  include_tasks: prometheus.yml
+  tags: prometheus-config
+
+
 # https://stackoverflow.com/questions/9457233/unlimited-bash-history
 - name: set bash history
   blockinfile:

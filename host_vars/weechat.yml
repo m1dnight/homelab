@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------------------
 # role: common
 
-packages:
+default_packages:
   - git
   - net-tools
   - libnss3-tools

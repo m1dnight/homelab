@@ -2,7 +2,7 @@ VAULT=vault.yml
 VAULT_PASSFILE=~/.secrets/vault_password
 VAULT_ARGS=--extra-vars @$(VAULT) --vault-password-file=$(VAULT_PASSFILE)
 
-ANSIBLE=ansible-playbook site.yml $(VAULT_ARGS) -i production
+ANSIBLE=OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook site.yml $(VAULT_ARGS) -i production
 
 tags:="all"
 edit_vault:
@@ -50,3 +50,6 @@ gitlab:
 
 coolify:
 	$(ANSIBLE) --limit coolify --tags=$(tags) $(extra)
+
+proxmox:
+	$(ANSIBLE) --limit proxmox --tags=$(tags) $(extra)
