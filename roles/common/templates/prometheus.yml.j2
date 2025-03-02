@@ -1,0 +1,46 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+  external_labels:
+    environment: '{{ ansible_hostname }}'
+    hostname: '{{ ansible_hostname }}'
+
+remote_write:
+  - url: {{ prometheus_endpoint }}
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+  - /etc/prometheus/rules/*.yaml
+  - /etc/prometheus/rules/*.rules
+
+scrape_configs:
+#  - job_name: docker
+#    static_configs:
+#    - targets:
+#      - localhost:9323
+#      labels:
+#        host: '{{ ansible_hostname }}'
+  - job_name: node
+    static_configs:
+    - targets:
+      - localhost:9100
+      labels:
+        host: '{{ ansible_hostname }}'
+#  - job_name: postgres
+#    static_configs:
+#    - targets:
+#      - localhost:9187
+#      labels:
+#        host: '{{ ansible_hostname }}'
+#  - job_name: cadvisor
+#    static_configs:
+#    - targets:
+#      - localhost:8081
+#      labels:
+#        host: '{{ ansible_hostname }}'
+
+
+scrape_config_files:
+  - scrape_configs/*

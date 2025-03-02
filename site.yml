@@ -1,5 +1,7 @@
 - hosts: all
   roles:
+    - prometheus.prometheus.node_exporter
+    - prometheus.prometheus.prometheus
     - common
 
 - hosts: web
@@ -15,10 +17,6 @@
     - samba
     - beet
     - mailer
-
-- hosts: pihole
-  roles:
-    - pihole
 
 - hosts: tailscale
   roles:

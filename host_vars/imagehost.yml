@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # role: common
 
-packages:
+default_packages:
   - git
   - nginx
   - php-fpm

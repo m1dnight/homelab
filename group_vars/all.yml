@@ -8,3 +8,5 @@ mail_recipient: "{{ secret.smtp.recipient }}"
 
 system_locale: "en_US.UTF-8"
 system_language: "en_US.UTF-8"
+
+prometheus_endpoint: "https://mimir.call-cc.be/api/v1/push"

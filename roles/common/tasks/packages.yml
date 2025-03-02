@@ -9,10 +9,14 @@
         state: latest
         update_cache: true
 
+    - name: debug
+      debug:
+        msg: "packages {{ default_packages }}"
     - name: install basic system packages
       apt:
-        pkg: "{{ packages }}"
+        pkg: "{{ item }}"
         state: latest
         update_cache: true
       when: packages is defined
+      with_items: "{{ default_packages }}"
   become: true

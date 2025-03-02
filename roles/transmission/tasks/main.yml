@@ -40,6 +40,13 @@
         dest: "{{ script_torrent_done_filename }}"
         mode: "0777"
 
+    - name: copy unrar_all.sh script
+      ansible.builtin.template:
+        src: unrar_all.sh.j2
+        dest: "{{ script_unrar_all_filename }}"
+        mode: "0777"
+      tags: unrar-all-script
+
     - name: enable transmission-daemon
       ansible.builtin.service:
         name: transmission-daemon
