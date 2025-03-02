@@ -37,7 +37,7 @@
   tags: weechat
 
 - name: install plugins
-  ansible.builtin.shell: weechat -r "/script install {{ item }};/quit"
+  ansible.builtin.shell: weechat -r '/script install {{ item }} ; /quit'
   with_items: "{{ plugins }}"
   when: plugins is defined
   tags: weechat

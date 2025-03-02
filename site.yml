@@ -18,10 +18,6 @@
     - beet
     - mailer
 
-- hosts: pihole
-  roles:
-    - pihole
-
 - hosts: tailscale
   roles:
     - tailscale

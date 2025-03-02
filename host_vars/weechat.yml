@@ -31,10 +31,10 @@ relay:
 
 plugins:
   - go.py
-  # - grep.py
-  # - highmon.pl
-  # - buffers.pl
-  # - autosort.py
+  - grep.py
+  - highmon.pl
+  - buffers.pl
+  - autosort.py
 
 various_commands:
   - "/set irc.look.smart_filter on"
