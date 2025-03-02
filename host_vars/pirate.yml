@@ -67,6 +67,7 @@ dht_enabled: false
 ratio_limit_enabled: false
 rpc_whitelist_enabled: false
 script_torrent_done_filename: "/usr/local/bin/unrar.sh"
+script_unrar_all_filename: "/usr/local/bin/unrar_all.sh"
 upload_slots_per_torrent: 200
 incomplete_dir: /mnt/torrents/incomplete
 download_dir: /mnt/torrents/complete
