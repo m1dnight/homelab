@@ -136,6 +136,9 @@ reverse_proxies:
     from: "coolify.call-cc.be"
     lan_only: yes
     to: "clfy.localdomain:8000"
+    tos:
+      - { path: "/app", to: "clfy.localdomain:6001" }
+      - { path: "/terminal/ws", to: "clfy.localdomain:6002" }
 
   - name: "butler"
     from: "butler.call-cc.be"
@@ -148,3 +151,16 @@ reverse_proxies:
     set_remote_host: "music.call-cc.be"
     lan_only: yes
     to: "clfy.localdomain:4533"
+# coolify.call-cc.be {
+#         log {
+#           output stdout
+#           level DEBUG
+#         }
+#         @denied not remote_ip private_ranges
+#         abort @denied
+
+#         reverse_proxy /app http://clfy.localdomain:6001
+#         reverse_proxy /terminal/ws clfy.localdomain:6002
+
+#         reverse_proxy http://clfy.localdomain:8000
+# }

@@ -8,6 +8,12 @@
 	abort @denied
 {% endif %}
 
+{% if proxy.tos is defined %}
+{% for to in proxy.tos %}
+	reverse_proxy {{ to.path }} {{ to.to }}
+{% endfor %}
+{% endif %}
+
 
 {% if proxy.debug is defined and proxy.debug == 1 %}
 	log {
@@ -31,6 +37,7 @@
 {% else %}
 	reverse_proxy {{ proxy.to }}
 {% endif %}
+
 
 }
 {% endfor %}

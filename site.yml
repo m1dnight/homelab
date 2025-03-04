@@ -1,8 +1,8 @@
-- hosts: all
-  roles:
-    - prometheus.prometheus.node_exporter
-    - prometheus.prometheus.prometheus
-    - common
+# - hosts: all
+#   roles:
+#     - prometheus.prometheus.node_exporter
+#     - prometheus.prometheus.prometheus
+#     - common
 
 - hosts: web
   roles:
