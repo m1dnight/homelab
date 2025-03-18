@@ -108,7 +108,7 @@ limits_config:
 compactor:
   retention_enabled: true
   working_directory: "/var/lib/loki/deleted"
-  compaction_interval: 1h
+  compaction_interval: 5m
   retention_delete_delay: 1h
   retention_delete_worker_count: 150
   delete_request_store: s3
