@@ -2,7 +2,6 @@
 web ansible_host=web.localdomain ansible_user=root
 weechat ansible_host=weechat.localdomain ansible_user=root
 beets ansible_host=music.localdomain ansible_user=root
-butler ansible_host=butler.isolated ansible_user=root
 tailscale ansible_host=tailscale.localdomain ansible_user=root
 imagehost ansible_host=imagehost.isolated ansible_user=root
 grafana ansible_host=grafana.isolated ansible_user=root
