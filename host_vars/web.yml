@@ -20,6 +20,10 @@ caddy_setcap: true
 caddy_systemd_capabilities_enabled: true
 caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
 
+extra_ips: &extra_ips
+  - "49.12.39.165" # development.loomy.be
+  - "34.76.76.180" # production.loomy.be
+
 reverse_proxies:
   - name: "homeassistant"
     from: "homeassistant.call-cc.be"
@@ -104,13 +108,13 @@ reverse_proxies:
   - name: "mimir"
     from: "mimir.call-cc.be"
     lan_only: yes
-    allowed_ips: ["49.12.39.165"]
+    allowed_ips: *extra_ips
     to: "grafana.isolated:9009"
 
   - name: "loki"
     from: "loki.call-cc.be"
     lan_only: yes
-    allowed_ips: ["49.12.39.165", "34.76.76.180"]
+    allowed_ips: *extra_ips
     to: "grafana.isolated:3100"
 
   - name: "minio"
@@ -130,6 +134,7 @@ reverse_proxies:
   - name: "s3"
     from: "s3.call-cc.be"
     lan_only: yes
+    allowed_ips: *extra_ips
     to: "minio.isolated:9000"
 
   - name: "coolify"
@@ -151,16 +156,3 @@ reverse_proxies:
     set_remote_host: "music.call-cc.be"
     lan_only: yes
     to: "clfy.localdomain:4533"
-# coolify.call-cc.be {
-#         log {
-#           output stdout
-#           level DEBUG
-#         }
-#         @denied not remote_ip private_ranges
-#         abort @denied
-
-#         reverse_proxy /app http://clfy.localdomain:6001
-#         reverse_proxy /terminal/ws clfy.localdomain:6002
-
-#         reverse_proxy http://clfy.localdomain:8000
-# }
