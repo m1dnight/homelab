@@ -66,6 +66,7 @@
     dest: /etc/grafana/grafana.ini
   notify:
     - restart grafana-server
+  tags: grafana
 
 - name: create loki data directory
   ansible.builtin.file:

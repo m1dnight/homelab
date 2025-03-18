@@ -8,7 +8,7 @@
 
 # instance name, defaults to HOSTNAME environment variable value or hostname if HOSTNAME var is empty
 ;instance_name = ${HOSTNAME}
-
+instance_name = "{{ root_url }}"
 #################################### Paths ####################################
 [paths]
 # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
@@ -30,6 +30,7 @@
 [server]
 # Protocol (http, https, h2, socket)
 ;protocol = http
+protocol = http
 
 # Minimum TLS version allowed. By default, this value is empty. Accepted values are: TLS1.2, TLS1.3. If nothing is set TLS1.2 would be taken
 ;min_tls_version = ""
@@ -42,6 +43,7 @@
 
 # The public facing domain name used to access grafana from a browser
 ;domain = localhost
+domain = {{ root_url }}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks
@@ -49,8 +51,9 @@
 
 # The full public facing url you use in browser, used for redirects and emails
 # If you use reverse proxy and sub path specify full url (with sub path)
-;root_url = %(protocol)s://%(domain)s:%(http_port)s/
-root_url = grafana.isolated:3000
+; root_url = %(protocol)s://%(domain)s:%(http_port)s/
+;root_url = grafana.isolated:3000
+root_url = https://{{ root_url }}
 # Serve Grafana from subpath specified in `root_url` setting. By default it is set to `false` for compatibility reasons.
 ;serve_from_sub_path = false
 
