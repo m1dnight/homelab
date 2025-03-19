@@ -20,6 +20,7 @@ apiVersion: 1
 #     uid: cegawe4pnnthcd
 #   - orgId: 1
 #     uid: eegb13bratdkwc
+
 contactPoints:
     - orgId: 1
       name: Slack
@@ -32,6 +33,15 @@ contactPoints:
             recipient: '{{ contact_slack_channel }}'
             token: {{ contact_slack_token }}
             username: {{ contact_slack_username }}
+          disableResolveMessage: false
+    - orgId: 1
+      name: Email
+      receivers:
+        - uid: email-contact-point
+          type: email
+          settings:
+            addresses: {{ contact_email }}
+            singleEmail: false
           disableResolveMessage: false
 
 groups:
@@ -59,7 +69,7 @@ groups:
                 expr: avg_over_time({compose_service="data-api"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_count | __error__=`` [5m]) by (message_label)
                 instant: true
                 intervalMs: 1000
-                legendFormat: '{{message_label}}'
+                legendFormat: '{{ '{{ message_label }}' }}'
                 maxDataPoints: 43200
                 queryType: instant
                 range: false
@@ -79,7 +89,7 @@ groups:
                 expr: avg_over_time({compose_service="data-api"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_count | __error__=`` [6h]) by (message_label)
                 instant: true
                 intervalMs: 1000
-                legendFormat: '{{message_label}} 1h'
+                legendFormat: '{{ '{{ message_label }}' }} 1h'
                 maxDataPoints: 43200
                 queryType: instant
                 range: false

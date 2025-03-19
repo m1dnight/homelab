@@ -27,6 +27,12 @@ home_assistant_key: "{{ secret.ha.token }}"
 
 root_url: "observability.call-cc.be"
 
+contact_email: "{{ secret.grafana_contact_email }}"
+contact_slack_token: "{{ secret.grafana_contact_slack.token }}"
+contact_slack_channel: "{{ secret.grafana_contact_slack.channel }}"
+contact_slack_username: "{{ secret.grafana_contact_slack.username }}"
+contact_slack_mention: "{{ secret.grafana_contact_slack.mention }}"
+
 data_sources:
   - name: Loki
     type: loki

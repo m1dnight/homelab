@@ -62,8 +62,8 @@
   tags: grafana
 
 - name: install grafana alert rules
-  copy:
-    src: alerts.yml
+  template:
+    src: alerts.yml.j2
     dest: /etc/grafana/provisioning/alerting/provision.yml
   notify:
     - restart grafana-server
