@@ -1,0 +1,1064 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 16,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 10,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "homeassistant_sensor_power_w{friendly_name!~\"(SB.*|energyhome.*)\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": true,
+            "legendFormat": "{{friendly_name}}",
+            "range": false,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Panel Title",
+        "transparent": true,
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 9,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "vertical",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "exemplar": false,
+            "expr": "homeassistant_sensor_energy_kwh * 0.25",
+            "format": "time_series",
+            "fullMetaSearch": false,
+            "hide": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{entity}}",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "timeFrom": "now/y",
+        "title": "Energy Cost",
+        "transformations": [
+          {
+            "id": "formatTime",
+            "options": {
+              "outputFormat": "YYYY",
+              "timeField": "Time",
+              "useTimezone": true
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "time",
+                  "targetField": "Time"
+                }
+              ],
+              "fields": {}
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {
+              "keepLabels": [
+                "friendly_name"
+              ],
+              "mode": "columns",
+              "valueLabel": "friendly_name"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "Sfeerlamp Voordeur Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Stekker Printer Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Stekker Rack Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Time": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "entity": {
+                  "aggregations": [
+                    "last"
+                  ],
+                  "operation": "groupby"
+                },
+                "friendly_name": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "homeassistant_sensor_energy_kwh": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.stekker_printer_energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "sensor.stekker_rack_energy": {
+                  "aggregations": []
+                },
+                "sensor.stekker_voordeur_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          },
+          {
+            "disabled": true,
+            "filter": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "id": "groupBy",
+            "options": {},
+            "topic": "annotations"
+          }
+        ],
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "watt"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 5
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [
+              "max",
+              "min",
+              "mean"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "sortBy": "Mean",
+            "sortDesc": true,
+            "width": 450
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "maxWidth": 450,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "homeassistant_sensor_power_w{friendly_name!~\"SB5.*|energyhome.*\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "{{ friendly_name }}",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Power",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [
+              {
+                "options": {
+                  "null": {
+                    "index": 0,
+                    "text": "0"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "noValue": "0",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "kwatth"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "sortBy": "Mean",
+            "sortDesc": false,
+            "width": 450
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "exemplar": false,
+            "expr": "increase(homeassistant_sensor_energy_kwh[1h])",
+            "format": "time_series",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{friendly_name}}",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Energy",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "hue",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "kwatth"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "id": 7,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "text": {
+            "valueSize": 9
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 100
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "exemplar": false,
+            "expr": "homeassistant_sensor_energy_kwh",
+            "format": "time_series",
+            "fullMetaSearch": false,
+            "hide": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{entity}}",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "timeFrom": "30d",
+        "title": "Energy Totals",
+        "transformations": [
+          {
+            "id": "formatTime",
+            "options": {
+              "outputFormat": "YYYY-MM-DD",
+              "timeField": "Time",
+              "useTimezone": true
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "time",
+                  "targetField": "Time"
+                }
+              ],
+              "fields": {}
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {
+              "keepLabels": [
+                "friendly_name"
+              ],
+              "mode": "columns",
+              "valueLabel": "friendly_name"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "Office - Desk Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Office - Prusa Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Office - Rack Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Sfeerlamp Voordeur Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Stekker Printer Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Stekker Rack Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Time": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "entity": {
+                  "aggregations": [
+                    "last"
+                  ],
+                  "operation": "groupby"
+                },
+                "friendly_name": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "homeassistant_sensor_energy_kwh": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_desk_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_prusa_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_rack_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.sb5_0_1av_41_578_total_yield": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.stekker_printer_energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "sensor.stekker_rack_energy": {
+                  "aggregations": []
+                },
+                "sensor.stekker_voordeur_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          },
+          {
+            "disabled": true,
+            "filter": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "id": "groupBy",
+            "options": {},
+            "topic": "annotations"
+          }
+        ],
+        "transparent": true,
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "hue",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "currencyEUR"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 24,
+          "x": 0,
+          "y": 25
+        },
+        "id": 8,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "text": {
+            "valueSize": 9
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          },
+          "xField": "Time",
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 100
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "Mimir"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "exemplar": false,
+            "expr": "homeassistant_sensor_energy_kwh * 0.25",
+            "format": "time_series",
+            "fullMetaSearch": false,
+            "hide": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{entity}}",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "timeFrom": "30d",
+        "title": "Energy Cost",
+        "transformations": [
+          {
+            "id": "formatTime",
+            "options": {
+              "outputFormat": "YYYY-MM-DD",
+              "timeField": "Time",
+              "useTimezone": true
+            }
+          },
+          {
+            "id": "convertFieldType",
+            "options": {
+              "conversions": [
+                {
+                  "destinationType": "time",
+                  "targetField": "Time"
+                }
+              ],
+              "fields": {}
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {
+              "keepLabels": [
+                "friendly_name"
+              ],
+              "mode": "columns",
+              "valueLabel": "friendly_name"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "Office - Desk Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Office - Prusa Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Office - Rack Energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "Sfeerlamp Voordeur Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Stekker Printer Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Stekker Rack Energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "Time": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "entity": {
+                  "aggregations": [
+                    "last"
+                  ],
+                  "operation": "groupby"
+                },
+                "friendly_name": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "homeassistant_sensor_energy_kwh": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_desk_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_prusa_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.office_rack_energy": {
+                  "aggregations": [
+                    "delta"
+                  ],
+                  "operation": "aggregate"
+                },
+                "sensor.stekker_printer_energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                },
+                "sensor.stekker_rack_energy": {
+                  "aggregations": []
+                },
+                "sensor.stekker_voordeur_energy": {
+                  "aggregations": [
+                    "delta"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "disabled": true,
+            "filter": {
+              "id": "byRefId",
+              "options": "A"
+            },
+            "id": "groupBy",
+            "options": {},
+            "topic": "annotations"
+          }
+        ],
+        "transparent": true,
+        "type": "barchart"
+      }
+    ],
+    "preload": false,
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "12h",
+            "value": "12h"
+          },
+          "description": "",
+          "label": "Bucket Size",
+          "name": "bucket_size",
+          "options": [
+            {
+              "selected": false,
+              "text": "1h",
+              "value": "1h"
+            },
+            {
+              "selected": true,
+              "text": "12h",
+              "value": "12h"
+            },
+            {
+              "selected": false,
+              "text": "1d",
+              "value": "1d"
+            },
+            {
+              "selected": false,
+              "text": "7d",
+              "value": "7d"
+            },
+            {
+              "selected": false,
+              "text": "31d",
+              "value": "31d"
+            }
+          ],
+          "query": "1h, 12h, 1d, 7d, 31d",
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-7d",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Printer",
+    "uid": "fe95x83b7nc3ka",
+    "version": 84,
+    "weekStart": ""
+  }

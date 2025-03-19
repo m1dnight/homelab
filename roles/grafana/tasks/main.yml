@@ -59,6 +59,23 @@
     dest: /etc/grafana/provisioning/datasources/provision.yml
   notify:
     - restart grafana-server
+  tags: grafana
+
+- name: install grafana alert rules
+  copy:
+    src: alerts.yml
+    dest: /etc/grafana/provisioning/alerting/provision.yml
+  notify:
+    - restart grafana-server
+  tags: grafana
+
+- name: install grafana dashboards
+  copy:
+    src: dashboards/
+    dest: /etc/grafana/provisioning/dashboards
+  notify:
+    - restart grafana-server
+  tags: grafana
 
 - name: install grafana config
   template:

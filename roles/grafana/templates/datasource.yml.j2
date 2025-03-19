@@ -59,6 +59,7 @@ datasources:
     type: {{ source.type }}
     access: {{ source.access }}
     url: {{ source.url }}
+    uid: {{ source.name }}
 {% if source.database is defined %}
     database: {{ source.database }}
 {% endif %}
