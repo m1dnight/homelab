@@ -138,7 +138,7 @@ groups:
                     type: loki
                     uid: Loki
                 editorMode: code
-                expr: avg_over_time({compose_service="data-api", host="vm-production"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_avg | __error__=`` [1m]) by (message_label) / 1000
+                expr: avg_over_time({compose_service="data-api"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_avg | __error__=`` [1m]) by (message_label) / 1000
                 instant: true
                 intervalMs: 1000
                 legendFormat: Average
@@ -190,7 +190,7 @@ groups:
             - refId: A
               queryType: instant
               relativeTimeRange:
-                from: 10800
+                from: 3600
                 to: 0
               datasourceUid: Loki
               model:
@@ -199,7 +199,7 @@ groups:
                     uid: Loki
                 direction: backward
                 editorMode: code
-                expr: avg_over_time({compose_project="loomy-services", host="vm-production"} |= `ingester_queue` | json | unwrap message_ingester_queue | __error__=`` [$__auto]) by (compose_project)
+                expr: avg_over_time({compose_project="loomy-services"} |= `ingester_queue` | json | unwrap message_ingester_queue | __error__=`` [$__auto]) by (compose_project)
                 instant: true
                 intervalMs: 1000
                 legendFormat: Queue
@@ -251,7 +251,7 @@ groups:
             - refId: A
               queryType: range
               relativeTimeRange:
-                from: 21600
+                from: 3600
                 to: 0
               datasourceUid: Loki
               model:
@@ -319,7 +319,7 @@ groups:
                 type: threshold
           dashboardUid: fe8h7q7f24u80f
           panelId: 1
-          noDataState: KeepLast
+          noDataState: OK
           execErrState: Error
           for: 1m
           annotations:
