@@ -24,13 +24,19 @@ nfs_mounts:
     fstype: nfs
     mountpoint: /mnt/series
 
-
   - src: pulsar.localdomain
     path: /volume2/movies
     opts: rw,sync,hard
     state: mounted
     fstype: nfs
     mountpoint: /mnt/movies
+
+  - src: pulsar2.localdomain
+    path: /volume1/music
+    opts: rw,sync,hard
+    state: mounted
+    fstype: nfs
+    mountpoint: /mnt/music
 
 #-------------------------------------------------------------------------------
 # role: transmission
