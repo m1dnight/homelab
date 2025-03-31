@@ -95,38 +95,40 @@
 ############################################################################
 # services
 
-- name: stop all services
-  community.docker.docker_compose_v2:
-    project_src: "{{ ansible_user_dir }}/services"
-    state: stopped
-  register: output
+- block:
+    - name: stop all services
+      community.docker.docker_compose_v2:
+        project_src: "{{ ansible_user_dir }}/services"
+        state: stopped
+      register: output
 
-- name: create directory for services
-  file:
-    path: "{{ item }}"
-    recurse: true
-    state: directory
-    mode: "0775"
-    owner: "{{ ansible_user_uid }}"
-    group: "{{ ansible_user_gid }}"
-  with_items:
-    - "{{ ansible_user_dir }}/services"
+    - name: create directory for services
+      file:
+        path: "{{ item }}"
+        recurse: true
+        state: directory
+        mode: "0775"
+        owner: "{{ ansible_user_uid }}"
+        group: "{{ ansible_user_gid }}"
+      with_items:
+        - "{{ ansible_user_dir }}/services"
 
-- name: install docker-compose for services
-  template:
-    src: docker-compose.yml.j2
-    dest: "{{ ansible_user_dir }}/services/docker-compose.yaml"
-    mode: "0775"
-    owner: "{{ ansible_user }}"
-    group: root
+    - name: install docker-compose for services
+      template:
+        src: docker-compose.yml.j2
+        dest: "{{ ansible_user_dir }}/services/docker-compose.yaml"
+        mode: "0775"
+        owner: "{{ ansible_user }}"
+        group: root
 
-- name: pull the containers
-  command: "docker compose pull"
-  args:
-    chdir: "{{ ansible_user_dir }}/services"
+    - name: pull the containers
+      command: "docker compose pull"
+      args:
+        chdir: "{{ ansible_user_dir }}/services"
 
-- name: start all services
-  community.docker.docker_compose_v2:
-    project_src: "{{ ansible_user_dir }}/services"
-    state: restarted
-    recreate: always
+    - name: start all services
+      community.docker.docker_compose_v2:
+        project_src: "{{ ansible_user_dir }}/services"
+        state: restarted
+        recreate: always
+  tags: services
