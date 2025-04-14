@@ -30,11 +30,6 @@ reverse_proxies:
     lan_only: yes
     to: "homeassistant.localdomain:8123"
 
-  - name: "exbin"
-    from: "exbin.call-cc.be"
-    lan_only: no
-    to: "clfy.localdomain:5001"
-
   - name: "proxmox"
     from: "proxmox.call-cc.be"
     lan_only: yes
@@ -144,6 +139,22 @@ reverse_proxies:
     tos:
       - { path: "/app", to: "clfy.localdomain:6001" }
       - { path: "/terminal/ws", to: "clfy.localdomain:6002" }
+
+  - name: "plausible"
+    from: "plausible.coolify.call-cc.be"
+    lan_only: no
+    to: "http://clfy.localdomain"
+
+  - name: "exbin"
+    from: "exbin.call-cc.be"
+    lan_only: no
+    set_remote_host: "exbin.coolify.call-cc.be"
+    to: "http://clfy.localdomain"
+
+  - name: "exbin"
+    from: "exbin.coolify.call-cc.be"
+    lan_only: false
+    to: "http://clfy.localdomain"
 
   - name: "butler"
     from: "butler.call-cc.be"

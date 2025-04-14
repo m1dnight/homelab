@@ -10,8 +10,8 @@
     name: caddy_ansible.caddy_ansible
   vars:
     caddy_config: "{{ caddy_file_content }}"
-  tags: caddy
+  tags: caddy-config
 
 - name: format caddy file
   ansible.builtin.shell: caddy fmt --overwrite /etc/caddy/Caddyfile
-  tags: caddy
+  tags: caddy-config

@@ -22,23 +22,26 @@
 	}
 {% endif %}
 
-{% if proxy.tls is defined and proxy.tls == 1 %}
-	 reverse_proxy {{ proxy.to }} {
-		{% if proxy.set_remote_host is defined %}
-			header_up Host "{{ proxy.set_remote_host }}"
+
+
+
+
+
+reverse_proxy {{ proxy.to }} {
+	{% if proxy.set_remote_host is defined %}
+	header_up Host "{{ proxy.set_remote_host }}"
+	{% endif %}
+
+	{% if proxy.tls is defined and proxy.tls == 1 %}
+	transport http {
+		tls
+		{% if proxy.tls_verify is defined and proxy.tls_verify == 0 %}
+		tls_insecure_skip_verify
 		{% endif %}
-		transport http {
-			tls
-{% if proxy.tls_verify is defined and proxy.tls_verify == 0 %}
-			tls_insecure_skip_verify
-{% endif %}
-		}
-	 }
-{% else %}
-	reverse_proxy {{ proxy.to }}
-{% endif %}
+	}
+	{% endif %}
+}
 
 
 }
 {% endfor %}
-
