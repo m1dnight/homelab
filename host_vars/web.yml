@@ -156,6 +156,11 @@ reverse_proxies:
     lan_only: false
     to: "http://clfy.localdomain"
 
+  - name: "elixpeer"
+    from: "elixpeer.coolify.call-cc.be"
+    lan_only: true
+    to: "http://clfy.localdomain"
+
   - name: "butler"
     from: "butler.call-cc.be"
     set_remote_host: "butler.call-cc.be"
