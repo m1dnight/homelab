@@ -161,6 +161,11 @@ reverse_proxies:
     lan_only: true
     to: "http://clfy.localdomain"
 
+  - name: "pihole"
+    from: "pihole.coolify.call-cc.be"
+    lan_only: true
+    to: "http://pihole.localdomain"
+
   - name: "butler"
     from: "butler.call-cc.be"
     set_remote_host: "butler.call-cc.be"
