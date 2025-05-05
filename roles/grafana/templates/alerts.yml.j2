@@ -48,7 +48,7 @@ groups:
     - orgId: 1
       name: Default
       folder: GrafanaCloud
-      interval: 1m
+      interval: 5m
       rules:
         - uid: begavtnccpnnkf
           title: Message Rate
@@ -125,7 +125,7 @@ groups:
           panelId: 3
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 5m
           annotations:
             __dashboardUid__: ce74ais6wz5s0b
             __panelId__: "3"
@@ -148,7 +148,7 @@ groups:
                     type: loki
                     uid: Loki
                 editorMode: code
-                expr: avg_over_time({compose_service="data-api"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_avg | __error__=`` [1m]) by (message_label) / 1000
+                expr: avg_over_time({compose_service="data-api"} |= `data_handle_message` | json | message_label = `:data_handle_message` | unwrap message_avg | __error__=`` [5m]) by (message_label) / 1000
                 instant: true
                 intervalMs: 1000
                 legendFormat: Average
@@ -185,7 +185,7 @@ groups:
           panelId: 2
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 5m
           annotations:
             __dashboardUid__: ce74ais6wz5s0b
             __panelId__: "2"
@@ -246,7 +246,7 @@ groups:
           panelId: 1
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 5m
           annotations:
             __dashboardUid__: ce74ais6wz5s0b
             __panelId__: "1"
@@ -331,7 +331,7 @@ groups:
           panelId: 1
           noDataState: OK
           execErrState: Error
-          for: 1m
+          for: 5m
           annotations:
             __dashboardUid__: fe8h7q7f24u80f
             __panelId__: "1"
