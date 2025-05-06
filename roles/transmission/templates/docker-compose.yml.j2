@@ -10,6 +10,30 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  # #-----------------------------------------------------------
+  # # Recyclarr
+
+  # recyclarr:
+  #   image: ghcr.io/recyclarr/recyclarr
+  #   container_name: recyclarr
+  #   environment:
+  #     - PUID="{{ ansible_user_uid }}"
+  #     - PGID="{{ ansible_user_gid}}"
+  #     - TZ="{{ timezone }}"
+  #   volumes:
+  #     - ./volumes/recyclarr:/config
+  maintainerr:
+    image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
+    environment:
+      - PUID="{{ ansible_user_uid }}"
+      - PGID="{{ ansible_user_gid}}"
+      - TZ="{{ timezone }}"
+    volumes:
+      - ./volumes/maintainerr:/opt/data
+    ports:
+      - 6246:6246
+    restart: unless-stopped
+
   #-----------------------------------------------------------
   # Sonarr
 
