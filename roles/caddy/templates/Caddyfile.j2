@@ -23,14 +23,15 @@
 {% endif %}
 
 
-
-
-
-
 reverse_proxy {{ proxy.to }} {
 	{% if proxy.set_remote_host is defined %}
 	header_up Host "{{ proxy.set_remote_host }}"
 	{% endif %}
+
+	{% if proxy.origin is defined %}
+	header_up Origin "{{ proxy.origin }}"
+	{% endif %}
+
 
 	{% if proxy.tls is defined and proxy.tls == 1 %}
 	transport http {

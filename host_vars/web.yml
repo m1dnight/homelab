@@ -160,6 +160,7 @@ reverse_proxies:
     from: "elixpeer.coolify.call-cc.be"
     lan_only: true
     to: "http://clfy.localdomain"
+    origin: "http://elixpeer.coolify.call-cc.be"
 
   - name: "pihole"
     from: "pihole.coolify.call-cc.be"
