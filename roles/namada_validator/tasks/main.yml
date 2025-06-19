@@ -58,3 +58,19 @@
     mode: '0755'
   loop: "{{ namada_binaries.files }}"
   become: True
+
+- name: download cometbft binary
+  get_url:
+    url: "{{ comet_bft_url }}"
+    dest: /tmp/cometbft
+    mode: '0755'
+  when: comet_bft_url is defined
+
+- name: copy cometbft to /usr/local/bin
+  copy:
+    src: /tmp/cometbft
+    remote_src: True
+    dest: /usr/local/bin/cometbft
+    mode: '0755'
+  become: True
+  when: comet_bft_url is defined
