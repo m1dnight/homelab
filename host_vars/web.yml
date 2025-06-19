@@ -23,6 +23,8 @@ caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
 extra_ips: &extra_ips
   - "49.12.39.165" # development.loomy.be
   - "34.76.76.180" # production.loomy.be
+  - "49.13.33.141" # prod.loomy.be
+  - "91.107.224.104" # prod.loomy.be variable
 
 reverse_proxies:
   - name: "homeassistant"
