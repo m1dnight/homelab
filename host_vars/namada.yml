@@ -1,0 +1,29 @@
+---
+#-------------------------------------------------------------------------------
+# role: common
+
+default_packages:
+  - git
+  - net-tools
+  - libnss3-tools
+  - ca-certificates
+  - tmux
+  - emacs-nox
+  - make
+  - git-core
+  - libssl-dev
+  - pkg-config
+  - libclang-14-dev
+  - build-essential
+  - protobuf-compiler
+  - libudev-dev
+  - libc6
+  - libc6-dev
+  - libc6-dbg
+
+#----------------------------------------------------------------------------
+# role: namada
+
+comit_bft_url: https://github.com/cometbft/cometbft/releases/download/v1.0.1/cometbft_1.0.1_linux_amd64.tar.gz
+namada_docker_image: ghcr.io/anoma/namada:main
+namada_chain_id: namada.5f5de2dd1b88cba30586420

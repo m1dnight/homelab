@@ -38,6 +38,14 @@ loki.write "endpoint" {
 ////////////////////////////////////////////////////////////////////////////////
 // Scrape prometheus endpoints
 
+prometheus.scrape "namada" {
+    targets = [{"__address__" = "namada.localdomain:9000", group = "infrastructure", service = "namada", host = "{{ ansible_hostname }}"}]
+    forward_to = [prometheus.remote_write.mimir.receiver]
+    metrics_path = "/minio/v2/metrics/cluster"
+    scrape_interval = "30s"
+    job_name = "namanda"
+}
+
 prometheus.scrape "minio" {
     targets = [{"__address__" = "minio.isolated:9000", group = "infrastructure", service = "minio", host = "{{ ansible_hostname }}"}]
     forward_to = [prometheus.remote_write.mimir.receiver]
@@ -45,6 +53,7 @@ prometheus.scrape "minio" {
     scrape_interval = "30s"
     job_name = "minio"
 }
+
 prometheus.scrape "alloy" {
     targets = [{"__address__" = "localhost:12345", group = "infrastructure", service = "alloy", host = "{{ ansible_hostname }}"}]
     forward_to = [prometheus.remote_write.mimir.receiver]

@@ -2,6 +2,12 @@
   roles:
     - common
 
+- hosts: namada
+  roles:
+    # - geerlingguy.docker
+    - role: namada_validator
+      tags: [namada_validator]
+
 - hosts: web
   roles:
     - caddy

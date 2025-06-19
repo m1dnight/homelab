@@ -1,15 +1,21 @@
 - block:
+  - name: ensure /etc/prometheus directory exists
+    ansible.builtin.file:
+      path: /etc/prometheus
+      state: directory
+      owner: prometheus
+      group: prometheus
+      mode: 0744
+
   - name: copy prometheus.yml to /etc/prometheus/prometheus.yml
-    become: true
     ansible.builtin.template:
       src: prometheus.yml.j2
       dest: /etc/prometheus/prometheus.yml
       owner: prometheus
       group: prometheus
-      mode: 0644
+      mode: 0744
 
   - name: make sure 'prometheus' service is started and enabled
-    become: true
     systemd:
       name: prometheus
       state: restarted
