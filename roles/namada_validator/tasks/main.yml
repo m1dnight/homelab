@@ -2,62 +2,73 @@
 ---
 # tasks file for namada_validator
 
-- name: remove existing /tmp/namada directory
+# - name: remove existing /tmp/namada directory
+#   file:
+#     path: /tmp/namada
+#     state: absent
+
+# - name: create /tmp/namada directory
+#   file:
+#     path: /tmp/namada
+#     state: directory
+#     mode: '0755'
+
+# - name: get latest namada release URL
+#   uri:
+#     url: https://api.github.com/repos/anoma/namada/releases/latest
+#     return_content: yes
+#   register: namada_release_info
+
+# - name: extract Linux download URL
+#   set_fact:
+#     namada_download_url: "{{ namada_release_info.json.assets | selectattr('browser_download_url', 'search', 'Linux') | map(attribute='browser_download_url') | first }}"
+
+# - name: download latest namada release
+#   get_url:
+#     url: "{{ namada_download_url }}"
+#     dest: /tmp/
+#     mode: '0644'
+#   register: namada_download
+
+# - name: extract namada tar.gz archive
+#   unarchive:
+#     src: "{{ namada_download.dest }}"
+#     dest: /tmp/namada
+#     remote_src: yes
+#   register: namada_extract
+
+# - name: find extracted namada binaries
+#   find:
+#     paths: /tmp/namada
+#     patterns: "namada*"
+#     file_type: file
+#     use_regex: no
+#     recurse: True
+#   register: namada_binaries
+
+# - name: print debug
+#   debug:
+#     msg: "{{ namada_binaries }}"
+
+# - name: copy namada binaries to /usr/local/bin
+#   copy:
+#     src: "{{ item.path }}"
+#     remote_src: True
+#     dest: "/usr/local/bin/{{ item.path | basename }}"
+#     mode: '0755'
+#   loop: "{{ namada_binaries.files }}"
+#   become: True
+
+- name: remove existing /tmp/cometbft directory
   file:
-    path: /tmp/namada
+    path: /tmp/cometbft
     state: absent
 
-- name: create /tmp/namada directory
+- name: create /tmp/cometbft directory
   file:
-    path: /tmp/namada
+    path: /tmp/cometbft
     state: directory
     mode: '0755'
-
-- name: get latest namada release URL
-  uri:
-    url: https://api.github.com/repos/anoma/namada/releases/latest
-    return_content: yes
-  register: namada_release_info
-
-- name: extract Linux download URL
-  set_fact:
-    namada_download_url: "{{ namada_release_info.json.assets | selectattr('browser_download_url', 'search', 'Linux') | map(attribute='browser_download_url') | first }}"
-
-- name: download latest namada release
-  get_url:
-    url: "{{ namada_download_url }}"
-    dest: /tmp/
-    mode: '0644'
-  register: namada_download
-
-- name: extract namada tar.gz archive
-  unarchive:
-    src: "{{ namada_download.dest }}"
-    dest: /tmp/namada
-    remote_src: yes
-  register: namada_extract
-
-- name: find extracted namada binaries
-  find:
-    paths: /tmp/namada
-    patterns: "namada*"
-    file_type: file
-    use_regex: no
-    recurse: True
-  register: namada_binaries
-
-- name: print debug
-  debug:
-    msg: "{{ namada_binaries }}"
-
-- name: copy namada binaries to /usr/local/bin
-  copy:
-    src: "{{ item.path }}"
-    remote_src: True
-    dest: "/usr/local/bin/{{ item.path | basename }}"
-    mode: '0755'
-  loop: "{{ namada_binaries.files }}"
-  become: True
 
 - name: download cometbft binary
   get_url:
@@ -65,10 +76,18 @@
     dest: /tmp/cometbft
     mode: '0755'
   when: comet_bft_url is defined
+  register: cometbft_download
+
+- name: extract cometbft tar.gz archive
+  unarchive:
+    src: "{{ cometbft_download.dest }}"
+    dest: /tmp/cometbft
+    remote_src: yes
+  register: namada_extract
 
 - name: copy cometbft to /usr/local/bin
   copy:
-    src: /tmp/cometbft
+    src: /tmp/cometbft/cometbft
     remote_src: True
     dest: /usr/local/bin/cometbft
     mode: '0755'
