@@ -1,3 +1,23 @@
+{% for static in static_sites %}
+#-------------------------------------------------------------------------------
+# static site {{ static.name }}
+{{ static.domain }} {
+    root * {{ static.path }}
+    encode gzip
+    file_server {
+        hide .git
+    }
+
+    log {
+        output file /var/log/caddy/{{ static.domain }}.log
+    }
+
+    header {
+        ?Cache-Control "max-age=1800"
+    }
+}
+
+{% endfor %}
 
 {% for proxy in reverse_proxies %}
 #-------------------------------------------------------------------------------
@@ -42,7 +62,6 @@ reverse_proxy {{ proxy.to }} {
 	}
 	{% endif %}
 }
-
 
 }
 {% endfor %}

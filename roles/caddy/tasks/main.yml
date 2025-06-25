@@ -15,3 +15,9 @@
 - name: format caddy file
   ansible.builtin.shell: caddy fmt --overwrite /etc/caddy/Caddyfile
   tags: caddy-config
+
+- name: copy static websites
+  ansible.builtin.copy:
+    src: static_sites/
+    dest: "/var/www/"
+  tags: static-sites

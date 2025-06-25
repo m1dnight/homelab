@@ -26,6 +26,11 @@ extra_ips: &extra_ips
   - "49.13.33.141" # prod.loomy.be
   - "91.107.224.104" # prod.loomy.be variable
 
+static_sites:
+  - name: "call-cc.be"
+    domain: "call-cc.be"
+    path: "/var/www/call-cc.be"
+
 reverse_proxies:
   - name: "homeassistant"
     from: "homeassistant.call-cc.be"
