@@ -1,821 +1,973 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 57,
-    "links": [],
-    "panels": [
+  "annotations": {
+    "list": [
       {
+        "builtIn": 1,
         "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "binBps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 3,
-          "x": 0,
-          "y": 0
-        },
-        "id": 7,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": "sum(rate(node_network_transmit_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
-            "instant": false,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "Data Tx",
-        "transparent": true,
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "binBps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 3,
-          "x": 3,
-          "y": 0
-        },
-        "id": 8,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
-            "instant": false,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "Data Rx",
-        "transparent": true,
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "max": 1,
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 3,
-          "x": 6,
-          "y": 0
-        },
-        "id": 4,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "expr": "avg_over_time(node_filesystem_avail_bytes{host=\"$host\", fstype!=\"tmpfs\", mountpoint!=\"/boot/efi\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\"}[1h]) / on(device, mountpoint) avg_over_time(node_filesystem_size_bytes{host=\"$host\", fstype!=\"tmpfs\", mountpoint!=\"/boot/efi\"}[1h])",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "legendFormat": "{{mountpoint}}",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "Disk Usage",
-        "transparent": true,
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 3,
-          "x": 9,
-          "y": 0
-        },
-        "id": 1,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": "1 - avg by(host) (rate(node_cpu_seconds_total{mode=\"idle\", host=\"$host\"}[$__rate_interval]))",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "CPU",
-        "transparent": true,
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 3,
-          "x": 12,
-          "y": 0
-        },
-        "id": 3,
-        "options": {
-          "minVizHeight": 75,
-          "minVizWidth": 75,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto"
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": " 1 - (node_memory_MemAvailable_bytes{host=\"$host\"} / node_memory_MemTotal_bytes{host=\"$host\"} )",
-            "range": true,
-            "refId": "A"
-          }
-        ],
-        "title": "Memory",
-        "transparent": true,
-        "type": "gauge"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "decimals": 0,
-            "mappings": [],
-            "min": 0,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "none"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 9,
-          "x": 15,
-          "y": 0
-        },
-        "id": 10,
-        "options": {
-          "colorMode": "value",
-          "graphMode": "none",
-          "justifyMode": "center",
-          "orientation": "vertical",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showPercentChange": false,
-          "textMode": "value_and_name",
-          "wideLayout": false
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "expr": "max by(state) (last_over_time(engine_daemon_container_states_containers{host=\"$host\"}[10m]))",
-            "fullMetaSearch": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "__auto",
-            "range": true,
-            "refId": "A",
-            "useBackend": false
-          }
-        ],
-        "title": "Container States",
-        "transparent": true,
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 52,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "never",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "normal"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "max": 1,
-            "min": 0,
-            "noValue": "0",
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 24,
-          "x": 0,
-          "y": 6
-        },
-        "id": 2,
-        "interval": "15s",
-        "options": {
-          "legend": {
-            "calcs": [
-              "min",
-              "max",
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": " (1 - avg by(host,cpu) (rate(node_cpu_seconds_total{host=\"$host\",mode=\"idle\"}[$__rate_interval])))  / on() group_left(host) count by(host) (node_cpu_seconds_total{host=\"$host\",mode=\"idle\"})",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "Core {{cpu}}",
-            "range": true,
-            "refId": "B"
-          }
-        ],
-        "title": "CPU Usage",
-        "transparent": true,
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "binBps"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 6,
-          "w": 24,
-          "x": 0,
-          "y": 15
-        },
-        "id": 9,
-        "options": {
-          "legend": {
-            "calcs": [
-              "mean"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "width": 250
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": "sum(rate(node_network_transmit_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "TX",
-            "range": true,
-            "refId": "A"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "editorMode": "code",
-            "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
-            "hide": false,
-            "instant": false,
-            "legendFormat": "RX",
-            "range": true,
-            "refId": "B"
-          }
-        ],
-        "title": "Network",
-        "transparent": true,
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "Mimir"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "barWidthFactor": 0.6,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 21
-        },
-        "id": 11,
-        "options": {
-          "legend": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "Mimir"
-            },
-            "disableTextWrap": false,
-            "editorMode": "code",
-            "expr": "1 - (node_filesystem_avail_bytes{host=\"$host\", mountpoint!~\"/boot/.*\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\", mountpoint!~\"/run.*\"} / node_filesystem_size_bytes{host=\"$host\", mountpoint!~\"/boot/.*\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\", mountpoint!~\"/run.*\"})",
-            "fullMetaSearch": false,
-            "hide": false,
-            "includeNullMetadata": true,
-            "instant": false,
-            "legendFormat": "{{device}} {{mountpoint}}",
-            "range": true,
-            "refId": "B",
-            "useBackend": false
-          }
-        ],
-        "title": "Disk Usage Line",
-        "transparent": true,
-        "type": "timeseries"
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
-    ],
-    "preload": false,
-    "schemaVersion": 41,
-    "tags": [
-        "system"
-      ],
-    "templating": {
-      "list": [
-        {
-          "current": {
-            "text": "vm-production",
-            "value": "vm-production"
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 57,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
           "datasource": {
             "type": "prometheus",
             "uid": "Mimir"
           },
-          "definition": "query_result(sum by(host) (rate(node_network_transmit_bytes_total[$__range])))",
-          "label": "Host",
-          "name": "host",
-          "options": [],
-          "query": {
-            "qryType": 3,
-            "query": "query_result(sum by(host) (rate(node_network_transmit_bytes_total[$__range])))",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
-          },
-          "refresh": 2,
-          "regex": "/.*host=\"(?<text>.*?)\"./",
-          "type": "query"
+          "editorMode": "code",
+          "expr": "sum(rate(node_network_transmit_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
         }
-      ]
+      ],
+      "title": "Data Tx",
+      "transparent": true,
+      "type": "gauge"
     },
-    "time": {
-      "from": "now-30m",
-      "to": "now"
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Data Rx",
+      "transparent": true,
+      "type": "gauge"
     },
-    "timepicker": {},
-    "timezone": "browser",
-    "title": "System",
-    "uid": "ae74fmaej33lsb",
-    "version": 1
-  }
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "avg_over_time(node_filesystem_avail_bytes{host=\"$host\", fstype!=\"tmpfs\", mountpoint!=\"/boot/efi\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\"}[1h]) / on(device, mountpoint) avg_over_time(node_filesystem_size_bytes{host=\"$host\", fstype!=\"tmpfs\", mountpoint!=\"/boot/efi\"}[1h])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{mountpoint}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Disk Usage",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": "1 - avg by(host) (rate(node_cpu_seconds_total{mode=\"idle\", host=\"$host\"}[$__rate_interval]))",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": " 1 - (node_memory_MemAvailable_bytes{host=\"$host\"} / node_memory_MemTotal_bytes{host=\"$host\"} )",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Memory",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 15,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "max by(state) (last_over_time(engine_daemon_container_states_containers{host=\"$host\"}[10m]))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Container States",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 6
+      },
+      "id": 12,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "delta(node_network_transmit_bytes_total{host=\"$host\", device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[24h])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Data Tx (Daily)",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 6
+      },
+      "id": 13,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": "delta(node_network_receive_bytes_total{host=\"$host\", device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[24h])",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Data Rx (Daily)",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 52,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 2,
+      "interval": "15s",
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": " (1 - avg by(host,cpu) (rate(node_cpu_seconds_total{host=\"$host\",mode=\"idle\"}[$__rate_interval])))  / on() group_left(host) count by(host) (node_cpu_seconds_total{host=\"$host\",mode=\"idle\"})",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Core {{cpu}}",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "CPU Usage",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "binBps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "width": 250
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_network_transmit_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TX",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(node_network_receive_bytes_total{host=\"$host\",device!~\"veth.*\", device!~\"tailscale.*\", device!~\"docker.*\", device!~\"lo\", device!~\"br.*\"}[$__rate_interval]) )",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "RX",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Network",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "Mimir"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.0-90358",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "Mimir"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "1 - (node_filesystem_avail_bytes{host=\"$host\", mountpoint!~\"/boot/.*\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\", mountpoint!~\"/run.*\"} / node_filesystem_size_bytes{host=\"$host\", mountpoint!~\"/boot/.*\", mountpoint!~\"/var/.*\", mountpoint!~\"/mnt/.*\", mountpoint!~\"/etc/.*\", mountpoint!~\"/run.*\"})",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{device}} {{mountpoint}}",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "Disk Usage Line",
+      "transparent": true,
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "vm-production",
+          "value": "vm-production"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Mimir"
+        },
+        "definition": "query_result(sum by(host) (rate(node_network_transmit_bytes_total[$__range])))",
+        "label": "Host",
+        "name": "host",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(sum by(host) (rate(node_network_transmit_bytes_total[$__range])))",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "/.*host=\"(?<text>.*?)\"./",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "System",
+  "uid": "ae74fmaej33lsb",
+  "version": 6
+}
