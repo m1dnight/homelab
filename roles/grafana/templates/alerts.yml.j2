@@ -270,7 +270,7 @@ groups:
                     uid: Loki
                 direction: backward
                 editorMode: builder
-                expr: count(rate({compose_project="loomy-services", service_name!~"loomy-services-mqtt-1"} |= `"severity":"error"` or `error` [$__auto]))
+                expr: count(rate({compose_project="loomy-services", service_name!~"loomy-services-mqtt-1"} |= `"severity":"error"` or `error` != `"severity":"info"` or `"severity":"warning"` [$__auto]))
                 instant: true
                 intervalMs: 1000
                 maxDataPoints: 43200
