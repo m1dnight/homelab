@@ -1,212 +1,239 @@
 {
-    "annotations": {
-      "list": [
-        {
-          "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
-          "enable": true,
-          "hide": true,
-          "iconColor": "rgba(0, 211, 255, 1)",
-          "name": "Annotations & Alerts",
-          "type": "dashboard"
-        }
-      ]
-    },
-    "editable": true,
-    "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
-    "id": 51,
-    "links": [],
-    "panels": [
+  "annotations": {
+    "list": [
       {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 0
-        },
-        "id": 6,
-        "panels": [],
-        "title": "Error",
-        "type": "row"
-      },
-      {
+        "builtIn": 1,
         "datasource": {
-          "type": "loki",
-          "uid": "Loki"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 8,
-          "w": 24,
-          "x": 0,
-          "y": 1
-        },
-        "id": 1,
-        "options": {
-          "dedupStrategy": "none",
-          "enableInfiniteScrolling": false,
-          "enableLogDetails": true,
-          "prettifyLogMessage": false,
-          "showCommonLabels": false,
-          "showLabels": false,
-          "showTime": true,
-          "sortOrder": "Descending",
-          "wrapLogMessage": false
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "Loki"
-            },
-            "direction": "backward",
-            "editorMode": "code",
-            "expr": "{compose_project=\"loomy-services\", service_name!~\"loomy-services-mqtt-1\"} |= `\"severity\":\"error\"` or `error`",
-            "queryType": "range",
-            "refId": "A"
-          }
-        ],
-        "title": "Error",
-        "type": "logs"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 9
-        },
-        "id": 5,
-        "panels": [],
-        "title": "Warning",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "loki",
-          "uid": "Loki"
-        },
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 24,
-          "x": 0,
-          "y": 10
-        },
-        "id": 2,
-        "options": {
-          "dedupStrategy": "none",
-          "enableInfiniteScrolling": false,
-          "enableLogDetails": true,
-          "prettifyLogMessage": false,
-          "showCommonLabels": false,
-          "showLabels": false,
-          "showTime": false,
-          "sortOrder": "Descending",
-          "wrapLogMessage": false
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "Loki"
-            },
-            "editorMode": "builder",
-            "expr": "{compose_project=\"loomy-services\"} |= `warn`",
-            "queryType": "range",
-            "refId": "A"
-          }
-        ],
-        "title": "Warning",
-        "type": "logs"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 19
-        },
-        "id": 4,
-        "panels": [],
-        "title": "Regular",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "loki",
-          "uid": "Loki"
-        },
-        "fieldConfig": {
-          "defaults": {},
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 24,
-          "x": 0,
-          "y": 20
-        },
-        "id": 3,
-        "options": {
-          "dedupStrategy": "none",
-          "enableInfiniteScrolling": false,
-          "enableLogDetails": true,
-          "prettifyLogMessage": false,
-          "showCommonLabels": false,
-          "showLabels": false,
-          "showTime": false,
-          "sortOrder": "Descending",
-          "wrapLogMessage": false
-        },
-        "pluginVersion": "11.6.0-84735",
-        "targets": [
-          {
-            "datasource": {
-              "type": "loki",
-              "uid": "Loki"
-            },
-            "editorMode": "builder",
-            "expr": "{compose_project=\"loomy-services\"} != `error` or `warning`",
-            "queryType": "range",
-            "refId": "A"
-          }
-        ],
-        "title": "Regular",
-        "type": "logs"
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
-    ],
-    "preload": false,
-    "schemaVersion": 41,
-    "tags": [
-      "loomy",
-      "logs"
-    ],
-    "templating": {
-      "list": []
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 26,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [],
+      "title": "Error",
+      "type": "row"
     },
-    "time": {
-      "from": "now-7d",
-      "to": "now"
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "Loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "Loki"
+          },
+          "direction": "backward",
+          "editorMode": "builder",
+          "expr": "{compose_project=\"loomy-services\", service_name!~\"loomy-services-mqtt-1\", host=\"$host\"} |= `\"severity\":\"error\"` or `error` != `\"severity\":\"info\"` or `\"severity\":\"warning\"`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Error",
+      "type": "logs"
     },
-    "timepicker": {},
-    "timezone": "browser",
-    "title": "Logs",
-    "uid": "fe8h7q7f24u80f",
-    "version": 3
-  }
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 5,
+      "panels": [],
+      "title": "Warning",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "Loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "Loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{compose_project=\"loomy-services\", host=\"$host\"} |= `warn`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Warning",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 4,
+      "panels": [],
+      "title": "Regular",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "Loki"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 3,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "12.0.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "Loki"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{compose_project=\"loomy-services\", host=\"$host\"} != `error` or `warning`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Regular",
+      "type": "logs"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [
+    "loomy",
+    "logs"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "development.loomy.be",
+          "value": "development.loomy.be"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "Loki"
+        },
+        "definition": "",
+        "description": "",
+        "label": "Host",
+        "name": "host",
+        "options": [],
+        "query": {
+          "label": "host",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Logs",
+  "uid": "fe8h7q7f24u80f",
+  "version": 10
+}
