@@ -22,6 +22,25 @@ services:
   #     - TZ="{{ timezone }}"
   #   volumes:
   #     - ./volumes/recyclarr:/config
+
+  #----------------------------------------------------------------------------
+  # Audiobookshelf
+
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    ports:
+      - 13378:80
+    volumes:
+      - /mnt/audiobooks/audiobooks:/audiobooks
+      - /mnt/audiobooks/podcasts:/podcasts
+      - /mnt/audiobooks/metadata:/metadata
+      - ./volumes/audiobookshelf:/config
+    environment:
+      - TZ="{{ timezone }}"
+
+  #----------------------------------------------------------------------------
+  # Maintainerr
+
   maintainerr:
     image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
     environment:
@@ -107,35 +126,35 @@ services:
   #-----------------------------------------------------------
   # Lidarr
 
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-    environment:
-      - PUID="{{ ansible_user_uid }}"
-      - PGID="{{ ansible_user_gid}}"
-      - TZ={{ timezone }}
-    volumes:
-      - ./volumes/lidarr/config:/config
-      - /mnt/music:/mnt/music #optional
-      - /mnt/torrents/complete/lidarr:/mnt/torrents/complete/lidarr #optional
-    ports:
-      - 8686:8686
-    restart: unless-stopped
+  # lidarr:
+  #   image: lscr.io/linuxserver/lidarr:latest
+  #   container_name: lidarr
+  #   environment:
+  #     - PUID="{{ ansible_user_uid }}"
+  #     - PGID="{{ ansible_user_gid}}"
+  #     - TZ={{ timezone }}
+  #   volumes:
+  #     - ./volumes/lidarr/config:/config
+  #     - /mnt/music:/mnt/music #optional
+  #     - /mnt/torrents/complete/lidarr:/mnt/torrents/complete/lidarr #optional
+  #   ports:
+  #     - 8686:8686
+  #   restart: unless-stopped
 
   #-----------------------------------------------------------
   # Headphones
 
-  headphones:
-    image: lscr.io/linuxserver/headphones:latest
-    container_name: headphones
-    environment:
-      - PUID="{{ ansible_user_uid }}"
-      - PGID="{{ ansible_user_gid}}"
-      - TZ={{ timezone }}
-    volumes:
-      - ./volumes/lidarr/config:/config
-      - /mnt/music:/mnt/music:ro #optional
-      - /mnt/torrents/complete/lidarr:/mnt/torrents/complete/lidarr #optional
-    ports:
-      - 8181:8181
-    restart: unless-stopped
+  # headphones:
+  #   image: lscr.io/linuxserver/headphones:latest
+  #   container_name: headphones
+  #   environment:
+  #     - PUID="{{ ansible_user_uid }}"
+  #     - PGID="{{ ansible_user_gid}}"
+  #     - TZ={{ timezone }}
+  #   volumes:
+  #     - ./volumes/lidarr/config:/config
+  #     - /mnt/music:/mnt/music:ro #optional
+  #     - /mnt/torrents/complete/lidarr:/mnt/torrents/complete/lidarr #optional
+  #   ports:
+  #     - 8181:8181
+  #   restart: unless-stopped
