@@ -1,11 +1,12 @@
 # https://grafana.com/docs/grafana/latest/administration/provisioning/
 apiVersion: 1
-
+prune: true
 providers:
   - name: dashboards
     type: file
     updateIntervalSeconds: 30
     allowUiUpdates: true
+    disableDeletion: false
     options:
       path: /etc/grafana/provisioning/dashboards
       foldersFromFilesStructure: true
