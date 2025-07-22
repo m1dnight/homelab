@@ -11,3 +11,4 @@ gitlab ansible_host=gitlab.localdomain ansible_user=root
 coolify ansible_host=clfy.localdomain ansible_user=root
 proxmox ansible_host=milkyway.localdomain ansible_user=root
 namada ansible_host=namada.localdomain ansible_user=root
+vpn ansible_host=vpn.localdomain ansible_user=root

@@ -1,0 +1,15 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for nordvpn
+- name: install nordvpn
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  with_items:
+    - wget -O /tmp/install.sh  https://downloads.nordcdn.com/apps/linux/install.sh
+    - "sh /tmp/install.sh -n -p nordvpn"
+    - yes no | nordvpn login --token "{{ nordvpn_token }}"
+    - nordvpn whitelist add port 22
+    - nordvpn whitelist add port 1234
+    - nordvpn set killswitch on
+    - nordvpn set autoconnect true
+    - nordvpn connect Switzerland

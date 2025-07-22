@@ -1,6 +1,6 @@
-- hosts: all
-  roles:
-    - common
+# - hosts: all
+#   roles:
+#     - common
 
 - hosts: namada
   roles:
@@ -14,7 +14,8 @@
 
 - hosts: weechat
   roles:
-    - weechat
+    - nordvpn
+    # - weechat
 
 - hosts: beets
   roles:
@@ -56,3 +57,8 @@
   roles:
     - geerlingguy.docker
     - coolify
+
+
+- hosts: vpn
+  roles:
+    - nordvpn
