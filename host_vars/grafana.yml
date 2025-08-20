@@ -1,5 +1,11 @@
 ---
 #-------------------------------------------------------------------------------
+# role: tailscale
+
+tailscale_key: "{{ secret.tailscale_key }}"
+tailscale_reauth: true
+
+#-------------------------------------------------------------------------------
 # role: common
 
 default_packages:

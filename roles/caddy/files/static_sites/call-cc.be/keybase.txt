@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/cdetroye
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://call-cc.be
+  * I am cdetroye (https://keybase.io/cdetroye) on keybase.
+  * I have a public key ASAE33wBUaRh3fVkSYhWOZoMZICZrX35GZHuFlTNTy-HNQo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "012029641a34e8e0a2384e198d970b470edd0af9a43e75bdd5304561f28cd20213e50a",
+      "host": "keybase.io",
+      "kid": "012004df7c0151a461ddf564498856399a0c648099ad7df91991ee1654cd4f2f87350a",
+      "uid": "beb1df955392fb8c68c870518a871900",
+      "username": "cdetroye"
+    },
+    "merkle_root": {
+      "ctime": 1753954808,
+      "hash": "c28af76660b8d1b90b056b155edf12edad201c7887caf288fecd15caca17c636ef0b49d8a409ea5887a9f05ff1fc3795d2677485a3e75b3a9f1503b80b13cf09",
+      "hash_meta": "c357bbb552ec018600ecf55e62bf30c7f34bab3954ea0de330017a55eb945522",
+      "seqno": 26985473
+    },
+    "service": {
+      "entropy": "xRteLV1yjfOFE+pGj8nLoeVd",
+      "hostname": "call-cc.be",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.5.1"
+  },
+  "ctime": 1753954815,
+  "expire_in": 504576000,
+  "prev": "b5e462ba1793e3bde0fb313ff22eebf7c2803846679cd298a91bad6c97c14123",
+  "seqno": 75,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgBN98AVGkYd31ZEmIVjmaDGSAma19+RmR7hZUzU8vhzUKp3BheWxvYWTESpcCS8QgteRiuheT473g+zE/8i7r98KAOEZnnNKYqRutbJfBQSPEIB3zuzRo77ct+Nal91gU47d0vgb/VjCmo+K78O7HoFP6AgHCo3NpZ8RAkqAGuNbkSJ1UpLiPsZrVpK80QQnQX3c6ObM0kZvCG+nzcfGhHF2dGMAj6B/gDMlvRuoPUJmrDRo8ztTXjLm0CqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIN4t6jU6pxvrdjU+IcSBqpn6PO91NdJibQqX9F0F84CGo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/cdetroye
+
+==================================================================

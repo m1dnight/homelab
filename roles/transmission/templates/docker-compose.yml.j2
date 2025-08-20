@@ -43,6 +43,7 @@ services:
 
   maintainerr:
     image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
+    user: 1000:1000
     environment:
       - PUID="{{ ansible_user_uid }}"
       - PGID="{{ ansible_user_gid}}"
