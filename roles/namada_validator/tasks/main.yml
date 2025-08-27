@@ -74,3 +74,19 @@
     mode: '0755'
   become: True
   when: comet_bft_url is defined
+
+
+- name: copy prometheus.yml to /etc/prometheus/prometheus.yml
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: prometheus
+    group: prometheus
+    mode: 0744
+
+- name: make sure 'prometheus' service is started and enabled
+  systemd:
+    name: prometheus
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
