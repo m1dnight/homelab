@@ -11,7 +11,8 @@
 - name: create minio container
   community.docker.docker_container:
     name: minio
-    image: bitnami/minio:latest
+    # after this image the web ui is broken, so keep this version around.
+    image: bitnami/minio:2025.4.22
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -19,4 +20,5 @@
         MINIO_PROMETHEUS_AUTH_TYPE: "public"
         MINIO_DEFAULT_BUCKETS: "mimir-blocks-storage,mimir-ruler-storage,loki-common,loki-storage"
     volumes:
-      - /root/.minio:/bitnami/minio/data
+      # - /root/.minio:/bitnami/minio/data
+      - /mnt/data/.minio:/bitnami/minio/data
