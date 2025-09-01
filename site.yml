@@ -5,9 +5,9 @@
 - hosts: namada
   roles:
     # - geerlingguy.docker
+    - prometheus.prometheus.prometheus
     - role: namada_validator
       tags: [namada_validator]
-    - prometheus.prometheus.prometheus
 
 - hosts: web
   roles:
