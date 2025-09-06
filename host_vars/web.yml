@@ -124,14 +124,14 @@ reverse_proxies:
     lan_only: yes
     to: "minio.isolated:9001"
 
-  - name: "kimber.be"
-    from: "kimber.be"
-    lan_only: no
-    set_remote_host: "kimber-be.webflow.io"
-    to: "https://kimber-be.webflow.io"
-    debug: no
-    tls: yes
-    tls_verify: no
+  # - name: "kimber.be"
+  #   from: "kimber.be"
+  #   lan_only: no
+  #   set_remote_host: "kimber-be.webflow.io"
+  #   to: "https://kimber-be.webflow.io"
+  #   debug: no
+  #   tls: yes
+  #   tls_verify: no
 
   - name: "s3"
     from: "s3.call-cc.be"
@@ -185,3 +185,9 @@ reverse_proxies:
     set_remote_host: "music.call-cc.be"
     lan_only: yes
     to: "clfy.localdomain:4533"
+
+  - name: "audiobooks"
+    from: "audiobooks.call-cc.be"
+    set_remote_host: "audiobooks.call-cc.be"
+    lan_only: yes
+    to: "clfy.localdomain:13378"
