@@ -15,8 +15,8 @@
 
 - hosts: weechat
   roles:
-    - nordvpn
-    # - weechat
+    # - nordvpn
+    - weechat
 
 - hosts: beets
   roles:
