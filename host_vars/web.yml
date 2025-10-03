@@ -82,6 +82,13 @@ reverse_proxies:
     tls_verify: no
     to: "pulsar.localdomain:8081"
 
+  - name: "share"
+    from: "share.call-cc.be"
+    lan_only: no
+    tls: yes
+    tls_verify: no
+    to: "pulsar.localdomain:8081"
+
   - name: "plausible"
     from: "plausible.loomy.be"
     lan_only: no
@@ -190,4 +197,10 @@ reverse_proxies:
     from: "audiobooks.call-cc.be"
     set_remote_host: "audiobooks.call-cc.be"
     lan_only: yes
-    to: "clfy.localdomain:13378"
+    to: "pirate.localdomain:13378"
+
+  - name: "kvm"
+    from: "kvm.call-cc.be"
+    set_remote_host: "kvm.call-cc.be"
+    lan_only: yes
+    to: "jetkvm.localdomain"
