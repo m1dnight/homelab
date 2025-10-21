@@ -204,3 +204,12 @@ reverse_proxies:
     set_remote_host: "kvm.call-cc.be"
     lan_only: yes
     to: "jetkvm.localdomain"
+
+  - name: "eth"
+    from: "eth.call-cc.be"
+    set_remote_host: "eth.call-cc.be"
+    lan_only: no
+    to: "eth.isolated:8545"
+    auth: yes
+    username: "admin"
+    password: "$2a$14$hiaHdooZIZWnhej0KWhMxuKVkiYyFHXHnaMCzsrLKFXkNo2mmv96G"
