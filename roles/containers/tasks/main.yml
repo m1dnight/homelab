@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: install the docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ ansible_user_dir }}/docker-compose.yml"
+
+- name: install the docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ ansible_user_dir }}/docker-compose.yml"
+
+- name: pull the containers
+  command: "docker compose pull"
+  args:
+    chdir: "{{ ansible_user_dir }}"
+
+- name: start all services
+  community.docker.docker_compose_v2:
+    project_src: "{{ ansible_user_dir }}"
+    state: restarted
+    recreate: always
+    remove_orphans: true
