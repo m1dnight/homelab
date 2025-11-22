@@ -78,34 +78,9 @@
 
         content: |
           #!/bin/bash
-
-          LOCKFILE="/tmp/unrar_subdirs.lock"
-          PIDFILE="/tmp/unrar_subdirs.pid"
           TARGET_DIR="/mnt/torrents/complete"
 
-          # remove the lockfile
-          cleanup() {
-              rm -f "$LOCKFILE" "$PIDFILE"
-          }
-
-          # remove lockfile on exit
-          trap cleanup EXIT INT TERM
-
-          if [ -f "$LOCKFILE" ]; then
-              if [ -f "$PIDFILE" ]; then
-                  OLD_PID=$(cat "$PIDFILE")
-                  if ps -p "$OLD_PID" > /dev/null 2>&1; then
-                      echo "Error: script is already running (PID: $OLD_PID)"
-                      exit 1
-                  else
-                      echo "Removing stale lockfile (process $OLD_PID no longer exists)"
-                      rm -f "$LOCKFILE" "$PIDFILE"
-                  fi
-              fi
-          fi
-
-          echo $$ > "$PIDFILE"
-          touch "$LOCKFILE"
+          set -a
 
           # Check if target directory exists
           if [ ! -d "$TARGET_DIR" ]; then
@@ -119,54 +94,83 @@
               exit 1
           fi
 
-          find "$TARGET_DIR" -type f -name "*.rar" -print0 | while IFS= read -r -d '' rar_file; do
-              # Get the directory containing the .rar file
-              dir=$(dirname "$rar_file")
+          LOCKFILE="/tmp/unrar_subdirs.lock"
+          PIDFILE="/tmp/unrar_subdirs.pid"
+
+          # Function to clean up lockfile on exit
+          cleanup() {
+              echo "removing lockfile"
+              rm -f "$LOCKFILE" "$PIDFILE"
+          }
 
 
-              # Change to the directory and execute unrar
+          if [ -f "$LOCKFILE" ]; then
+              # Check if the process is still running
+              if [ -f "$PIDFILE" ]; then
+                  OLD_PID=$(cat "$PIDFILE")
+                  if ps -p "$OLD_PID" > /dev/null 2>&1; then
+                      echo "Error: Script is already running (PID: $OLD_PID)"
+                      echo "If you're sure it's not running, remove: $LOCKFILE"
+                      exit 1
+                  else
+                      echo "Removing stale lockfile (process $OLD_PID no longer exists)"
+                      rm -f "$LOCKFILE" "$PIDFILE"
+                  fi
+              fi
+          fi
+
+          # Set trap to cleanup on exit
+          trap cleanup EXIT INT TERM
+
+          # Create lockfile and store our PID
+          echo $$ > "$PIDFILE"
+          touch "$LOCKFILE"
+
+          find "$TARGET_DIR" -type f -name ".unrar" -print0 | while IFS= read -r -d '' unrar_file; do
+              # Get the directory containing the .unrar file
+              unrar_dir=$(dirname "$unrar_file")
+              echo ".unrar in ${unrar_dir}"
+
+              # Change to the directory and find nested .rar fils
               (
-                  cd "$dir" || exit 1
-                  # print current dir
-                  pwd
+            cd "$unrar_dir" || exit 1
 
-                  unrar=true
+            # find all rar files in this dir and unrar them
+            find "${unrar_dir}" -type f -name "*.rar" -print0 | while IFS= read -r -d '' rar_file; do
+                dir=$(dirname $rar_file)
+                (
+              echo "rar file in ${dir}";
+              cd "${dir}" || exit 1;
+              pwd ;
+                    temp_dir=$(mktemp -d -t unrar.XXXXXXXXXX);
+                    unrar x "$(basename "$rar_file")" "$temp_dir/";
 
-                  # if an mkv file exists, skip
-                  if ls *.mkv 1> /dev/null 2>&1; then
-                      echo "existing .mkv file; skipping"
-                      unrar=false;
-                  fi
+              # if unrar did not exit properly, abort and do not clean up
+              unrar_exit=$?
+              if ! [ $unrar_exit -eq 0 ]; then
+                  echo "unrar did not exit properly";
+                  exit $unrar_exit;
+              else
+                        mv "$temp_dir"/* "$dir/" 2>/dev/null;
+                  rmdir "$temp_dir";
+              fi;
+                )
+            done
 
-                  if [ "$unrar" = true ]; then
-                    # make a temp dir for the unrar so sonarr doesnt pick it up right away
-                    temp_dir=$(mktemp -d -t unrar.XXXXXXXXXX)
+            # if the unrar did not complete, do not remove the .unrar file
+            exit_code=$?
 
-                    # unrar to the temp dir
-                    unrar x "$(basename "$rar_file")"
-                    # unrar x "$(basename "$rar_file")" "$temp_dir/"
-
-                    # move the unrar file back
-                    mv "$temp_dir"/* "$dir/" 2>/dev/null
-                    rmdir "$temp_dir"
-
-                  fi
+            if ! [ $exit_code -eq 0 ]; then
+              exit $exit_code;
+            else
+              rm .unrar;
+            fi
 
               )
-
-              if [ $? -eq 0 ]; then
-                  echo "✓ Successfully extracted in: $dir"
-              else
-                  echo "✗ Failed to extract in: $dir"
-              fi
-              if [ "$unrar" = true ]; then
-                exit 0
-              fi
-
           done
-    # - name: Create cron job for script
-    #   cron:
-    #     name: "Unrar all torrents"
-    #     minute: "*"
-    #     hour: "*"
-    #     job: "{{ ansible_user_dir }}/unrar_all.sh"
+    - name: Create cron job for script
+      cron:
+        name: "Unrar all torrents"
+        minute: "*"
+        hour: "*"
+        job: "{{ ansible_user_dir }}/unrar_all.sh"
