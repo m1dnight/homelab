@@ -1,7 +1,8 @@
 services:
-{% for container in containers %}
+{% for container in containers_list %}
 {% set container_name = container.keys() | list | first %}
 # container: {{ container_name }}
-  {{ container | to_nice_yaml }}
+{{ container_name }}:
+  {{ container.docker | to_nice_yaml }}
 
 {% endfor %}

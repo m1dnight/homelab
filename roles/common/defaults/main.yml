@@ -1,2 +1,10 @@
 nfs_mounts: []
-default_packages: []
+default_packages:
+  - python3
+  - python3-pip
+  - python3-venv
+  - tmux
+  - tree
+  - git
+  - nfs-common
+  - software-properties-common

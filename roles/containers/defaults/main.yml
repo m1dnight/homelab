@@ -1,3 +1,4 @@
 #SPDX-License-Identifier: MIT-0
 ---
-# defaults file for containers
+containers_list: []
+containers_project_path: "{{ ansible_user_dir }}"

@@ -40,40 +40,41 @@ reverse_proxies:
   - name: "proxmox"
     from: "proxmox.call-cc.be"
     lan_only: yes
-    to: "https://milkyway.localdomain:8006"
     debug: yes
     tls: yes
     tls_verify: no
+    to: "https://milkyway.localdomain:8006"
 
   - name: "transmission"
     from: "transmission.call-cc.be"
     lan_only: yes
-    to: "pirate.localdomain:9091"
+    to: "containers.localdomain:9091"
 
   - name: "bazarr"
     from: "bazarr.call-cc.be"
     lan_only: yes
-    to: "pirate.localdomain:6767"
+    to: "containers.localdomain:6767"
 
   - name: "jackett"
     from: "jackett.call-cc.be"
     lan_only: yes
-    to: "pirate.localdomain:9117"
+    to: "containers.localdomain:9117"
 
   - name: "radarr"
     from: "radarr.call-cc.be"
     lan_only: yes
-    to: "pirate.localdomain:7878"
-
-  - name: "lidarr"
-    from: "lidarr.call-cc.be"
-    lan_only: yes
-    to: "pirate.localdomain:8686"
+    to: "containers.localdomain:7878"
 
   - name: "sonarr"
     from: "sonarr.call-cc.be"
     lan_only: yes
-    to: "pirate.localdomain:8989"
+    to: "containers.localdomain:8989"
+
+  - name: "audiobooks"
+    from: "audiobooks.call-cc.be"
+    set_remote_host: "audiobooks.call-cc.be"
+    lan_only: yes
+    to: "containers.localdomain:13378"
 
   - name: "synology"
     from: "synology.call-cc.be"
@@ -193,11 +194,7 @@ reverse_proxies:
     lan_only: yes
     to: "clfy.localdomain:4533"
 
-  - name: "audiobooks"
-    from: "audiobooks.call-cc.be"
-    set_remote_host: "audiobooks.call-cc.be"
-    lan_only: yes
-    to: "pirate.localdomain:13378"
+
 
   - name: "kvm"
     from: "kvm.call-cc.be"

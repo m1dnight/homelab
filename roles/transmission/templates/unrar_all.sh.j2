@@ -17,21 +17,3 @@ foo() {
 export -f foo
 
 find {{ download_dir }} -mindepth 1  -type d -execdir bash -c 'foo "$0"' {} \;
-# set -x
-# # the full path of the torrent
-# src="$TR_TORRENT_DIR/$TR_TORRENT_NAME"
-
-# echo "unrarring ${src}"
-
-# # if the source is not a directory, don't extract
-# test -d "${src}" || exit
-
-# # if it is already unrarred, exit
-# test -f "${src}/.unrarred" && exit
-
-# tmp=$(mktemp -d)
-# find "${src}" -name '*.rar' -execdir bash -c 'unrar e $0 '"${tmp}" {} \;
-# rsync -r "${tmp}/" "${src}/"
-# rm -rf "${tmp}"
-
-# touch "${src}/.unrarred"

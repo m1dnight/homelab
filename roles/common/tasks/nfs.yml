@@ -1,10 +1,12 @@
 - name: create mountpoints for nfs
+  become: true
   ansible.builtin.file:
     path: "{{ item.mountpoint }}"
     state: directory
   with_items: "{{ nfs_mounts }}"
 
 - name: ensure all nfs mounts are defined
+  become: true
   ansible.posix.mount:
     src: "{{ item.src}}:{{ item.path }}"
     path: "{{ item.mountpoint }}"
@@ -14,6 +16,7 @@
   with_items: "{{ nfs_mounts }}"
 
 - name: mount all nfs mounts
+  become: true
   ansible.posix.mount:
     src: "{{ item.src}}:{{ item.path }}"
     path: "{{ item.mountpoint }}"

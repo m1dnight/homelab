@@ -17,6 +17,6 @@
         pkg: "{{ item }}"
         state: latest
         update_cache: true
-      when: packages is defined
+      when: default_packages is defined
       with_items: "{{ default_packages }}"
   become: true

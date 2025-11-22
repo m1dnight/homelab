@@ -59,7 +59,114 @@
     - geerlingguy.docker
     - coolify
 
-
 - hosts: vpn
   roles:
     - nordvpn
+
+- hosts: containers
+  # roles:
+  #   - common
+  #   - role: geerlingguy.docker
+  #     become: true
+  #   - role: containers
+  #     tags: ["containers"]
+  tasks:
+    - name: Create unrar script
+      copy:
+        dest: "{{ ansible_user_dir }}/unrar_all.sh"
+        mode: "0755"
+
+        content: |
+          #!/bin/bash
+
+          LOCKFILE="/tmp/unrar_subdirs.lock"
+          PIDFILE="/tmp/unrar_subdirs.pid"
+          TARGET_DIR="/mnt/torrents/complete"
+
+          # remove the lockfile
+          cleanup() {
+              rm -f "$LOCKFILE" "$PIDFILE"
+          }
+
+          # remove lockfile on exit
+          trap cleanup EXIT INT TERM
+
+          if [ -f "$LOCKFILE" ]; then
+              if [ -f "$PIDFILE" ]; then
+                  OLD_PID=$(cat "$PIDFILE")
+                  if ps -p "$OLD_PID" > /dev/null 2>&1; then
+                      echo "Error: script is already running (PID: $OLD_PID)"
+                      exit 1
+                  else
+                      echo "Removing stale lockfile (process $OLD_PID no longer exists)"
+                      rm -f "$LOCKFILE" "$PIDFILE"
+                  fi
+              fi
+          fi
+
+          echo $$ > "$PIDFILE"
+          touch "$LOCKFILE"
+
+          # Check if target directory exists
+          if [ ! -d "$TARGET_DIR" ]; then
+              echo "Error: Directory '$TARGET_DIR' does not exist"
+              exit 1
+          fi
+
+          # Check if unrar is available
+          if ! command -v unrar &> /dev/null; then
+              echo "Error: unrar command not found. Please install unrar first."
+              exit 1
+          fi
+
+          find "$TARGET_DIR" -type f -name "*.rar" -print0 | while IFS= read -r -d '' rar_file; do
+              # Get the directory containing the .rar file
+              dir=$(dirname "$rar_file")
+
+
+              # Change to the directory and execute unrar
+              (
+                  cd "$dir" || exit 1
+                  # print current dir
+                  pwd
+
+                  unrar=true
+
+                  # if an mkv file exists, skip
+                  if ls *.mkv 1> /dev/null 2>&1; then
+                      echo "existing .mkv file; skipping"
+                      unrar=false;
+                  fi
+
+                  if [ "$unrar" = true ]; then
+                    # make a temp dir for the unrar so sonarr doesnt pick it up right away
+                    temp_dir=$(mktemp -d -t unrar.XXXXXXXXXX)
+
+                    # unrar to the temp dir
+                    unrar x "$(basename "$rar_file")"
+                    # unrar x "$(basename "$rar_file")" "$temp_dir/"
+
+                    # move the unrar file back
+                    mv "$temp_dir"/* "$dir/" 2>/dev/null
+                    rmdir "$temp_dir"
+
+                  fi
+
+              )
+
+              if [ $? -eq 0 ]; then
+                  echo "✓ Successfully extracted in: $dir"
+              else
+                  echo "✗ Failed to extract in: $dir"
+              fi
+              if [ "$unrar" = true ]; then
+                exit 0
+              fi
+
+          done
+    # - name: Create cron job for script
+    #   cron:
+    #     name: "Unrar all torrents"
+    #     minute: "*"
+    #     hour: "*"
+    #     job: "{{ ansible_user_dir }}/unrar_all.sh"

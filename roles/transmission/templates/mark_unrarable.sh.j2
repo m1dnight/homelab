@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -x
+# the full path of the torrent
+src="$TR_TORRENT_DIR/$TR_TORRENT_NAME"
+
+echo "unrarring ${src}"
+
+# if the source is not a directory, don't extract
+test -d "${src}" || exit
+
+# if it is already unrarred, exit
+test -f "${src}/.unrarred" && exit
+
+touch "${src}/.to_unrar"
