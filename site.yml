@@ -64,12 +64,12 @@
     - nordvpn
 
 - hosts: containers
-  # roles:
-  #   - common
-  #   - role: geerlingguy.docker
-  #     become: true
-  #   - role: containers
-  #     tags: ["containers"]
+  roles:
+    - common
+    - role: geerlingguy.docker
+      become: true
+    - role: containers
+      tags: ["containers"]
   tasks:
     - name: Create unrar script
       copy:

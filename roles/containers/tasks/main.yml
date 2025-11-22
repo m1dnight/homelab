@@ -1,27 +1,27 @@
 # SPDX-License-Identifier: MIT-0
 ---
-# - name: Check if docker-compose.yml exists
-#   ansible.builtin.stat:
-#     path: "{{ containers_project_path }}/docker-compose.yml"
-#   register: docker_compose_file
+- name: Check if docker-compose.yml exists
+  ansible.builtin.stat:
+    path: "{{ containers_project_path }}/docker-compose.yml"
+  register: docker_compose_file
 
-# #----------------------------------------------------------------------------#
-# #                                Remove if empty                             #
-# #----------------------------------------------------------------------------#
+#----------------------------------------------------------------------------#
+#                                Remove if empty                             #
+#----------------------------------------------------------------------------#
 
-# - block:
-#     - name: Stop all services before delete
-#       community.docker.docker_compose_v2:
-#         project_src: "{{ containers_project_path }}"
-#         state: absent
-#         remove_orphans: true
-#       register: output
+- block:
+    - name: Stop all services before delete
+      community.docker.docker_compose_v2:
+        project_src: "{{ containers_project_path }}"
+        state: absent
+        remove_orphans: true
+      register: output
 
-#     - name: Remove docker file
-#       ansible.builtin.file:
-#         path: "{{ containers_project_path }}/docker-compose.yml"
-#         state: absent
-#   when: "docker_compose_file.stat.exists and (containers_list is not defined or containers_list | length < 1)"
+    - name: Remove docker file
+      ansible.builtin.file:
+        path: "{{ containers_project_path }}/docker-compose.yml"
+        state: absent
+  when: "docker_compose_file.stat.exists and (containers_list is not defined or containers_list | length < 1)"
 
 #----------------------------------------------------------------------------#
 #                                Start if changed                            #
@@ -30,32 +30,27 @@
 - block:
     - name: Copy volume files if exist
       become: true
-      # ansible.builtin.synchronize:
-        # src: "{{ item[item.keys() | list | first].volume_data }}"
-        # dest: "{{ containers_project_path }}/volumes/"
-      #   delete: no
-      #   recursive: yes
       ansible.builtin.copy:
-        src: "{{ item[item.keys() | list | first].volume_data }}"
+        src: "{{ item.volume_data }}"
         dest: "{{ containers_project_path }}/volumes/"
         owner: 1000
         group: 1000
-        mode: '0775'
+        mode: "0775"
         backup: no
-
       with_items: "{{ containers_list }}"
-      when: item[item.keys() | list | first].volume_data is defined
-    # - name: Install the docker compose file
-    #   ansible.builtin.template:
-    #     src: docker-compose.yml.j2
-    #     dest: "{{ containers_project_path }}/docker-compose.yml"
-    #   register: docker_compose_template
+      when: item.volume_data is defined
 
-    # - name: Start all containers
-    #   block:
-    #     - name: Restart docker compose
-    #       community.docker.docker_compose_v2:
-    #         project_src: "{{ ansible_user_dir }}"
-    #         state: present
-    #         remove_orphans: true
+    - name: Install the docker compose file
+      ansible.builtin.template:
+        src: docker-compose.yml.j2
+        dest: "{{ containers_project_path }}/docker-compose.yml"
+      register: docker_compose_template
+
+    - name: Start all containers
+      block:
+        - name: Restart docker compose
+          community.docker.docker_compose_v2:
+            project_src: "{{ ansible_user_dir }}"
+            state: present
+            remove_orphans: true
   when: "containers_list is defined and containers_list | length > 0"

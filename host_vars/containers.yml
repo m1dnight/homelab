@@ -31,139 +31,156 @@ default_options: &default_options
   restart: unless-stopped
 
 containers_list:
-  - minio:
-      docker:
-        <<: *default_options
-        image: m1dnight/minio:2025.4.22
-        ports:
-          - "9000:9000"
-          - "9001:9001"
-        environment:
-          MINIO_PROMETHEUS_AUTH_TYPE: "public"
-          MINIO_DEFAULT_BUCKETS: "mimir-blocks-storage,mimir-ruler-storage,loki-common,loki-storage"
+  - name: minio
+    docker:
+      <<: *default_options
+      image: m1dnight/minio:2025.4.22
+      ports:
+        - "9000:9000"
+        - "9001:9001"
+      environment:
+        MINIO_PROMETHEUS_AUTH_TYPE: "public"
+        MINIO_DEFAULT_BUCKETS: "mimir-blocks-storage,mimir-ruler-storage,loki-common,loki-storage"
 
-  - audiobookshelf:
-      docker:
-        <<: *default_options
-        image: ghcr.io/advplyr/audiobookshelf:latest
-        ports:
-          - 13378:80
-        volumes:
-          - /mnt/audiobooks/audiobooks:/audiobooks
-          - /mnt/audiobooks/podcasts:/podcasts
-          - /mnt/audiobooks/metadata:/metadata
-          - ./volumes/audiobookshelf:/config
-        environment:
-          - TZ="Europe/Brussels"
+  - name: audiobookshelf
+    docker:
+      <<: *default_options
+      image: ghcr.io/advplyr/audiobookshelf:latest
+      ports:
+        - 13378:80
+      volumes:
+        - /mnt/audiobooks/audiobooks:/audiobooks
+        - /mnt/audiobooks/podcasts:/podcasts
+        - /mnt/audiobooks/metadata:/metadata
+        - ./volumes/audiobookshelf:/config
+      environment:
+        - TZ="Europe/Brussels"
 
-  - maintainerr:
-      docker:
-        <<: *default_options
-        image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
-        user: 1000:1000
-        environment:
-          - PUID="0"
-          - PGID="0"
-          - TZ="Europe/Brussels"
-        volumes:
-          - ./volumes/maintainerr:/opt/data
-        ports:
-          - 6246:6246
+  - name: maintainerr
+    docker:
+      <<: *default_options
+      image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
+      user: 1000:1000
+      environment:
+        - PUID="0"
+        - PGID="0"
+        - TZ="Europe/Brussels"
+      volumes:
+        - ./volumes/maintainerr:/opt/data
+      ports:
+        - 6246:6246
 
-  - sonarr:
-      docker:
-        <<: *default_options
-        image: lscr.io/linuxserver/sonarr
-        container_name: sonarr
-        environment:
-          - PUID="0"
-          - PGID="0"
-          - TZ="Europe/Brussels"
-        volumes:
-          - ./volumes/sonarr:/config
-          - /mnt/series:/tv
-          - /mnt/torrents:/downloads
-        ports:
-          - 8989:8989
+  - name: sonarr
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/sonarr
+      container_name: sonarr
+      environment:
+        - PUID="0"
+        - PGID="0"
+        - TZ="Europe/Brussels"
+      volumes:
+        - ./volumes/sonarr:/config
+        - /mnt/series:/tv
+        - /mnt/torrents:/downloads
+      ports:
+        - 8989:8989
 
-  - radarr:
-      docker:
-        <<: *default_options
-        image: lscr.io/linuxserver/radarr
-        container_name: radarr
-        environment:
-          - PUID="0"
-          - PGID="0"
-          - TZ="Europe/Brussels"
-        volumes:
-          - ./volumes/radarr:/config
-          - /mnt/movies:/movies
-          - /mnt/torrents:/downloads
-        ports:
-          - 7878:7878
+  - name: radarr
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/radarr
+      container_name: radarr
+      environment:
+        - PUID="0"
+        - PGID="0"
+        - TZ="Europe/Brussels"
+      volumes:
+        - ./volumes/radarr:/config
+        - /mnt/movies:/movies
+        - /mnt/torrents:/downloads
+      ports:
+        - 7878:7878
 
-  - bazarr:
-      docker:
-        <<: *default_options
-        image: lscr.io/linuxserver/bazarr
-        container_name: bazarr
-        environment:
-          - PUID="0"
-          - PGID="0"
-          - TZ=Europe/Brussels
-        volumes:
-          - ./volumes/bazarr:/config
-          - /mnt/movies:/movies
-          - /mnt/series:/tv
-        ports:
-          - 6767:6767
+  - name: bazarr
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/bazarr
+      container_name: bazarr
+      environment:
+        - PUID="0"
+        - PGID="0"
+        - TZ=Europe/Brussels
+      volumes:
+        - ./volumes/bazarr:/config
+        - /mnt/movies:/movies
+        - /mnt/series:/tv
+      ports:
+        - 6767:6767
 
-  - jackett:
-      docker:
-        <<: *default_options
-        image: lscr.io/linuxserver/jackett
-        container_name: jackett
-        environment:
-          - PUID="0"
-          - PGID="0"
-          - TZ=Europe/Brussels
-          - AUTO_UPDATE=true
-        volumes:
-          - ./volumes/jackett:/config
-        ports:
-          - 9117:9117
+  - name: jackett
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/jackett
+      container_name: jackett
+      environment:
+        - PUID="0"
+        - PGID="0"
+        - TZ=Europe/Brussels
+        - AUTO_UPDATE=true
+      volumes:
+        - ./volumes/jackett:/config
+      ports:
+        - 9117:9117
 
-  - transmission:
-      volume_data: container_volumes/transmission
-      docker:
-        <<: *default_options
-        image: lscr.io/linuxserver/transmission:latest
-        container_name: transmission
-        environment:
-          - PUID=1000
-          - PGID=1000
-          - TZ=Etc/UTC
-          - TRANSMISSION_WEB_HOME= #optional
-          - USER= #optional
-          - PASS= #optional
-          - WHITELIST= #optional
-          - PEERPORT= #optional
-          - HOST_WHITELIST= #optional
-        volumes:
-          - ./volumes/transmission/data:/config
-          - /mnt/torrents:/mnt/torrents
-        ports:
-          - 9091:9091
-          - 51413:51413
-          - 51413:51413/udp
+  - name: transmission
+    volume_data: container_volumes/transmission
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/transmission:latest
+      container_name: transmission
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+        - TRANSMISSION_WEB_HOME= #optional
+        - USER= #optional
+        - PASS= #optional
+        - WHITELIST= #optional
+        - PEERPORT= #optional
+        - HOST_WHITELIST= #optional
+      volumes:
+        - ./volumes/transmission/data:/config
+        - /mnt/torrents:/mnt/torrents
+      ports:
+        - 9091:9091
+        - 51413:51413
+        - 51413:51413/udp
 
-  - watchtower:
-      docker:
-        <<: *default_options
-        image: containrrr/watchtower
-        environment:
-          - WATCHTOWER_POLL_INTERVAL=6
-          - WATCHTOWER_CLEANUP=true
-          - DOCKER_API_VERSION=1.44
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
+  - name: rtorrent
+    docker:
+      <<: *default_options
+      image: ghcr.io/linuxserver/rutorrent
+      container_name: rutorrent
+      environment:
+        - PUID=1000
+        - PGID=1000
+      volumes:
+        - ./volumes/rtorrent:/config
+        - /mnt/torrents:/mnt/torrents
+      ports:
+        - 80:80
+        - 5000:5000
+        - 51414:51413
+        - 6881:6881/udp
+
+  - name: watchtower
+    docker:
+      <<: *default_options
+      image: containrrr/watchtower
+      environment:
+        - WATCHTOWER_POLL_INTERVAL=6
+        - WATCHTOWER_CLEANUP=true
+        - DOCKER_API_VERSION=1.44
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
