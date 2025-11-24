@@ -1,6 +1,6 @@
-# - hosts: all
-#   roles:
-#     - common
+- hosts: all
+  roles:
+    - common
 
 - hosts: namada
   roles:
@@ -65,7 +65,7 @@
 
 - hosts: containers
   roles:
-    - common
+    - prometheus.prometheus.prometheus
     - role: geerlingguy.docker
       become: true
     - role: containers
