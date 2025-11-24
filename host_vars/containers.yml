@@ -169,10 +169,26 @@ containers_list:
         - ./volumes/rtorrent:/config
         - /mnt/torrents:/mnt/torrents
       ports:
-        - 80:80
+        - 8080:80
         - 5000:5000
         - 51414:51413
         - 6881:6881/udp
+
+  - name: lidarr
+    docker:
+      <<: *default_options
+      image: lscr.io/linuxserver/lidarr:latest
+      container_name: lidarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./volumes/rtorrent:/config
+        - /mnt/music/lidarr:/music
+        - /mnt/torrents/rtorrent:/downloads
+      ports:
+        - 8686:8686
 
   - name: watchtower
     docker:
