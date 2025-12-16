@@ -63,9 +63,15 @@
   roles:
     - nordvpn
 
+- hosts: plex
+  roles:
+    - prometheus.prometheus.prometheus
+    - prometheus.prometheus.node_exporter
+
 - hosts: containers
   roles:
     - prometheus.prometheus.prometheus
+    - prometheus.prometheus.node_exporter
     - role: geerlingguy.docker
       become: true
     - role: containers

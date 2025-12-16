@@ -20,7 +20,7 @@ format:
 #----------------------------------------------------------------------------
 # Services
 
-STANDARD_SERVICES=containers beets web weechat butler pihole tailscale imagehost minio namada grafana pirate vpn
+STANDARD_SERVICES=containers beets web weechat butler pihole tailscale imagehost minio namada grafana pirate vpn plex
 
 all:
 	$(ANSIBLE) --tags=$(tags) -f 10

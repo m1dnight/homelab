@@ -13,3 +13,4 @@ proxmox ansible_host=milkyway.localdomain ansible_user=root
 namada ansible_host=namada.localdomain ansible_user=root
 vpn ansible_host=vpn.localdomain ansible_user=root
 containers ansible_host=containers.localdomain ansible_user=administrator
+plex ansible_host=plex.localdomain ansible_user=administrator
