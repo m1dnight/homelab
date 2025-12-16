@@ -194,8 +194,6 @@ reverse_proxies:
     lan_only: yes
     to: "clfy.localdomain:4533"
 
-
-
   - name: "kvm"
     from: "kvm.call-cc.be"
     set_remote_host: "kvm.call-cc.be"
@@ -216,3 +214,8 @@ reverse_proxies:
     set_remote_host: "n8n.call-cc.be"
     lan_only: yes
     to: "n8n.localdomain:443"
+
+  - name: "anoma"
+    from: "anoma.andromeda.call-cc.be"
+    lan_only: no
+    to: "http://anoma.localdomain:4000"
