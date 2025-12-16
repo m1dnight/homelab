@@ -210,3 +210,9 @@ reverse_proxies:
     auth: yes
     username: "admin"
     password: "$2a$14$hiaHdooZIZWnhej0KWhMxuKVkiYyFHXHnaMCzsrLKFXkNo2mmv96G"
+
+  - name: "n8n"
+    from: "n8n.call-cc.be"
+    set_remote_host: "n8n.call-cc.be"
+    lan_only: yes
+    to: "n8n.localdomain:443"

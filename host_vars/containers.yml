@@ -82,7 +82,7 @@ containers_list:
       volumes:
         - ./volumes/sonarr:/config
         - /mnt/series:/tv
-        - /mnt/torrents:/downloads
+        - /mnt/torrents:/mnt/torrents
       ports:
         - 8989:8989
 
@@ -98,7 +98,7 @@ containers_list:
       volumes:
         - ./volumes/radarr:/config
         - /mnt/movies:/movies
-        - /mnt/torrents:/downloads
+        - /mnt/torrents:/mnt/torrents
       ports:
         - 7878:7878
 
