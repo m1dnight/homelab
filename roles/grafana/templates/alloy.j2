@@ -54,6 +54,14 @@ prometheus.scrape "minio" {
     job_name = "minio"
 }
 
+prometheus.scrape "containers" {
+    targets = [{"__address__" = "containers.localdomain:9000", group = "infrastructure", service = "containers", host = "{{ ansible_hostname }}"}]
+    forward_to = [prometheus.remote_write.mimir.receiver]
+    metrics_path = "/minio/v2/metrics/cluster"
+    scrape_interval = "30s"
+    job_name = "minio"
+}
+
 prometheus.scrape "alloy" {
     targets = [{"__address__" = "localhost:12345", group = "infrastructure", service = "alloy", host = "{{ ansible_hostname }}"}]
     forward_to = [prometheus.remote_write.mimir.receiver]
