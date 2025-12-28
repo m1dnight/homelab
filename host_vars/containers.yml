@@ -60,6 +60,7 @@ containers_list:
     docker:
       <<: *default_options
       image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
+      container_name: maintainerr
       user: 1000:1000
       environment:
         - PUID="0"

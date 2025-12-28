@@ -40,10 +40,26 @@ reverse_proxies:
   - name: "proxmox"
     from: "proxmox.call-cc.be"
     lan_only: yes
-    debug: yes
+    debug: no
     tls: yes
     tls_verify: no
     to: "https://milkyway.localdomain:8006"
+
+  - name: "andromeda"
+    from: "andromeda.call-cc.be"
+    lan_only: yes
+    debug: no
+    tls: yes
+    tls_verify: no
+    to: "https://andromeda.localdomain:8006"
+
+  - name: "pbs"
+    from: "pbs.call-cc.be"
+    lan_only: yes
+    debug: yes
+    tls: yes
+    tls_verify: no
+    to: "https://pbe.localdomain:8007"
 
   - name: "transmission"
     from: "transmission.call-cc.be"
@@ -219,3 +235,23 @@ reverse_proxies:
     from: "anoma.andromeda.call-cc.be"
     lan_only: no
     to: "http://anoma.localdomain:4000"
+
+  # - name: "base-mainnet"
+  #   from: "base-mainnet.andromeda.call-cc.be"
+  #   lan_only: no
+  #   to: "http://anoma.localdomain:4001"
+
+  - name: "base-sepolia"
+    from: "base-sepolia.andromeda.call-cc.be"
+    lan_only: no
+    to: "http://anoma.localdomain:4002"
+
+  - name: "eth-sepolia"
+    from: "eth-sepolia.andromeda.call-cc.be"
+    lan_only: no
+    to: "http://anoma.localdomain:4003"
+
+  - name: "base"
+    from: "base.andromeda.call-cc.be"
+    lan_only: no
+    to: "http://anoma.localdomain:4004"
