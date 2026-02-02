@@ -25,7 +25,7 @@ extra_ips: &extra_ips
   - "49.13.33.141" # production.loomy.be
   - "91.107.224.104" # prod.loomy.be variable
   - "88.198.40.214" # backend.loomy.be
-
+  - "34.79.124.208" # development.loomy.be on gcp
 static_sites:
   - name: "call-cc.be"
     domain: "call-cc.be"
@@ -106,15 +106,10 @@ reverse_proxies:
     tls_verify: no
     to: "pulsar.localdomain:8081"
 
-  - name: "plausible"
-    from: "plausible.loomy.be"
-    lan_only: no
-    to: "observability.localdomain:8000"
-
   - name: "notifications.development.loomy.be"
     from: "notifications.development.loomy.be"
     lan_only: no
-    to: "192.168.1.153:4001"
+    to: "loomy-tools.localdomain:4001"
 
   - name: "weechat"
     from: "chat.call-cc.be"
@@ -163,35 +158,29 @@ reverse_proxies:
     allowed_ips: *extra_ips
     to: "minio.isolated:9000"
 
-  - name: "coolify"
-    from: "coolify.call-cc.be"
+  - name: "garage"
+    from: "garage.andromeda.call-cc.be"
     lan_only: yes
-    to: "clfy.localdomain:8000"
-    tos:
-      - { path: "/app", to: "clfy.localdomain:6001" }
-      - { path: "/terminal/ws", to: "clfy.localdomain:6002" }
+    allowed_ips: *extra_ips
+    to: "s3.localdomain:3900"
 
-  - name: "plausible"
-    from: "plausible.coolify.call-cc.be"
-    lan_only: no
-    to: "http://clfy.localdomain"
+  - name: "grafana"
+    from: "grafana.andromeda.call-cc.be"
+    lan_only: yes
+    allowed_ips: *extra_ips
+    to: "monitoring.localdomain:3000"
 
-  - name: "exbin"
-    from: "exbin.call-cc.be"
-    lan_only: no
-    set_remote_host: "exbin.coolify.call-cc.be"
-    to: "http://clfy.localdomain"
+  - name: "loki"
+    from: "loki.andromeda.call-cc.be"
+    lan_only: yes
+    allowed_ips: *extra_ips
+    to: "monitoring.localdomain:3100"
 
-  - name: "exbin"
-    from: "exbin.coolify.call-cc.be"
-    lan_only: false
-    to: "http://clfy.localdomain"
-
-  - name: "elixpeer"
-    from: "elixpeer.coolify.call-cc.be"
-    lan_only: true
-    to: "http://clfy.localdomain"
-    origin: "http://elixpeer.coolify.call-cc.be"
+  - name: "mimir"
+    from: "mimir.andromeda.call-cc.be"
+    lan_only: yes
+    allowed_ips: *extra_ips
+    to: "monitoring.localdomain:9009"
 
   - name: "pihole"
     from: "pihole.coolify.call-cc.be"
@@ -202,7 +191,7 @@ reverse_proxies:
     from: "butler.call-cc.be"
     set_remote_host: "butler.call-cc.be"
     lan_only: no
-    to: "clfy.localdomain:4000"
+    to: "butler.localdomain:4000"
 
   - name: "music"
     from: "music.call-cc.be"
@@ -215,43 +204,3 @@ reverse_proxies:
     set_remote_host: "kvm.call-cc.be"
     lan_only: yes
     to: "jetkvm.localdomain"
-
-  - name: "eth"
-    from: "eth.call-cc.be"
-    set_remote_host: "eth.call-cc.be"
-    lan_only: no
-    to: "eth.isolated:8545"
-    auth: yes
-    username: "admin"
-    password: "$2a$14$hiaHdooZIZWnhej0KWhMxuKVkiYyFHXHnaMCzsrLKFXkNo2mmv96G"
-
-  - name: "n8n"
-    from: "n8n.call-cc.be"
-    set_remote_host: "n8n.call-cc.be"
-    lan_only: yes
-    to: "n8n.localdomain:443"
-
-  - name: "anoma"
-    from: "anoma.andromeda.call-cc.be"
-    lan_only: no
-    to: "http://anoma.localdomain:4000"
-
-  # - name: "base-mainnet"
-  #   from: "base-mainnet.andromeda.call-cc.be"
-  #   lan_only: no
-  #   to: "http://anoma.localdomain:4001"
-
-  - name: "base-sepolia"
-    from: "base-sepolia.andromeda.call-cc.be"
-    lan_only: no
-    to: "http://anoma.localdomain:4002"
-
-  - name: "eth-sepolia"
-    from: "eth-sepolia.andromeda.call-cc.be"
-    lan_only: no
-    to: "http://anoma.localdomain:4003"
-
-  - name: "base"
-    from: "base.andromeda.call-cc.be"
-    lan_only: no
-    to: "http://anoma.localdomain:4004"
