@@ -11,21 +11,21 @@ default_packages:
 
 nfs_mounts:
   - src: pulsar.localdomain
-    path: /volume2/torrents
+    path: /volume1/torrents
     opts: rw,sync,hard
     state: mounted
     fstype: nfs
     mountpoint: /mnt/torrents
 
   - src: pulsar.localdomain
-    path: /volume2/tv-shows
+    path: /volume1/tv-shows
     opts: rw,sync,hard
     state: mounted
     fstype: nfs
     mountpoint: /mnt/series
 
   - src: pulsar.localdomain
-    path: /volume2/movies
+    path: /volume1/movies
     opts: rw,sync,hard
     state: mounted
     fstype: nfs
