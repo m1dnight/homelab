@@ -79,104 +79,264 @@
   tasks:
     - name: Create unrar script
       copy:
-        dest: "{{ ansible_user_dir }}/unrar_all.sh"
+        dest: "{{ ansible_user_dir }}/unrar_all.py"
         mode: "0755"
 
         content: |
-          #!/bin/bash
-          TARGET_DIR="/mnt/torrents/complete"
+            import atexit
+            import json
+            import logging
+            import os
+            import shutil
+            import subprocess
+            import sys
+            import tempfile
+            import argparse
+            import re
+            from pathlib import Path
 
-          set -a
-
-          # Check if target directory exists
-          if [ ! -d "$TARGET_DIR" ]; then
-              echo "Error: Directory '$TARGET_DIR' does not exist"
-              exit 1
-          fi
-
-          # Check if unrar is available
-          if ! command -v unrar &> /dev/null; then
-              echo "Error: unrar command not found. Please install unrar first."
-              exit 1
-          fi
-
-          LOCKFILE="/tmp/unrar_subdirs.lock"
-          PIDFILE="/tmp/unrar_subdirs.pid"
-
-          # Function to clean up lockfile on exit
-          cleanup() {
-              echo "removing lockfile"
-              rm -f "$LOCKFILE" "$PIDFILE"
-          }
+            # Basic configuration
+            logging.basicConfig(
+                level=logging.WARNING,  # Set minimum log level
+                format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                datefmt='%Y-%m-%d %H:%M:%S'
+            )
 
 
-          if [ -f "$LOCKFILE" ]; then
-              # Check if the process is still running
-              if [ -f "$PIDFILE" ]; then
-                  OLD_PID=$(cat "$PIDFILE")
-                  if ps -p "$OLD_PID" > /dev/null 2>&1; then
-                      echo "Error: Script is already running (PID: $OLD_PID)"
-                      echo "If you're sure it's not running, remove: $LOCKFILE"
-                      exit 1
-                  else
-                      echo "Removing stale lockfile (process $OLD_PID no longer exists)"
-                      rm -f "$LOCKFILE" "$PIDFILE"
-                  fi
-              fi
-          fi
+            def read_extracted_paths():
+                """
+                Read the unrarred files from the file
+                :return:
+                """
+                store_path = os.path.dirname(os.path.realpath(__file__))
+                store_file = os.path.join(store_path, 'unrarred.json')
+                if os.path.exists(store_file) and os.path.isfile(store_file):
+                    with open(store_file, 'r') as f:
+                        data = json.load(f)
+                        return data['paths']
+                else:
+                    return []
 
-          # Set trap to cleanup on exit
-          trap cleanup EXIT INT TERM
 
-          # Create lockfile and store our PID
-          echo $$ > "$PIDFILE"
-          touch "$LOCKFILE"
+            def remember_unrar(path):
+                """"
+                REmember the unrarred file as unrarred.
+                """
+                store_path = os.path.dirname(os.path.realpath(__file__))
+                store_file = os.path.join(store_path, 'unrarred.json')
+                paths = read_extracted_paths()
+                paths.append(path)
+                new_state = {'paths': list(set(paths))}
+                with open(store_file, 'w') as f:
+                    json.dump(new_state, f)
 
-          find "$TARGET_DIR" -type f -name ".unrar" -print0 | while IFS= read -r -d '' unrar_file; do
-              # Get the directory containing the .unrar file
-              unrar_dir=$(dirname "$unrar_file")
-              echo ".unrar in ${unrar_dir}"
 
-              # Change to the directory and find nested .rar fils
-              (
-            cd "$unrar_dir" || exit 1
+            def was_unrarred(path):
+                """
+                Checks if the path was unrarred before.
+                :param path:
+                :return:
+                """
+                unrarred = read_extracted_paths()
+                return path in unrarred
 
-            # find all rar files in this dir and unrar them
-            find "${unrar_dir}" -type f -name "*.rar" -print0 | while IFS= read -r -d '' rar_file; do
-                dir=$(dirname $rar_file)
-                (
-              echo "rar file in ${dir}";
-              cd "${dir}" || exit 1;
-              pwd ;
-                    temp_dir=$(mktemp -d -t unrar.XXXXXXXXXX);
-                    unrar x "$(basename "$rar_file")" "$temp_dir/";
 
-              # if unrar did not exit properly, abort and do not clean up
-              unrar_exit=$?
-              if ! [ $unrar_exit -eq 0 ]; then
-                  echo "unrar did not exit properly";
-                  exit $unrar_exit;
-              else
-                        mv "$temp_dir"/* "$dir/" 2>/dev/null;
-                  rmdir "$temp_dir";
-              fi;
+            def ensure_root_exists(root):
+                """
+                Ensure the root directory exists.
+                :param root: Directory to ensure exists.
+                :return: exists
+                """
+                # Ensure the target directory exists
+                # Check if target directory exists
+                if not os.path.isdir(root):
+                    logging.error(f"Directory '{root}' does not exist")
+                    sys.exit(1)
+
+
+            def ensure_unrar_available():
+                """
+                Ensure unrar command is available.
+                :return:
+                """
+                if not shutil.which('unrar'):
+                    logging.error("Error: unrar command not found. Please install unrar first.")
+                    sys.exit(1)
+
+
+            def ensure_no_lock():
+                """
+                Check if a lockfile exists, if it does, abort. If it does not, create it.
+                :return:
+                """
+                if os.path.exists(lock_file):
+                    logging.error(f"Error: Lock file '{lock_file}' already exists. Another instance may be running.")
+                    sys.exit(1)
+
+
+            def create_lock(lock_file):
+                """
+                Create a lock file for this process.
+                :return:
+                """
+                # make sure the doesn't exist a lockfile yet.
+                ensure_no_lock()
+
+                try:
+                    with open(lock_file, 'w') as f:
+                        f.write(str(os.getpid()))
+                    logging.debug(f"Lock file created: {lock_file}")
+                except Exception as e:
+                    logging.error(f"Error: Could not create lock file: {e}")
+                    sys.exit(1)
+
+
+            def unlock(lock_file):
+                """
+                Unlock the lock file.
+                :return:
+                """
+                if os.path.exists(lock_file):
+                    os.remove(lock_file)
+                    logging.debug(f"Lock file removed: {lock_file}")
+
+
+            def find_unrarrable(root_dir, ignored_subdirs):
+                directories_with_unrar = []
+                for root, dirs, files in os.walk(root_dir, topdown=True):
+                    dirs[:] = [d for d in dirs if d not in ignored_subdirs]
+                    if any(f.lower().endswith('.rar') for f in files):
+                    # if any(f.lower().endswith('.unrar') for f in files):
+                        directories_with_unrar.append(root)
+                return directories_with_unrar
+
+
+            def move_temp_to_destination(temp_dir, destination):
+                """
+                Move the contents of the temp directory to the destination.
+                :param temp_dir:
+                :param destination:
+                :return:
+                """
+                for item in os.listdir(temp_dir):
+                    src = os.path.join(temp_dir, item)
+                    dst = Path(os.path.join(destination, item))
+                    tmp_dst = dst.with_suffix('.moving')
+
+                    # Overwrite existing files.
+                    if os.path.exists(dst):
+                        if os.path.isdir(dst):
+                            shutil.rmtree(dst)
+                        else:
+                            os.remove(dst)
+                    logging.debug("Move {} to {}".format(src, dst))
+                    shutil.move(src, tmp_dst)
+                    shutil.move(tmp_dst, dst)
+                    logging.debug(f"Moved: {item}")
+
+            def should_extract_this_rar(rar_file_path):
+                """Determine if this is the correct RAR file to extract from"""
+                basename = os.path.basename(rar_file_path).lower()
+
+                # if it has the format .partXXX.rar, only part001.rar is valid.
+                if re.search(r'\.(part0*1\.rar)$', basename):
+                    return True
+
+                if re.search(r'\.(part\d+\.rar)$', basename):
+                    return False
+
+                if re.search(r'\.rar$', basename):
+                    return True
+
+
+                return False  # Default to yes if unsure
+
+            def unrar_file(rar_file_path):
+                """
+                Unrar the given rar file into a temp directory.
+                """
+                # create a temp directory for the output
+                temp_dir = tempfile.mkdtemp(prefix='unrar_')
+
+                # Get the dir that holds the rar file.
+                rar_file_dir = os.path.dirname(os.path.abspath(rar_file_path))
+
+                # call unrar
+                args = ['unrar', 'x', '-o+', rar_file_path, temp_dir + '/']
+                unrar_command = " ".join(args)
+                logging.debug(unrar_command)
+
+                result = subprocess.run(
+                    args,
+                    capture_output=True,
+                    text=True,
+                    encoding='utf-8',
+                    errors='replace',
                 )
-            done
 
-            # if the unrar did not complete, do not remove the .unrar file
-            exit_code=$?
+                # check if the unrar worked
+                if result.returncode != 0:
+                    logging.error(f"Error extracting '{rar_file_path}': {result.stderr}")
+                    sys.exit(1)
+                else:
+                    logging.info("Unrarred {}".format(rar_file_path))
+                    # Move the unrarred content back to the original directory
+                    move_temp_to_destination(temp_dir, rar_file_dir)
 
-            if ! [ $exit_code -eq 0 ]; then
-              exit $exit_code;
-            else
-              rm .unrar;
-            fi
+                # remove the temp directory
+                shutil.rmtree(temp_dir)
 
-              )
-          done
+
+            def unrar_candidate(directory):
+                """
+                Unrars the rar files in this directory.
+                :param path:
+                :return:
+                """
+                # # Verify the directory has the .unrar marker
+                # unrar_marker = os.path.join(directory, '.unrar')
+                # if not os.path.exists(unrar_marker):
+                #     logging.warning(f"Warning: No .unrar marker in '{directory}', skipping")
+                #     return
+
+                # Find all .rar files in the directory
+                rar_files = [f for f in os.listdir(directory) if f.lower().endswith('.rar')]
+                for rar_file in rar_files:
+                    # make sure the rar file was not unrarred before
+                    logging.debug(f"Found .rar '{rar_file}'")
+                    absolute_rar_file = os.path.join(directory, rar_file)
+
+                    if was_unrarred(os.path.join(directory, rar_file)):
+                        logging.info("{} was already unrarred".format(rar_file))
+                        return
+
+                    if should_extract_this_rar(absolute_rar_file):
+                        unrar_file(absolute_rar_file)
+                        remember_unrar(absolute_rar_file)
+
+            ignored_subdirs = {'#recycle', 'sample', 'Sample'}
+            lock_file = '/tmp/unrar_all.lock'
+
+            if __name__ == '__main__':
+                parser = argparse.ArgumentParser(description='Recursively extract RAR archives from a directory.')
+                parser.add_argument('root_directory', nargs='?', default='/mnt/torrents/',
+                                    help='Root directory to scan for RAR files (default: /mnt/torrents/)')
+                args = parser.parse_args()
+
+                root_directory = args.root_directory
+
+                ensure_root_exists(root_directory)
+                ensure_unrar_available()
+                create_lock(lock_file)
+                atexit.register(lambda: unlock(lock_file))
+
+                unrarrable = find_unrarrable(root_directory, ignored_subdirs)
+                for directory in unrarrable:
+                    unrar_candidate(directory)
+
     - name: Create cron job for script
       cron:
         name: "Unrar all torrents"
         minute: "*"
         hour: "*"
-        job: "{{ ansible_user_dir }}/unrar_all.sh"
+        job: "{{ ansible_user_dir }}/unrar_all.py /mnt/torrents"
