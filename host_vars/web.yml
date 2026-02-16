@@ -204,3 +204,9 @@ reverse_proxies:
     set_remote_host: "kvm.call-cc.be"
     lan_only: yes
     to: "jetkvm.localdomain"
+
+  - name: "claudio"
+    from: "claudio.call-cc.be"
+    set_remote_host: "claudio.call-cc.be"
+    lan_only: yes
+    to: "claudius.localdomain"
